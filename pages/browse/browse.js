@@ -1,10 +1,10 @@
 ﻿const browseGenreConfig = [
   { key: "classic", label: "CLASSIC", subLabel: "클래식", genres: ["클래식"] },
   { key: "kpop", label: "K-POP", subLabel: "케이팝", genres: ["케이팝"] },
-  { key: "trot", label: "TROT", subLabel: "트로트", genres: ["트로트"] },
   { key: "jpop", label: "J-POP", subLabel: "제이팝", genres: ["제이팝"] },
   { key: "pop", label: "POP", subLabel: "팝", genres: ["팝"] },
-  { key: "hiphop-rnb", label: "HIP-HOP / R&B", subLabel: "힙합 / 알앤비", genres: ["힙합", "R&B"] }
+  { key: "indie-band", label: "INDIE / BAND", subLabel: "인디/밴드", genres: ["인디/밴드"] },
+  { key: "hiphop-rnb", label: "HIP-HOP / R&B", subLabel: "힙합 / 알앤비", genres: ["힙합/R&B"] }
 ];
 
 let browseTracks = window.trackitData?.tracks || [];
@@ -19,10 +19,10 @@ function getBrowseTracksByGenre(genre) {
 }
 
 function renderBrowseGenres() {
-  return browseGenreConfig.map((genre, index) => {
+  return browseGenreConfig.map(genre => {
     const count = getBrowseTracksByGenre(genre).length;
     const activeClass = genre.key === selectedBrowseGenreKey ? "genre-card active" : "genre-card";
-    const featuredClass = index === 0 ? "genre-card--featured" : "";
+    const featuredClass = genre.key === selectedBrowseGenreKey ? "genre-card--featured" : "";
 
     return `
       <button type="button" data-genre-key="${genre.key}" class="${activeClass} ${featuredClass} rounded-2xl p-4 text-left">
@@ -71,27 +71,29 @@ function renderBrowseTrackSection() {
   `;
 }
 
-function bindBrowseGenreButtons() {
-  const root = document.querySelector("[data-page-root]");
-  if (!root) {
-    return;
-  }
+function bindBrowseInteractions() {
+  document.addEventListener("click", event => {
+    if (document.body.dataset.currentPage !== "browse") {
+      return;
+    }
 
-  root.querySelectorAll("[data-genre-key]").forEach(button => {
-    button.addEventListener("click", () => {
-      selectedBrowseGenreKey = button.dataset.genreKey;
-      renderBrowsePage();
-    });
+    const genreButton = event.target.closest("[data-genre-key]");
+    if (!genreButton) {
+      return;
+    }
+
+    event.preventDefault();
+    selectedBrowseGenreKey = genreButton.dataset.genreKey;
+    renderBrowsePage();
   });
 }
-
 function renderBrowse() {
   return `
     <div class="browse-shell">
       <div class="browse-hero surface rounded-3xl p-5 md:p-6">
         <p class="text-sm" style="color:var(--muted)">DISCOVER</p>
         <h1 class="font-medium mt-1">둘러보기</h1>
-        <p class="text-sm mt-2" style="color:var(--muted)">장르별로 정리한 60곡 데이터로 구성한 탐색 페이지입니다.</p>
+        <p class="text-sm mt-2" style="color:var(--muted)">장르별로 모은 무료 MP3 음원을 탐색해보세요.</p>
       </div>
       <div class="browse-genre-grid grid grid-cols-2 gap-3">${renderBrowseGenres()}</div>
       ${renderBrowseTrackSection()}
@@ -106,7 +108,6 @@ function renderBrowsePage() {
   }
 
   root.innerHTML = renderBrowse();
-  bindBrowseGenreButtons();
 
   if (window.lucide) {
     lucide.createIcons();
@@ -135,6 +136,14 @@ window.trackitPages = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  bindBrowseGenreButtons();
+  bindBrowseInteractions();
   loadBrowseTracks();
 });
+
+
+
+
+
+
+
+
