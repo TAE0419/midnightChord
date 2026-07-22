@@ -6,6 +6,52 @@ const appState = {
   searchQuery: ""
 };
 
+let artistWaveAnimationFrame = null;
+
+// 미니 재생바의 SVG 선 좌표를 계속 바꿔 실제로 출렁이는 파형을 만듭니다.
+function setArtistWave(button, active) {
+  document.querySelectorAll("[data-artist-play-track]").forEach(item => {
+    item.classList.remove("is-wave-active");
+    item.setAttribute("aria-label", "아티스트 음악 재생");
+  });
+
+  if (artistWaveAnimationFrame) {
+    cancelAnimationFrame(artistWaveAnimationFrame);
+    artistWaveAnimationFrame = null;
+  }
+
+  if (!active || !button) {
+    return;
+  }
+
+  button.classList.add("is-wave-active");
+  button.setAttribute("aria-label", "아티스트 음악 일시정지");
+  const path = button.querySelector(".artist-wave path");
+
+  const drawWave = time => {
+    if (!button.classList.contains("is-wave-active")) {
+      return;
+    }
+
+    const points = [];
+    for (let x = 0; x <= 180; x += 2) {
+      // 주기가 다른 파동을 섞어 간격은 촘촘하고 높이는 조금 불규칙하게 만듭니다.
+      // 양 끝은 일자에 가깝도록 envelope 값을 곱합니다.
+      const envelope = Math.sin((Math.PI * x) / 180);
+      const wave =
+        Math.sin(x * 0.68 + time * 0.018) * 4.5 +
+        Math.sin(x * 0.37 - time * 0.011) * 2.3 +
+        Math.sin(x * 1.08 + time * 0.024) * 1.2;
+      const y = 15 + wave * envelope;
+      points.push(`${x === 0 ? "M" : "L"}${x} ${y.toFixed(2)}`);
+    }
+    path.setAttribute("d", points.join(" "));
+    artistWaveAnimationFrame = requestAnimationFrame(drawWave);
+  };
+
+  artistWaveAnimationFrame = requestAnimationFrame(drawWave);
+}
+
 function currentPageId() {
   return document.body.dataset.currentPage || "home";
 }
@@ -101,11 +147,44 @@ function bindNavigation() {
   document.addEventListener("click", event => {
     const pageLink = event.target.closest("[data-page-link]");
     const artistLink = event.target.closest("[data-artist-name]");
+    const artistPlay = event.target.closest("[data-artist-play-track]");
+    const artistDetailPlay = event.target.closest("[data-artist-detail-play]");
     const playTrack = event.target.closest("[data-play-track]");
     const trackRow = event.target.closest("[data-track-index]");
 
     if (artistLink) {
       window.location.href = new URL(`${pageUrl("artist-detail")}?name=${encodeURIComponent(artistLink.dataset.artistName)}`, document.baseURI).href;
+      return;
+    }
+    // 아티스트 카드 안의 미니 플레이어를 누르면 연결된 곡을 재생합니다.
+    if (artistPlay) {
+      const shouldPlay = !artistPlay.classList.contains("is-wave-active");
+      setArtistWave(artistPlay, shouldPlay);
+
+      if (shouldPlay) {
+        playTrackByIndex(Number(artistPlay.dataset.artistPlayTrack));
+      } else {
+        getPlayerElements().audio.pause();
+        appState.playing = false;
+        updatePlayButtons();
+      }
+      return;
+    }
+    // 상세 페이지 인기곡 버튼: 클릭할 때 재생/일시정지 아이콘을 교체합니다.
+    if (artistDetailPlay) {
+      const shouldPlay = !artistDetailPlay.classList.contains("is-playing");
+      artistDetailPlay.classList.toggle("is-playing", shouldPlay);
+      artistDetailPlay.innerHTML = `<span>인기곡재생</span><i data-lucide="${shouldPlay ? "Pause" : "Play"}" class="w-4 h-4"></i>`;
+      artistDetailPlay.setAttribute("aria-label", shouldPlay ? "인기곡 일시정지" : "인기곡 재생");
+      createLucideIcons();
+
+      if (shouldPlay) {
+        playTrackByIndex(Number(artistDetailPlay.dataset.artistDetailPlay));
+      } else {
+        getPlayerElements().audio.pause();
+        appState.playing = false;
+        updatePlayButtons();
+      }
       return;
     }
     if (playTrack) {
@@ -285,6 +364,11 @@ function updatePlayButtons() {
   const player = getPlayerElements();
   player.buttons.forEach(button => {
     button.innerHTML = `<i data-lucide="${appState.playing ? "Pause" : "Play"}" class="w-4 h-4"></i>`;
+  });
+  // 현재 재생 중인 아티스트 카드에만 파형 애니메이션 클래스를 붙입니다.
+  document.querySelectorAll("[data-artist-play-track]").forEach(button => {
+    const isPlaying = appState.playing && Number(button.dataset.artistPlayTrack) === appState.currentTrackIndex;
+    button.classList.toggle("is-playing", isPlaying);
   });
   createLucideIcons();
 }
