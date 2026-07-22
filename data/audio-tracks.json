@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Violet Night",
+    "artist": "LUNA",
+    "time": "3:20",
+    "audioSrc": "assets/audio/violet-night.mp3"
+  },
+  {
+    "title": "Purple Orbit",
+    "artist": "MUSE",
+    "time": "3:48",
+    "audioSrc": "assets/audio/purple-orbit.mp3"
+  },
+  {
+    "title": "Night Drive",
+    "artist": "NOIR",
+    "time": "4:01",
+    "audioSrc": "assets/audio/night-drive.mp3"
+  },
+  {
+    "title": "Moon Signal",
+    "artist": "LUNA",
+    "time": "3:54",
+    "audioSrc": "assets/audio/moon-signal.mp3"
+  },
+  {
+    "title": "Rose Static",
+    "artist": "MUSE",
+    "time": "3:12",
+    "audioSrc": "assets/audio/rose-static.mp3"
+  },
+  {
+    "title": "Blue Relay",
+    "artist": "KAI",
+    "time": "2:58",
+    "audioSrc": "assets/audio/blue-relay.mp3"
+  }
+]
