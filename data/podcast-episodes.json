@@ -1,35 +1,89 @@
 [
   {
-    "id": "midnight-session-01",
-    "title": "Midnight Session EP.01",
-    "host": "Studio Midnight",
-    "category": "작업실",
-    "date": "2026.07.22",
-    "time": "18:00",
-    "description": "밤의 작업실에서 음악이 완성되는 과정을 이야기합니다.",
-    "imageSrc": "assets/images/podcasts/midnight-session-01.jpg",
-    "audioSrc": "assets/audio/podcasts/midnight-session-01.mp3"
+    "id": "series-01",
+    "title": "미드나잇 25시 정각",
+    "host": "마키아또",
+    "category": "일상 / 힐링",
+    "description": "지친 하루 끝, 조용히 켜놓고 듣는 밤의 라디오. 특별하지 않아도 따뜻한 우리들의 소소한 일상과 위로를 담아 전합니다.",
+    "coverImage": "assets/images/podcasts/midnight-hello.jpg",
+    "isFeatured": true,
+    "episodes": [
+      {
+        "id": "ep-101",
+        "epNumber": "EP.01",
+        "title": "수고했어, 오늘도 빛난 당신에게",
+        "duration": "22:15",
+        "publishedAt": "2026-04-01",
+        "audioUrl": "assets/audio/podcasts/hello-ep01.mp3",
+        "summary": "온종일 달리느라 고생한 스스로에게 전하는 밤의 메시지. 차 한 잔과 함께 편안하게 들어보세요."
+      },
+      {
+        "id": "ep-102",
+        "epNumber": "EP.02",
+        "title": "아무것도 하지 않아도 괜찮은 밤",
+        "duration": "18:40",
+        "publishedAt": "2026-04-08",
+        "audioUrl": "assets/audio/podcasts/hello-ep02.mp3",
+        "summary": "생각이 너무 많아 잠들지 못하는 밤, 모든 부담감을 잠시 내려놓는 연습."
+      }
+    ]
   },
   {
-    "id": "artist-talk-01",
-    "title": "Artist Talk EP.01",
+    "id": "series-02",
+    "title": "아티스트의 야간 작업실",
     "host": "Studio Midnight",
-    "category": "인터뷰",
-    "date": "2026.07.25",
-    "time": "24:00",
-    "description": "아티스트의 작업 방식과 플레이리스트 큐레이션 이야기를 나눕니다.",
-    "imageSrc": "assets/images/podcasts/artist-talk-01.jpg",
-    "audioSrc": "assets/audio/podcasts/artist-talk-01.mp3"
+    "category": "음악 / 아티스트",
+    "description": "명곡과 명작이 탄생한 바로 그 새벽. 아티스트들의 비하인드 스토리와 몽환적인 보랏빛 작업실 속 깊은 이야기.",
+    "coverImage": "assets/images/podcasts/artist-studio.jpg",
+    "isFeatured": false,
+    "episodes": [
+      {
+        "id": "ep-201",
+        "epNumber": "EP.01",
+        "title": "대중에게 사랑받은 그 멜로디는 어떻게 만들어졌나",
+        "duration": "31:10",
+        "publishedAt": "2026-04-03",
+        "audioUrl": "assets/audio/podcasts/artist-ep01.mp3",
+        "summary": "스튜디오 미드나잇의 시그니처 사운드 'Violet Night' 제작 비하인드 및 프로듀서 인터뷰."
+      },
+      {
+        "id": "ep-202",
+        "epNumber": "EP.02",
+        "title": "새벽 3시, 영감이 밀려오는 시간",
+        "duration": "25:50",
+        "publishedAt": "2026-04-10",
+        "audioUrl": "assets/audio/podcasts/artist-ep02.mp3",
+        "summary": "낮에는 들리지 않던 소리들이 새벽에 특별해지는 이유. 뮤지션들이 말하는 밤의 창작욕."
+      }
+    ]
   },
   {
-    "id": "album-making-01",
-    "title": "Album Making EP.01",
-    "host": "Studio Midnight",
-    "category": "앨범 이야기",
-    "date": "2026.07.28",
-    "time": "21:00",
-    "description": "앨범 콘셉트와 사운드가 완성되는 흐름을 소개합니다.",
-    "imageSrc": "assets/images/podcasts/album-making-01.jpg",
-    "audioSrc": "assets/audio/podcasts/album-making-01.mp3"
+    "id": "series-03",
+    "title": "밤 11시, 문장 수집가들",
+    "host": "북클럽 미드나잇",
+    "category": "도서 / 에세이",
+    "description": "잠들기 전 마음에 오래도록 맴도는 단 한 줄의 문장. 당신의 밤을 포근하게 채워줄 소설과 에세이 추천.",
+    "coverImage": "assets/images/podcasts/book-collectors.jpg",
+    "isFeatured": false,
+    "episodes": [
+      {
+        "id": "ep-301",
+        "epNumber": "EP.01",
+        "title": "지친 날 나를 살려낸 보랏빛 문장들",
+        "duration": "28:30",
+        "publishedAt": "2026-04-05",
+        "audioUrl": "assets/audio/podcasts/book-ep01.mp3",
+        "summary": "마음이 조급할 때 가만히 펼쳐보기 좋은 밤의 에세이 추천작 3권."
+      },
+      {
+        "id": "ep-302",
+        "epNumber": "EP.02",
+        "title": "길을 잃었을 때 읽는 몰입의 소설",
+        "duration": "24:15",
+        "publishedAt": "2026-04-12",
+        "audioUrl": "assets/audio/podcasts/book-ep02.mp3",
+        "summary": "현실을 잠시 잊고 다른 세계관 속으로 푹 빠져들게 만드는 매력적인 소설 이야기."
+      }
+    ]
   }
 ]
