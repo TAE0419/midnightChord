@@ -6,52 +6,6 @@ const appState = {
   searchQuery: ""
 };
 
-let artistWaveAnimationFrame = null;
-
-// 미니 재생바의 SVG 선 좌표를 계속 바꿔 실제로 출렁이는 파형을 만듭니다.
-function setArtistWave(button, active) {
-  document.querySelectorAll("[data-artist-play-track]").forEach(item => {
-    item.classList.remove("is-wave-active");
-    item.setAttribute("aria-label", "아티스트 음악 재생");
-  });
-
-  if (artistWaveAnimationFrame) {
-    cancelAnimationFrame(artistWaveAnimationFrame);
-    artistWaveAnimationFrame = null;
-  }
-
-  if (!active || !button) {
-    return;
-  }
-
-  button.classList.add("is-wave-active");
-  button.setAttribute("aria-label", "아티스트 음악 일시정지");
-  const path = button.querySelector(".artist-wave path");
-
-  const drawWave = time => {
-    if (!button.classList.contains("is-wave-active")) {
-      return;
-    }
-
-    const points = [];
-    for (let x = 0; x <= 180; x += 2) {
-      // 주기가 다른 파동을 섞어 간격은 촘촘하고 높이는 조금 불규칙하게 만듭니다.
-      // 양 끝은 일자에 가깝도록 envelope 값을 곱합니다.
-      const envelope = Math.sin((Math.PI * x) / 180);
-      const wave =
-        Math.sin(x * 0.68 + time * 0.018) * 4.5 +
-        Math.sin(x * 0.37 - time * 0.011) * 2.3 +
-        Math.sin(x * 1.08 + time * 0.024) * 1.2;
-      const y = 15 + wave * envelope;
-      points.push(`${x === 0 ? "M" : "L"}${x} ${y.toFixed(2)}`);
-    }
-    path.setAttribute("d", points.join(" "));
-    artistWaveAnimationFrame = requestAnimationFrame(drawWave);
-  };
-
-  artistWaveAnimationFrame = requestAnimationFrame(drawWave);
-}
-
 function currentPageId() {
   return document.body.dataset.currentPage || "home";
 }
@@ -100,45 +54,6 @@ function renderCurrentPage() {
   pageRoot.innerHTML = window.trackitPages[pageId] ? window.trackitPages[pageId]() : window.trackitPages.home();
 }
 
-async function loadPodcastData() {
-  if (!window.trackitData) {
-    return;
-  }
-
-  try {
-    const response = await fetch("data/podcast-episodes.json", { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error(`Podcast data request failed: ${response.status}`);
-    }
-
-    const seriesList = await response.json();
-    if (!Array.isArray(seriesList)) {
-      return;
-    }
-
-    window.trackitData.podcastSeries.splice(0, window.trackitData.podcastSeries.length, ...seriesList);
-    window.trackitData.tracks.splice(
-      0,
-      window.trackitData.tracks.length,
-      ...window.trackitData.tracks.filter(track => !track.audioSrc || !track.audioSrc.includes("assets/audio/podcasts/"))
-    );
-
-    seriesList.forEach(series => {
-      series.episodes.forEach(episode => {
-        window.trackitData.tracks.push({
-          title: episode.title,
-          artist: series.host,
-          time: episode.duration,
-          audioSrc: episode.audioUrl,
-          imageSrc: series.coverImage
-        });
-      });
-    });
-  } catch (error) {
-    console.warn("Podcast JSON could not be loaded. Using bundled podcast data.", error);
-  }
-}
-
 function navigateToPage(pageId) {
   window.location.href = new URL(pageUrl(pageId), document.baseURI).href;
 }
@@ -147,44 +62,11 @@ function bindNavigation() {
   document.addEventListener("click", event => {
     const pageLink = event.target.closest("[data-page-link]");
     const artistLink = event.target.closest("[data-artist-name]");
-    const artistPlay = event.target.closest("[data-artist-play-track]");
-    const artistDetailPlay = event.target.closest("[data-artist-detail-play]");
     const playTrack = event.target.closest("[data-play-track]");
     const trackRow = event.target.closest("[data-track-index]");
 
     if (artistLink) {
       window.location.href = new URL(`${pageUrl("artist-detail")}?name=${encodeURIComponent(artistLink.dataset.artistName)}`, document.baseURI).href;
-      return;
-    }
-    // 아티스트 카드 안의 미니 플레이어를 누르면 연결된 곡을 재생합니다.
-    if (artistPlay) {
-      const shouldPlay = !artistPlay.classList.contains("is-wave-active");
-      setArtistWave(artistPlay, shouldPlay);
-
-      if (shouldPlay) {
-        playTrackByIndex(Number(artistPlay.dataset.artistPlayTrack));
-      } else {
-        getPlayerElements().audio.pause();
-        appState.playing = false;
-        updatePlayButtons();
-      }
-      return;
-    }
-    // 상세 페이지 인기곡 버튼: 클릭할 때 재생/일시정지 아이콘을 교체합니다.
-    if (artistDetailPlay) {
-      const shouldPlay = !artistDetailPlay.classList.contains("is-playing");
-      artistDetailPlay.classList.toggle("is-playing", shouldPlay);
-      artistDetailPlay.innerHTML = `<span>인기곡재생</span><i data-lucide="${shouldPlay ? "Pause" : "Play"}" class="w-4 h-4"></i>`;
-      artistDetailPlay.setAttribute("aria-label", shouldPlay ? "인기곡 일시정지" : "인기곡 재생");
-      createLucideIcons();
-
-      if (shouldPlay) {
-        playTrackByIndex(Number(artistDetailPlay.dataset.artistDetailPlay));
-      } else {
-        getPlayerElements().audio.pause();
-        appState.playing = false;
-        updatePlayButtons();
-      }
       return;
     }
     if (playTrack) {
@@ -289,7 +171,6 @@ function getPlayerElements() {
     audio: document.getElementById("studioAudio"),
     title: document.getElementById("playerTitle"),
     artist: document.getElementById("playerArtist"),
-    cover: document.getElementById("playerCover"),
     status: document.getElementById("playerStatus"),
     progress: document.getElementById("playerProgress"),
     sidebarTitle: document.querySelector("[data-sidebar-player-title]"),
@@ -305,55 +186,14 @@ function getCurrentTrack() {
   return window.trackitData.tracks[appState.currentTrackIndex] || window.trackitData.tracks[0];
 }
 
-function getTrackVisual(track) {
-  const albums = window.trackitData.albums || [];
-  const exactAlbum = albums.find(album => album.title === track.title && album.artist === track.artist);
-  const artistAlbum = albums.find(album => album.artist === track.artist);
-  const album = exactAlbum || artistAlbum;
-
-  if (track.imageSrc || track.coverImage) {
-    return {
-      imageSrc: track.imageSrc || track.coverImage,
-      art: album ? album.art : "album-art"
-    };
-  }
-
-  return {
-    imageSrc: album ? album.imageSrc : "",
-    art: album ? album.art : "album-art"
-  };
-}
-
 function updatePlayerMeta(status = "") {
   const track = getCurrentTrack();
   const player = getPlayerElements();
-  const visual = getTrackVisual(track);
 
   player.title.textContent = track.title;
   player.artist.textContent = track.artist;
   player.status.textContent = status || track.audioSrc;
   player.sidebarTitle.textContent = track.title;
-  player.cover.className = `w-11 h-11 rounded-xl shrink-0 ${visual.art}`;
-  player.cover.style.backgroundImage = "";
-  player.cover.style.backgroundSize = "";
-  player.cover.style.backgroundPosition = "";
-  player.cover.setAttribute("aria-label", visual.imageSrc ? `${track.title} cover` : "Album cover");
-
-  if (visual.imageSrc) {
-    player.cover.dataset.imageSrc = visual.imageSrc;
-    const coverImage = new Image();
-    coverImage.onload = () => {
-      if (player.cover.dataset.imageSrc !== visual.imageSrc) {
-        return;
-      }
-      player.cover.style.backgroundImage = `url("${visual.imageSrc}")`;
-      player.cover.style.backgroundSize = "cover";
-      player.cover.style.backgroundPosition = "center";
-    };
-    coverImage.src = visual.imageSrc;
-  } else {
-    delete player.cover.dataset.imageSrc;
-  }
 
   document.querySelectorAll("[data-track-index]").forEach(item => {
     item.classList.toggle("purple-soft", Number(item.dataset.trackIndex) === appState.currentTrackIndex);
@@ -364,11 +204,6 @@ function updatePlayButtons() {
   const player = getPlayerElements();
   player.buttons.forEach(button => {
     button.innerHTML = `<i data-lucide="${appState.playing ? "Pause" : "Play"}" class="w-4 h-4"></i>`;
-  });
-  // 현재 재생 중인 아티스트 카드에만 파형 애니메이션 클래스를 붙입니다.
-  document.querySelectorAll("[data-artist-play-track]").forEach(button => {
-    const isPlaying = appState.playing && Number(button.dataset.artistPlayTrack) === appState.currentTrackIndex;
-    button.classList.toggle("is-playing", isPlaying);
   });
   createLucideIcons();
 }
@@ -491,9 +326,8 @@ function createLucideIcons() {
   }
 }
 
-async function bootTrackit() {
+function bootTrackit() {
   loadLocalUser();
-  await loadPodcastData();
   renderNavigation();
   renderCurrentPage();
   bindNavigation();

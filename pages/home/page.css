@@ -1,2 +1,35 @@
 /* Home page specific styles. */
 
+.chart-rank {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@font-face {
+  font-family: 'Nasa'; 
+  src: url('../../assets/fonts/Nasalization\ Rg.otf') format('woff2'),
+}
+
+main{
+  background: #6e62a6;
+background: linear-gradient(180deg,rgba(110, 98, 166, .8) 0%, rgba(17, 17, 21, 1) 25%);
+}
+
+.title{
+  font-family: 'Nasa', sans-serif;
+  font-size: 4rem !important;
+}
+.textBox{
+  display: flex; flex-direction: column;
+  gap: 0.5rem;
+}
+.release{
+  width: 7rem;
+}
+
+.topBox{
+  display: flex; align-items: center; justify-content: space-between;
+  padding-left: 3rem; padding-right: 3rem;
+}
