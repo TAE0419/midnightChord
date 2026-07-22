@@ -1,0 +1,16 @@
+{
+  "covers": [
+    { "title": "Violet Night", "artist": "LUNA", "imageSrc": "assets/images/covers/violet-night.jpg" },
+    { "title": "After Midnight", "artist": "NOIR", "imageSrc": "assets/images/covers/after-midnight.jpg" },
+    { "title": "Silent Frequency", "artist": "WAVE", "imageSrc": "assets/images/covers/silent-frequency.jpg" },
+    { "title": "Grey Motion", "artist": "MOTION", "imageSrc": "assets/images/covers/grey-motion.jpg" },
+    { "title": "Rose Static", "artist": "MUSE", "imageSrc": "assets/images/covers/rose-static.jpg" },
+    { "title": "Blue Relay", "artist": "KAI", "imageSrc": "assets/images/covers/blue-relay.jpg" }
+  ],
+  "artists": [
+    { "name": "LUNA", "imageSrc": "assets/images/artists/luna.jpg" },
+    { "name": "NOIR", "imageSrc": "assets/images/artists/noir.jpg" },
+    { "name": "MUSE", "imageSrc": "assets/images/artists/muse.jpg" },
+    { "name": "WAVE", "imageSrc": "assets/images/artists/wave.jpg" }
+  ]
+}

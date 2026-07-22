@@ -4,9 +4,16 @@ function icon(name, className = "w-4 h-4") {
   return `<i data-lucide="${name}" class="${className}"></i>`;
 }
 
+function assetBox(item, className, fallback = "") {
+  if (item.imageSrc) {
+    return `<img src="${item.imageSrc}" alt="${item.title || item.name}" class="${className} object-cover" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: '${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl', textContent: '${fallback}' }))">`;
+  }
+  return `<div class="${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl">${fallback}</div>`;
+}
+
 function albumTile(album, framed = false) {
   const body = `
-    <div class="${album.art} rounded-2xl aspect-square flex items-center justify-center text-4xl">${album.icon || ""}</div>
+    ${assetBox(album, "rounded-2xl aspect-square w-full", album.icon || "")}
     <p class="mt-2 font-medium">${album.title}</p>
     <p class="text-sm" style="color:var(--muted)">${album.artist}${album.year ? ` · ${album.year}` : ""}</p>
   `;
@@ -118,7 +125,7 @@ function renderArtists() {
     <div class="grid md:grid-cols-2 gap-4">
       ${artists.map(artist => `
         <article class="surface rounded-2xl p-4 flex items-center gap-4">
-          <div class="w-14 h-14 rounded-full purple-soft flex items-center justify-center text-xl">${artist.initial}</div>
+          ${assetBox(artist, "w-14 h-14 rounded-full", artist.initial)}
           <div class="flex-1"><p class="font-medium">${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div>
           <button type="button" class="surface rounded-xl px-3 py-2 text-sm" data-artist-name="${artist.name}">소개 보기</button>
         </article>
@@ -132,7 +139,7 @@ function renderArtistDetail(artistName = "LUNA") {
   return `
     <button type="button" class="text-sm flex items-center gap-2" style="color:#c4b5fd" data-page-link="artists">${icon("ArrowLeft")} 아티스트 목록</button>
     <div class="surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[150px_1fr] gap-6 items-center">
-      <div class="album-art rounded-full aspect-square max-w-[150px] w-full mx-auto flex items-center justify-center text-4xl">${artist.initial}</div>
+      ${assetBox(artist, "rounded-full aspect-square max-w-[150px] w-full mx-auto", artist.initial)}
       <div>
         <p class="text-sm" style="color:var(--muted)">ARTIST PROFILE</p>
         <h1 class="text-3xl md:text-4xl font-medium mt-2">${artist.name}</h1>
@@ -219,7 +226,7 @@ function renderMypage(user, error = "") {
     </div>
     <div class="grid md:grid-cols-2 gap-4">
       <section class="surface rounded-2xl p-4"><h2 class="font-medium">이번 달 감상 기록</h2><div class="space-y-4 mt-5">${["Electronic:72", "R&B:54", "Indie:38"].map(item => { const [name, value] = item.split(":"); return `<div><div class="flex justify-between text-sm"><span>${name}</span><span>${value}%</span></div><div class="progress h-2 rounded-full mt-2"><span style="width:${value}%"></span></div></div>`; }).join("")}</div></section>
-      <section class="surface rounded-2xl p-4"><h2 class="font-medium">가장 많이 들은 아티스트</h2><div class="space-y-3 mt-4">${artists.slice(0, 3).map(artist => `<div class="flex items-center gap-3"><div class="w-11 h-11 rounded-full surface-soft flex items-center justify-center">${artist.initial}</div><div><p>${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div></div>`).join("")}</div></section>
+      <section class="surface rounded-2xl p-4"><h2 class="font-medium">가장 많이 들은 아티스트</h2><div class="space-y-3 mt-4">${artists.slice(0, 3).map(artist => `<div class="flex items-center gap-3">${assetBox(artist, "w-11 h-11 rounded-full", artist.initial)}<div><p>${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div></div>`).join("")}</div></section>
     </div>
   `;
 }
@@ -254,3 +261,4 @@ window.trackitPages = {
   mypage: renderMypage,
   settings: renderSettings
 };
+
