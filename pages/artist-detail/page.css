@@ -1,2 +1,72 @@
 /* Artist detail page specific styles. */
 
+/* 상단 프로필 카드의 높이와 둥근 모서리 */
+.artist-detail-hero {
+  min-height: 164px;
+  border-radius: 18px;
+}
+
+/* 시안의 보라색 인기곡 재생 버튼 */
+.artist-detail-play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: 7px;
+  background: #8b5cf6;
+  color: #fff;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.artist-detail-play:hover { background: #9b72f7; }
+.artist-detail-play:active { transform: scale(.97); }
+.artist-detail-play.is-playing { background: #7650d8; }
+
+/* 소개 카드: 선택한 아티스트 사진을 카드 배경으로 사용 */
+.artist-intro-card {
+  position: relative;
+  isolation: isolate;
+  contain: paint;
+  min-height: 190px;
+  overflow: hidden;
+  background: var(--panel);
+  border-color: rgb(63, 63, 63);
+}
+
+/* 배경 이미지를 테두리보다 1px 안쪽에만 그려 가장자리 번짐을 막습니다. */
+.artist-intro-card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 1px;
+  border-radius: calc(1rem - 1px);
+  background-image: var(--artist-detail-image);
+  background-position: center;
+  background-size: cover;
+}
+
+/* 아주 연한 보라색 유리 패널. 뒤 사진을 흐리게 보여줍니다. */
+.artist-intro-glass {
+  position: absolute;
+  inset: 1px;
+  overflow: hidden;
+  border-radius: calc(1rem - 1px);
+  padding: 21px;
+  background: rgba(78, 71, 87, 0.32);
+  color: #ffff;
+  backdrop-filter: blur(9px) saturate(1.18);
+  -webkit-backdrop-filter: blur(9px) saturate(1.18);
+}
+
+.artist-intro-glass p {
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+}
+
+@media (min-width: 768px) {
+  .artist-detail-lower { grid-template-columns: 1.18fr .82fr; }
+  .artist-tracks,
+  .artist-intro-card { min-height: 190px; }
+}
