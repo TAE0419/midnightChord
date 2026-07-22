@@ -6,15 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="../../">
   <title>Studio Midnight | 아티스트</title>
+  <!-- Tailwind CSS: class 이름으로 크기, 여백, 정렬 등을 적용합니다. -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide: 검색, 알림, 재생 같은 아이콘을 표시합니다. -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <!-- 사이트 전체에서 공통으로 사용하는 색상과 레이아웃 -->
   <link rel="stylesheet" href="css/common.css" />
+  <!-- 아티스트 페이지 전용 스타일
+       카드, 소개 버튼, 미니 재생바와 파형 색상은 이 CSS에서 수정합니다. -->
   <link rel="stylesheet" href="pages/artists/page.css" />
 </head>
 
 <body class="bg-zinc-950 p-4 md:p-8" data-current-page="artists">
+  <!-- 앱 전체를 감싸는 영역 -->
   <section class="w-full">
     <div class="trackit-app grid grid-cols-[72px_1fr] md:grid-cols-[190px_1fr]">
+      <!-- 왼쪽 사이드바: 로고, 페이지 메뉴, 현재 재생 정보 -->
       <aside class="sidebar p-3 md:p-4 flex flex-col gap-6"><a class="flex items-center gap-3" href="index.html"
           aria-label="Studio Midnight 홈">
           <div class="w-10 h-10 rounded-xl purple-btn flex items-center justify-center font-medium">SM</div>
@@ -31,7 +39,9 @@
           </div>
         </div>
       </aside>
+      <!-- 오른쪽의 아티스트 페이지 본문 -->
       <main class="min-w-0 p-4 md:p-6 pb-24">
+        <!-- 상단 검색창, 알림 버튼, 사용자 프로필 -->
         <header class="flex flex-col md:flex-row gap-3 md:items-center justify-between mb-6"><label
             class="relative block w-full md:max-w-sm"><i data-lucide="Search" class="absolute left-3 top-2.5 w-4 h-4"
               style="color:var(--muted)"></i><input data-search-input type="search" placeholder="아티스트, 앨범, 곡 검색"
@@ -42,8 +52,11 @@
             <div class="w-9 h-9 rounded-full purple-soft flex items-center justify-center">SM</div>
           </div>
         </header>
+        <!-- 아티스트 카드 목록이 들어가는 자리
+             실제 카드는 js/trackit-pages.js의 renderArtists()가 생성합니다. -->
         <section class="page active space-y-6" data-page-root></section>
       </main>
+      <!-- 화면 아래쪽에 고정되는 전체 음악 플레이어 -->
       <footer
         class="fixed-player col-span-2 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_1fr] gap-3 items-center px-4 md:px-6 py-3">
         <audio id="studioAudio" preload="metadata"></audio>
@@ -71,8 +84,15 @@
       </footer>
     </div>
   </section>
+  <!-- 아티스트, 앨범, 곡 등의 원본 데이터 -->
   <script src="js/trackit-data.js"></script>
+  <!-- 내가 관리하는 아티스트 전용 데이터 -->
+  <script src="pages/artists/artists-data.js"></script>
+  <!-- 원본 데이터로 아티스트 카드 HTML을 생성 -->
   <script src="js/trackit-pages.js"></script>
+  <!-- 공용 아티스트 목록 대신 내가 관리하는 목록 화면을 사용 -->
+  <script src="pages/artists/artists-page.js"></script>
+  <!-- 클릭, 음악 재생, 파형 애니메이션 등 실제 동작을 담당 -->
   <script src="js/trackit-app.js"></script>
 </body>
 
