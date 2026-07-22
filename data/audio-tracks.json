@@ -1,542 +1,114 @@
 [
   {
     "id": "classic-01",
-    "title": "Moonlit Sonata",
-    "artist": "Aurelia Voss",
+    "title": "Radetzky March Op 228",
+    "artist": "Budapest Art Orchestra",
     "genre": "클래식",
-    "time": "3:18",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-    "source": "SoundHelix"
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Budapest Art Orchestra - Radetzky March Op 228.mp3"
   },
   {
     "id": "classic-02",
-    "title": "Silver Rain Waltz",
-    "artist": "Elian Hart",
+    "title": "House of Secrets",
+    "artist": "Francesco DAndrea",
     "genre": "클래식",
-    "time": "3:42",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-    "source": "SoundHelix"
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Francesco DAndrea - House of Secrets.mp3"
   },
   {
     "id": "classic-03",
-    "title": "Velvet Evening",
-    "artist": "Clara Ren",
+    "title": "Te Deum",
+    "artist": "Yuval Shapiro",
     "genre": "클래식",
-    "time": "4:05",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "classic-04",
-    "title": "Winter Orchard",
-    "artist": "Luca Dorian",
-    "genre": "클래식",
-    "time": "3:29",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "classic-05",
-    "title": "Aurora Prelude",
-    "artist": "Mira Sol",
-    "genre": "클래식",
-    "time": "2:57",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "classic-06",
-    "title": "Golden Horizon",
-    "artist": "Theo Vale",
-    "genre": "클래식",
-    "time": "4:11",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "classic-07",
-    "title": "Midnight Cello",
-    "artist": "Nina Quill",
-    "genre": "클래식",
-    "time": "3:36",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "classic-08",
-    "title": "Echoes in Bloom",
-    "artist": "Soren Bell",
-    "genre": "클래식",
-    "time": "3:53",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "classic-09",
-    "title": "Rose Garden Trio",
-    "artist": "Yuna Aris",
-    "genre": "클래식",
-    "time": "3:47",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "classic-10",
-    "title": "Starlight Refrain",
-    "artist": "Ivo Maren",
-    "genre": "클래식",
-    "time": "4:02",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-    "source": "SoundHelix"
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Yuval  Shapiro - Te Deum.mp3"
   },
   {
     "id": "kpop-01",
-    "title": "Neon Heartbeat",
-    "artist": "Sora Min",
+    "title": "All Is My Time",
+    "artist": "Lemon",
     "genre": "케이팝",
-    "time": "3:14",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-02",
-    "title": "City Lights Rush",
-    "artist": "Hyeon Rae",
-    "genre": "케이팝",
-    "time": "3:22",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-03",
-    "title": "Cherry Skyline",
-    "artist": "Jin Seo",
-    "genre": "케이팝",
-    "time": "3:08",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-04",
-    "title": "Moonbeam Dance",
-    "artist": "Rin Ahn",
-    "genre": "케이팝",
-    "time": "3:31",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-05",
-    "title": "Cosmo Stage",
-    "artist": "Dae Hwan",
-    "genre": "케이팝",
-    "time": "3:19",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-06",
-    "title": "Blooming Pulse",
-    "artist": "Mina Kwon",
-    "genre": "케이팝",
-    "time": "3:27",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-07",
-    "title": "Midnight Mirage",
-    "artist": "Yoon Ji",
-    "genre": "케이팝",
-    "time": "3:41",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-08",
-    "title": "Sparkling Seoul",
-    "artist": "Haru Noh",
-    "genre": "케이팝",
-    "time": "3:16",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-18.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-09",
-    "title": "Velvet Echo",
-    "artist": "Seon U",
-    "genre": "케이팝",
-    "time": "3:24",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-19.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "kpop-10",
-    "title": "Orbit Glow",
-    "artist": "Jae Hoon",
-    "genre": "케이팝",
-    "time": "3:33",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-20.mp3",
-    "source": "SoundHelix"
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Lemon - All Is My Time.mp3"
   },
   {
     "id": "jpop-01",
-    "title": "Sunset Signal",
-    "artist": "Mio Sera",
+    "title": "Hoshifuru Yoruni",
+    "artist": "raz",
     "genre": "제이팝",
-    "time": "3:10",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-21.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-02",
-    "title": "Lantern Breeze",
-    "artist": "Riku Kato",
-    "genre": "제이팝",
-    "time": "3:20",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-22.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-03",
-    "title": "Paper Moon",
-    "artist": "Yui Haru",
-    "genre": "제이팝",
-    "time": "3:17",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-23.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-04",
-    "title": "Crystal Summer",
-    "artist": "Nao Minori",
-    "genre": "제이팝",
-    "time": "3:40",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-24.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-05",
-    "title": "Whispering Tokyo",
-    "artist": "Kaito Rei",
-    "genre": "제이팝",
-    "time": "3:28",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-25.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-06",
-    "title": "Blue Ocean Drive",
-    "artist": "Airi Nozomi",
-    "genre": "제이팝",
-    "time": "3:34",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-26.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-07",
-    "title": "Cherry Parade",
-    "artist": "Ren Furuya",
-    "genre": "제이팝",
-    "time": "3:13",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-27.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-08",
-    "title": "Dawn Reflection",
-    "artist": "Mika Sato",
-    "genre": "제이팝",
-    "time": "3:25",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-28.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-09",
-    "title": "Starry Arcade",
-    "artist": "Haru Shima",
-    "genre": "제이팝",
-    "time": "3:21",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-29.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "jpop-10",
-    "title": "Sweet Twilight",
-    "artist": "Sora Yamane",
-    "genre": "제이팝",
-    "time": "3:35",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-30.mp3",
-    "source": "SoundHelix"
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/raz - Hoshifuru Yoruni.mp3"
   },
   {
     "id": "pop-01",
-    "title": "Afterglow Avenue",
-    "artist": "Nora Vale",
+    "title": "Starry Eyed",
+    "artist": "Jane & The Boy",
     "genre": "팝",
-    "time": "3:15",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-31.mp3",
-    "source": "SoundHelix"
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Jane  The Boy - Starry Eyed.mp3"
   },
   {
     "id": "pop-02",
-    "title": "Summer in Stereo",
-    "artist": "Lina Cruz",
+    "title": "9 Lives",
+    "artist": "Anna Stefanie",
     "genre": "팝",
-    "time": "3:23",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-32.mp3",
-    "source": "SoundHelix"
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Anna Stefanie - 9 Lives.mp3"
   },
   {
-    "id": "pop-03",
-    "title": "Neon Weekend",
-    "artist": "Kai Mercer",
-    "genre": "팝",
-    "time": "3:18",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-33.mp3",
-    "source": "SoundHelix"
+    "id": "indie-band-01",
+    "title": "Falling for the Crown",
+    "artist": "IamDayLight",
+    "genre": "인디/밴드",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/IamDayLight - Falling for the Crown.mp3"
   },
   {
-    "id": "pop-04",
-    "title": "Dreamline",
-    "artist": "Mina West",
-    "genre": "팝",
-    "time": "3:29",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-34.mp3",
-    "source": "SoundHelix"
+    "id": "indie-band-02",
+    "title": "We Had a Moment",
+    "artist": "SOURWAH",
+    "genre": "인디/밴드",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/SOURWAH - We Had a Moment.mp3"
   },
   {
-    "id": "pop-05",
-    "title": "Velvet Horizon",
-    "artist": "Jules Rowe",
-    "genre": "팝",
-    "time": "3:37",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-35.mp3",
-    "source": "SoundHelix"
+    "id": "indie-band-03",
+    "title": "Slowly Sinking",
+    "artist": "two close",
+    "genre": "인디/밴드",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/two close - Slowly Sinking.mp3"
   },
   {
-    "id": "pop-06",
-    "title": "Pale Sunset",
-    "artist": "Eli Park",
-    "genre": "팝",
-    "time": "3:11",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-36.mp3",
-    "source": "SoundHelix"
+    "id": "hiphop-rnb-01",
+    "title": "There for You",
+    "artist": "call me joseph",
+    "genre": "힙합/R&B",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/call me joseph - there for you.mp3"
   },
   {
-    "id": "pop-07",
-    "title": "Golden Hour Kiss",
-    "artist": "Tessa Lane",
-    "genre": "팝",
-    "time": "3:26",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-37.mp3",
-    "source": "SoundHelix"
+    "id": "hiphop-rnb-02",
+    "title": "Roll the Dice",
+    "artist": "Cruella",
+    "genre": "힙합/R&B",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Cruella - Roll the Dice.mp3"
   },
   {
-    "id": "pop-08",
-    "title": "Midnight Carousel",
-    "artist": "Owen Hale",
-    "genre": "팝",
-    "time": "3:21",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-38.mp3",
-    "source": "SoundHelix"
+    "id": "hiphop-rnb-03",
+    "title": "Machine",
+    "artist": "FLAMEBOY",
+    "genre": "힙합/R&B",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/FLAMEBOY - Machine.mp3"
   },
   {
-    "id": "pop-09",
-    "title": "Bright Tomorrow",
-    "artist": "Rae Sol",
-    "genre": "팝",
-    "time": "3:33",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-39.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "pop-10",
-    "title": "Ocean Pulse",
-    "artist": "Noah Vance",
-    "genre": "팝",
-    "time": "3:27",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-40.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-01",
-    "title": "Cherry Blossom Alley",
-    "artist": "Hae Yoon",
-    "genre": "트로트",
-    "time": "3:16",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-41.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-02",
-    "title": "Sunshine Market",
-    "artist": "Bora Han",
-    "genre": "트로트",
-    "time": "3:24",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-42.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-03",
-    "title": "Nostalgic Lantern",
-    "artist": "Dong Hoon",
-    "genre": "트로트",
-    "time": "3:08",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-43.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-04",
-    "title": "River of Memories",
-    "artist": "Ji Won",
-    "genre": "트로트",
-    "time": "3:31",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-44.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-05",
-    "title": "Honeyed Evening",
-    "artist": "Soo Jin",
-    "genre": "트로트",
-    "time": "3:19",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-45.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-06",
-    "title": "Warm Streetlight",
-    "artist": "Minho Park",
-    "genre": "트로트",
-    "time": "3:27",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-46.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-07",
-    "title": "Blue Ribbon Night",
-    "artist": "Yun Seol",
-    "genre": "트로트",
-    "time": "3:41",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-47.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-08",
-    "title": "Mellow Lantern Parade",
-    "artist": "Seung Ah",
-    "genre": "트로트",
-    "time": "3:16",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-48.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-09",
-    "title": "Dancing With Stars",
-    "artist": "Hyun Woo",
-    "genre": "트로트",
-    "time": "3:24",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-49.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "trot-10",
-    "title": "Old Town Melody",
-    "artist": "Eun Ji",
-    "genre": "트로트",
-    "time": "3:33",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-50.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "hiphop-01",
-    "title": "Night Pulse",
-    "artist": "Rivo K",
-    "genre": "힙합",
-    "time": "3:24",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-51.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "hiphop-02",
-    "title": "Street Glow",
-    "artist": "Melo J",
-    "genre": "힙합",
-    "time": "3:18",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-52.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "hiphop-03",
-    "title": "Metro Rhythm",
-    "artist": "Nico Flow",
-    "genre": "힙합",
-    "time": "3:31",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-53.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "hiphop-04",
-    "title": "Bassline Avenue",
-    "artist": "Joon V",
-    "genre": "힙합",
-    "time": "3:22",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-54.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "hiphop-05",
-    "title": "After Hours Beat",
-    "artist": "Zea N",
-    "genre": "힙합",
-    "time": "3:27",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-55.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "rnb-01",
-    "title": "Velvet Moonlight",
-    "artist": "Lena Ray",
-    "genre": "R&B",
-    "time": "3:16",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-56.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "rnb-02",
-    "title": "Midnight Window",
-    "artist": "Sumi O",
-    "genre": "R&B",
-    "time": "3:28",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-57.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "rnb-03",
-    "title": "Soft City Lights",
-    "artist": "Ari Vance",
-    "genre": "R&B",
-    "time": "3:35",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-58.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "rnb-04",
-    "title": "Rosewater Drift",
-    "artist": "Mina Sloane",
-    "genre": "R&B",
-    "time": "3:20",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-59.mp3",
-    "source": "SoundHelix"
-  },
-  {
-    "id": "rnb-05",
-    "title": "Slow Motion Heart",
-    "artist": "Dae Sol",
-    "genre": "R&B",
-    "time": "3:32",
-    "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-60.mp3",
-    "source": "SoundHelix"
+    "id": "hiphop-rnb-04",
+    "title": "TOO EZ",
+    "artist": "Frank Bentley",
+    "genre": "힙합/R&B",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Frank Bentley - TOO EZ.mp3"
   }
 ]
