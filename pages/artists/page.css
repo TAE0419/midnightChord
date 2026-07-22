@@ -1,5 +1,37 @@
 /* Artist list page specific styles. */
 
+/* 검색어와 일치하지 않아 hidden 처리된 카드는 grid 스타일보다 우선해 숨깁니다. */
+.artist-card[hidden] {
+  display: none !important;
+}
+
+/* 카드에 마우스를 올리면 전체가 오른쪽으로 살짝 이동합니다. */
+.artist-card {
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.artist-card:hover {
+  transform: translateX(10px);
+  border-color: rgba(183, 152, 255, .5);
+  box-shadow: -6px 8px 20px rgba(0, 0, 0, .18);
+}
+
+/* 클릭 가능한 프로필 이미지 */
+.artist-profile-link {
+  display: block;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.artist-profile-link:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 3px rgba(183, 152, 255, .28);
+}
+
+.artist-profile-link:focus-visible {
+  outline: 2px solid #b798ff;
+  outline-offset: 3px;
+}
+
 /* ===== 아티스트 카드 안의 미니 음악 재생바 ===== */
 .artist-mini-player {
   display: grid;
@@ -120,6 +152,10 @@
     border-radius: 9999px;
     padding: 0 18px;
     background-color: #6953ae;
+    transition: all 0.3s;
+  }
+  [data-page-root] > .grid > article button[data-artist-name]:hover{
+    background-color: #b04fff;
   }
 
   /* 목록 위쪽의 '아티스트' 페이지 제목 */

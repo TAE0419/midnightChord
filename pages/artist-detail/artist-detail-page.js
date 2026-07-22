@@ -8,7 +8,7 @@
   }
 
   function detailArtistImage(artist) {
-    const classes = "rounded-full aspect-square max-w-[150px] w-full mx-auto";
+    const classes = "artist-detail-profile-image rounded-full aspect-square max-w-[150px] w-full mx-auto";
     if (artist.imageSrc) {
       return `<img src="${artist.imageSrc}" alt="${artist.name}" class="${classes} object-cover" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: '${classes} purple-soft flex items-center justify-center text-4xl', textContent: '${artist.initial}' }))">`;
     }
@@ -44,10 +44,10 @@
           <h1 class="text-3xl md:text-4xl font-medium mt-2">${artist.name}</h1>
           <p class="mt-3 text-sm md:text-base" style="color:var(--muted)">${artist.des || `${artist.name}의 음악과 발매 소식을 소개하는 공간입니다.`}</p>
           <div class="flex gap-2 mt-5">
-            <button type="button" class="artist-detail-play purple-btn" data-artist-detail-play="0">
+            <button type="button" class="artist-detail-play purple-btn" data-personal-detail-audio="${artists.indexOf(artist)}" aria-label="인기곡 재생">
               <span>인기곡재생</span>${detailIcon("Play")}
             </button>
-            <button type="button" class="artist-follow surface rounded-xl px-4 py-2">팔로우</button>
+            <button type="button" class="artist-follow surface rounded-xl px-4 py-2" data-personal-follow aria-pressed="false">팔로우</button>
           </div>
         </div>
       </div>
@@ -69,4 +69,98 @@
 
   // 공용 렌더러 중 아티스트 상세만 개인 렌더러로 교체합니다.
   window.trackitPages.artistDetail = renderMyArtistDetail;
+
+  let activeDetailButton = null;
+
+  function updateDetailButton(button, playing) {
+    if (!button) return;
+    button.classList.toggle("is-playing", playing);
+    button.innerHTML = `<span>인기곡재생</span>${detailIcon(playing ? "Pause" : "Play")}`;
+    button.setAttribute("aria-label", playing ? "인기곡 일시정지" : "인기곡 재생");
+    // 실제 재생 상태와 프로필 이미지 회전 상태를 함께 맞춥니다.
+    const profileImage = document.querySelector(".artist-detail-profile-image");
+    if (profileImage) profileImage.classList.toggle("is-spinning", playing);
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  // 팔로우 버튼을 누르면 글자를 빨간 하트로 바꿉니다.
+  document.addEventListener("click", event => {
+    const button = event.target.closest("[data-personal-follow]");
+    if (!button) return;
+
+    const followed = button.getAttribute("aria-pressed") !== "true";
+    button.setAttribute("aria-pressed", String(followed));
+    button.classList.toggle("is-following", followed);
+    button.textContent = followed ? "❤️" : "팔로우";
+    button.setAttribute("aria-label", followed ? "팔로우 취소" : "팔로우");
+
+    // 누를 때마다 젤리 애니메이션을 처음부터 한 번 다시 실행합니다.
+    button.classList.remove("jello-horizontal");
+    void button.offsetWidth;
+    button.classList.add("jello-horizontal");
+    button.addEventListener("animationend", () => {
+      button.classList.remove("jello-horizontal");
+    }, { once: true });
+  });
+
+  // 상세 페이지에서 현재 아티스트의 audio 주소를 하단 <audio>에 연결합니다.
+  document.addEventListener("click", event => {
+    const button = event.target.closest("[data-personal-detail-audio]");
+    if (!button) return;
+
+    const artistIndex = Number(button.dataset.personalDetailAudio);
+    const artist = artists[artistIndex];
+    const audio = document.getElementById("studioAudio");
+    if (!artist || !artist.audio || !audio) return;
+
+    if (activeDetailButton === button && !audio.paused) {
+      audio.pause();
+      updateDetailButton(button, false);
+      return;
+    }
+
+    updateDetailButton(activeDetailButton, false);
+    activeDetailButton = button;
+    updateDetailButton(button, true);
+
+    if (audio.src !== artist.audio) {
+      audio.src = artist.audio;
+      audio.load();
+    }
+
+    document.getElementById("playerTitle").textContent = `${artist.name} Sample`;
+    document.getElementById("playerArtist").textContent = artist.name;
+    document.querySelector("[data-sidebar-player-title]").textContent = artist.name;
+    document.getElementById("playerStatus").textContent = "온라인 샘플 음악 재생 중";
+
+    audio.play().catch(() => {
+      updateDetailButton(button, false);
+      activeDetailButton = null;
+      document.getElementById("playerStatus").textContent = "온라인 음원을 불러오지 못했습니다.";
+    });
+  });
+
+  // 하단 플레이어로 재생/정지해도 버튼과 프로필 회전 상태를 동기화합니다.
+  document.addEventListener("DOMContentLoaded", () => {
+    const audio = document.getElementById("studioAudio");
+    if (!audio) return;
+
+    audio.addEventListener("play", () => {
+      updateDetailButton(activeDetailButton, true);
+    });
+
+    audio.addEventListener("pause", () => {
+      updateDetailButton(activeDetailButton, false);
+    });
+
+    audio.addEventListener("ended", event => {
+      event.stopImmediatePropagation();
+      updateDetailButton(activeDetailButton, false);
+      activeDetailButton = null;
+    });
+
+    audio.addEventListener("error", () => {
+      updateDetailButton(activeDetailButton, false);
+    });
+  });
 })();
