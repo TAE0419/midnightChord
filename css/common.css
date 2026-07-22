@@ -16,18 +16,19 @@
 
 body {
   font-family: "StudioMidnightKR", "StudioMidnight", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin-bottom: 4rem;
 }
 .trackit-app {
-  --purple: #8b5cf6;
+  --purple: #56e9c9;
   --purple-light: #a78bfa;
   --bg: #111115;
   --nav: #15151a;
   --panel: #1b1b21;
   --panel-soft: #25252d;
-  --border: #30303a;
-  --muted: #a1a1aa;
+  --border: #322d3f;
+  --muted: #948ca5;
   background: var(--bg);
-  color: #f4f4f5;
+  color: #f0eef3;
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
@@ -38,7 +39,7 @@ body {
 .surface { background: var(--panel); border: 1px solid var(--border); }
 .surface-soft { background: var(--panel-soft); }
 .purple-btn { background: var(--purple); color: white; }
-.purple-soft { background: rgba(139, 92, 246, .16); color: #c4b5fd; }
+.purple-soft { background: rgba(113, 103, 138, 0.16); color: #c4b5fd; }
 .nav-link { color: var(--muted); }
 .nav-link.active { background: rgba(139, 92, 246, .16); color: #ddd6fe; }
 .page { display: none; }
@@ -93,10 +94,10 @@ body {
   z-index: 9999;
   left: 1rem;
   right: 1rem;
-  bottom: 1rem;
+  bottom: 0 !important;
   background: #18181d;
   border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 1rem 1rem 0rem 0;
   box-shadow: 0 14px 40px rgba(0, 0, 0, .42), 0 0 24px rgba(139, 92, 246, .1);
 }
 
