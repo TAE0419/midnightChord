@@ -1,13 +1,13 @@
 window.trackitData = {
   pages: [
-    { id: "home", label: "홈", icon: "Home", href: "index.html" },
-    { id: "browse", label: "둘러보기", icon: "Search", href: "browse.html" },
-    { id: "album", label: "앨범 상세", icon: "Disc3", href: "album.html" },
-    { id: "artists", label: "아티스트", icon: "Mic2", href: "artists.html" },
-    { id: "podcasts", label: "팟캐스트", icon: "Podcast", href: "podcasts.html" },
-    { id: "playlist", label: "플레이리스트", icon: "ListMusic", href: "playlist.html" },
-    { id: "mypage", label: "마이페이지", icon: "UserRound", href: "mypage.html" },
-    { id: "settings", label: "설정", icon: "Settings", href: "settings.html" }
+    { id: "home", label: "홈", icon: "Home", href: "pages/home/" },
+    { id: "browse", label: "둘러보기", icon: "Search", href: "pages/browse/" },
+    { id: "album", label: "앨범 상세", icon: "Disc3", href: "pages/album/" },
+    { id: "artists", label: "아티스트", icon: "Mic2", href: "pages/artists/" },
+    { id: "podcasts", label: "팟캐스트", icon: "Podcast", href: "pages/podcasts/" },
+    { id: "playlist", label: "플레이리스트", icon: "ListMusic", href: "pages/playlist/" },
+    { id: "mypage", label: "마이페이지", icon: "UserRound", href: "pages/mypage/" },
+    { id: "settings", label: "설정", icon: "Settings", href: "pages/settings/" }
   ],
   albums: [
     { title: "Violet Night", artist: "LUNA", year: "2026", art: "album-art", imageSrc: "assets/images/covers/violet-night.jpg" },

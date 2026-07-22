@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="../../">
+  <title>Studio Midnight | 마이페이지</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="pages/mypage/page.css" />
+</head>
+
+<body class="bg-zinc-950 p-4 md:p-8" data-current-page="mypage">
+  <section class="w-full">
+    <div class="trackit-app grid grid-cols-[72px_1fr] md:grid-cols-[190px_1fr]">
+      <aside class="sidebar p-3 md:p-4 flex flex-col gap-6"><a class="flex items-center gap-3" href="index.html"
+          aria-label="Studio Midnight 홈">
+          <div class="w-10 h-10 rounded-xl purple-btn flex items-center justify-center font-medium">SM</div>
+          <div class="hidden md:block">
+            <p class="font-medium">STUDIO MIDNIGHT</p>
+            <p class="text-xs" style="color:var(--muted)">Feel the purple wave</p>
+          </div>
+        </a>
+        <nav class="space-y-2 text-sm" data-nav aria-label="주 메뉴"></nav>
+        <div class="mt-auto hidden md:block surface rounded-2xl p-3">
+          <p class="text-xs" style="color:var(--muted)">현재 재생 중</p>
+          <p class="text-sm mt-1" data-sidebar-player-title>Violet Night</p>
+          <div class="progress h-1.5 rounded-full mt-3"><span data-sidebar-player-progress style="width:0%"></span>
+          </div>
+        </div>
+      </aside>
+      <main class="min-w-0 p-4 md:p-6 pb-24">
+        <header class="flex flex-col md:flex-row gap-3 md:items-center justify-between mb-6"><label
+            class="relative block w-full md:max-w-sm"><i data-lucide="Search" class="absolute left-3 top-2.5 w-4 h-4"
+              style="color:var(--muted)"></i><input data-search-input type="search" placeholder="아티스트, 앨범, 곡 검색"
+              class="w-full rounded-xl border bg-transparent py-2 pl-9 pr-3 text-base"
+              style="border-color:var(--border);color:#f4f4f5"></label>
+          <div class="flex items-center gap-3"><button type="button" class="surface icon-button" aria-label="알림"
+              title="알림"><i data-lucide="Bell" class="w-4 h-4"></i></button>
+            <div class="w-9 h-9 rounded-full purple-soft flex items-center justify-center">SM</div>
+          </div>
+        </header>
+        <section class="page active space-y-6" data-page-root></section>
+      </main>
+      <footer
+        class="fixed-player col-span-2 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_1fr] gap-3 items-center px-4 md:px-6 py-3">
+        <audio id="studioAudio" preload="metadata"></audio>
+        <div class="flex items-center gap-3 min-w-0">
+          <div id="playerCover" class="album-art w-11 h-11 rounded-xl shrink-0"></div>
+          <div class="min-w-0">
+            <p id="playerTitle" class="truncate text-sm">Violet Night</p>
+            <p id="playerArtist" class="text-xs truncate" style="color:var(--muted)">LUNA</p>
+            <p id="playerStatus" class="text-[11px] truncate" style="color:var(--muted)">음원을 선택하거나 재생 버튼을 누르세요</p>
+          </div>
+        </div>
+        <div class="hidden md:block">
+          <div class="flex justify-center gap-4 mb-2"><button id="playerPrev" type="button" class="icon-button"
+              aria-label="이전 곡"><i data-lucide="SkipBack" class="w-4 h-4"></i></button><button id="playerToggle"
+              type="button" class="purple-btn w-9 h-9 rounded-full inline-flex items-center justify-center"
+              aria-label="재생"><i data-lucide="Play" class="w-4 h-4"></i></button><button id="playerNext" type="button"
+              class="icon-button" aria-label="다음 곡"><i data-lucide="SkipForward" class="w-4 h-4"></i></button></div>
+          <div class="progress h-1.5 rounded-full"><span id="playerProgress" style="width:0%"></span></div>
+        </div>
+        <div class="hidden md:flex justify-end mini-wave items-center gap-1 h-8"><span style="height:30%"></span><span
+            style="height:70%"></span><span style="height:45%"></span><span style="height:90%"></span><span
+            style="height:55%"></span></div><button id="mobilePlay" type="button"
+          class="md:hidden purple-btn w-10 h-10 rounded-full inline-flex items-center justify-center" aria-label="재생"><i
+            data-lucide="Play" class="w-4 h-4"></i></button>
+      </footer>
+    </div>
+  </section>
+  <script src="js/trackit-data.js"></script>
+  <script src="js/trackit-pages.js"></script>
+  <script src="js/trackit-app.js"></script>
+</body>
+
+</html>

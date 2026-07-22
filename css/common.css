@@ -1,3 +1,22 @@
+@font-face {
+  font-family: "StudioMidnight";
+  src: url("../assets/fonts/studio-midnight.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "StudioMidnightKR";
+  src: url("../assets/fonts/studio-midnight-kr.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "StudioMidnightKR", "StudioMidnight", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 .trackit-app {
   --purple: #8b5cf6;
   --purple-light: #a78bfa;

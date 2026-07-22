@@ -1,0 +1,14 @@
+{
+  "fonts": [
+    {
+      "family": "StudioMidnight",
+      "weight": "400 700",
+      "src": "assets/fonts/studio-midnight.woff2"
+    },
+    {
+      "family": "StudioMidnightKR",
+      "weight": "400 700",
+      "src": "assets/fonts/studio-midnight-kr.woff2"
+    }
+  ]
+}

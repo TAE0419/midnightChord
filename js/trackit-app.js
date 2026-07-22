@@ -12,13 +12,13 @@ function currentPageId() {
 
 function pageUrl(pageId) {
   if (pageId === "search") {
-    return "search.html";
+    return "pages/search/";
   }
   if (pageId === "artist-detail") {
-    return "artist-detail.html";
+    return "pages/artist-detail/";
   }
   const page = window.trackitData.pages.find(item => item.id === pageId);
-  return page ? page.href : "index.html";
+  return page ? page.href : "pages/home/";
 }
 
 function renderNavigation() {
@@ -55,7 +55,7 @@ function renderCurrentPage() {
 }
 
 function navigateToPage(pageId) {
-  window.location.href = pageUrl(pageId);
+  window.location.href = new URL(pageUrl(pageId), document.baseURI).href;
 }
 
 function bindNavigation() {
@@ -66,7 +66,7 @@ function bindNavigation() {
     const trackRow = event.target.closest("[data-track-index]");
 
     if (artistLink) {
-      window.location.href = `artist-detail.html?name=${encodeURIComponent(artistLink.dataset.artistName)}`;
+      window.location.href = new URL(`${pageUrl("artist-detail")}?name=${encodeURIComponent(artistLink.dataset.artistName)}`, document.baseURI).href;
       return;
     }
     if (playTrack) {
@@ -100,7 +100,7 @@ function bindSearch() {
   }
 
   searchInput.addEventListener("focus", () => {
-    window.location.href = "search.html";
+    window.location.href = new URL(pageUrl("search"), document.baseURI).href;
   });
 }
 
