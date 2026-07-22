@@ -100,6 +100,45 @@ function renderCurrentPage() {
   pageRoot.innerHTML = window.trackitPages[pageId] ? window.trackitPages[pageId]() : window.trackitPages.home();
 }
 
+async function loadPodcastData() {
+  if (!window.trackitData) {
+    return;
+  }
+
+  try {
+    const response = await fetch("data/podcast-episodes.json", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Podcast data request failed: ${response.status}`);
+    }
+
+    const seriesList = await response.json();
+    if (!Array.isArray(seriesList)) {
+      return;
+    }
+
+    window.trackitData.podcastSeries.splice(0, window.trackitData.podcastSeries.length, ...seriesList);
+    window.trackitData.tracks.splice(
+      0,
+      window.trackitData.tracks.length,
+      ...window.trackitData.tracks.filter(track => !track.audioSrc || !track.audioSrc.includes("assets/audio/podcasts/"))
+    );
+
+    seriesList.forEach(series => {
+      series.episodes.forEach(episode => {
+        window.trackitData.tracks.push({
+          title: episode.title,
+          artist: series.host,
+          time: episode.duration,
+          audioSrc: episode.audioUrl,
+          imageSrc: series.coverImage
+        });
+      });
+    });
+  } catch (error) {
+    console.warn("Podcast JSON could not be loaded. Using bundled podcast data.", error);
+  }
+}
+
 function navigateToPage(pageId) {
   window.location.href = new URL(pageUrl(pageId), document.baseURI).href;
 }
@@ -250,6 +289,7 @@ function getPlayerElements() {
     audio: document.getElementById("studioAudio"),
     title: document.getElementById("playerTitle"),
     artist: document.getElementById("playerArtist"),
+    cover: document.getElementById("playerCover"),
     status: document.getElementById("playerStatus"),
     progress: document.getElementById("playerProgress"),
     sidebarTitle: document.querySelector("[data-sidebar-player-title]"),
@@ -265,14 +305,55 @@ function getCurrentTrack() {
   return window.trackitData.tracks[appState.currentTrackIndex] || window.trackitData.tracks[0];
 }
 
+function getTrackVisual(track) {
+  const albums = window.trackitData.albums || [];
+  const exactAlbum = albums.find(album => album.title === track.title && album.artist === track.artist);
+  const artistAlbum = albums.find(album => album.artist === track.artist);
+  const album = exactAlbum || artistAlbum;
+
+  if (track.imageSrc || track.coverImage) {
+    return {
+      imageSrc: track.imageSrc || track.coverImage,
+      art: album ? album.art : "album-art"
+    };
+  }
+
+  return {
+    imageSrc: album ? album.imageSrc : "",
+    art: album ? album.art : "album-art"
+  };
+}
+
 function updatePlayerMeta(status = "") {
   const track = getCurrentTrack();
   const player = getPlayerElements();
+  const visual = getTrackVisual(track);
 
   player.title.textContent = track.title;
   player.artist.textContent = track.artist;
   player.status.textContent = status || track.audioSrc;
   player.sidebarTitle.textContent = track.title;
+  player.cover.className = `w-11 h-11 rounded-xl shrink-0 ${visual.art}`;
+  player.cover.style.backgroundImage = "";
+  player.cover.style.backgroundSize = "";
+  player.cover.style.backgroundPosition = "";
+  player.cover.setAttribute("aria-label", visual.imageSrc ? `${track.title} cover` : "Album cover");
+
+  if (visual.imageSrc) {
+    player.cover.dataset.imageSrc = visual.imageSrc;
+    const coverImage = new Image();
+    coverImage.onload = () => {
+      if (player.cover.dataset.imageSrc !== visual.imageSrc) {
+        return;
+      }
+      player.cover.style.backgroundImage = `url("${visual.imageSrc}")`;
+      player.cover.style.backgroundSize = "cover";
+      player.cover.style.backgroundPosition = "center";
+    };
+    coverImage.src = visual.imageSrc;
+  } else {
+    delete player.cover.dataset.imageSrc;
+  }
 
   document.querySelectorAll("[data-track-index]").forEach(item => {
     item.classList.toggle("purple-soft", Number(item.dataset.trackIndex) === appState.currentTrackIndex);
@@ -410,8 +491,9 @@ function createLucideIcons() {
   }
 }
 
-function bootTrackit() {
+async function bootTrackit() {
   loadLocalUser();
+  await loadPodcastData();
   renderNavigation();
   renderCurrentPage();
   bindNavigation();
