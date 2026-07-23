@@ -37,6 +37,19 @@ function trackRow(track, index, options = {}) {
   `;
 }
 
+function playlistRecentRow(entry, index) {
+  const art = entry.imageSrc
+    ? assetBox(entry, "w-11 h-11 rounded-lg shrink-0", entry.initial || "")
+    : `<div class="${entry.art || "purple-soft"} w-11 h-11 rounded-lg shrink-0"></div>`;
+  return `
+    <div class="flex items-center gap-3 p-3 border-b last:border-b-0" style="border-color:var(--border)">
+      ${art}
+      <div class="min-w-0 flex-1"><p class="truncate">${entry.title}</p><p class="text-sm truncate" style="color:var(--muted)">${entry.artist}</p></div>
+      <div class="flex items-center gap-4 shrink-0"><button type="button" class="playlist-recent-delete" data-playlist-recent-delete="${index}">삭제</button><span class="text-sm">${entry.time}</span></div>
+    </div>
+  `;
+}
+
 function renderHome() {
   return `
     <div class="surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-center overflow-hidden">
@@ -235,7 +248,7 @@ function renderPlaylist() {
     <div class="playlist-toast" data-playlist-toast role="status" aria-live="polite">플레이리스트에 추가 되었습니다.</div>
     <div class="surface rounded-2xl p-4">
       <h2 class="font-medium mb-3">최근 들은 곡</h2>
-      ${tracks.slice(0, 2).map((track, index) => trackRow(track, index, { art: albums[index].art, trailing: index === 0 ? "2분 전" : "18분 전" })).join("")}
+      <div data-playlist-recent-list></div>
     </div>
   `;
 }
@@ -251,6 +264,45 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   const toast = document.querySelector("[data-playlist-toast]");
   const startButton = document.querySelector("[data-playlist-carousel-start]");
   const endButton = document.querySelector("[data-playlist-carousel-end]");
+  const recentList = document.querySelector("[data-playlist-recent-list]");
+  const recentEntries = tracks.slice(0, 2).map((track, index) => ({
+    ...track,
+    imageSrc: artists[index]?.imageSrc,
+    initial: artists[index]?.initial,
+    art: albums[index]?.art,
+    time: index === 0 ? "2분 전" : "18분 전"
+  }));
+
+  function renderRecentEntries() {
+    if (!recentList) return;
+    recentList.innerHTML = recentEntries.length
+      ? recentEntries.map(playlistRecentRow).join("")
+      : `<p class="text-sm p-3" style="color:var(--muted)">최근 들은 곡이 없습니다.</p>`;
+  }
+
+  function addRecentArtist(artist) {
+    const title = artist.title || artist.name;
+    const existingIndex = recentEntries.findIndex(entry => entry.artist === artist.name && entry.title === title);
+    if (existingIndex >= 0) recentEntries.splice(existingIndex, 1);
+    recentEntries.unshift({
+      title,
+      artist: artist.name,
+      imageSrc: artist.imageSrc,
+      initial: artist.initial,
+      art: artist.art,
+      time: "방금 전"
+    });
+    recentEntries.splice(5);
+    renderRecentEntries();
+  }
+
+  renderRecentEntries();
+  recentList?.addEventListener("click", event => {
+    const deleteButton = event.target.closest("[data-playlist-recent-delete]");
+    if (!deleteButton) return;
+    recentEntries.splice(Number(deleteButton.dataset.playlistRecentDelete), 1);
+    renderRecentEntries();
+  });
 
   function setModalOpen(isOpen) {
     if (!modal) return;
@@ -376,6 +428,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     document.getElementById("playerArtist").textContent = artist.name;
     document.getElementById("playerStatus").textContent = "재생 중";
     document.querySelector("[data-sidebar-player-title]").textContent = artist.title || artist.name;
+    addRecentArtist(artist);
     audio.play().then(updateCardPlayers).catch(updateCardPlayers);
   }
 

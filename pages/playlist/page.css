@@ -447,6 +447,20 @@
   font-size: 1.2rem;
 }
 
+.playlist-recent-delete {
+  background: #7057b8;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  font-size: .72rem;
+  padding: .35rem .8rem;
+}
+
+.playlist-recent-delete:hover {
+  background: #b04fff;
+}
+
 /* Tablet only: desktop (1024px+) card layout is intentionally unchanged. */
 @media (max-width: 1023px) {
   .playlist-carousel-track {
