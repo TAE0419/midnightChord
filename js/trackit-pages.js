@@ -50,6 +50,19 @@ function playlistRecentRow(entry, index) {
   `;
 }
 
+function playlistCurrentRow(entry) {
+  const art = entry.imageSrc
+    ? assetBox(entry, "w-9 h-9 rounded-full shrink-0", entry.initial || "")
+    : `<div class="${entry.art || "purple-soft"} w-9 h-9 rounded-full shrink-0"></div>`;
+  return `
+    <div class="playlist-current-row">
+      ${art}
+      <div class="min-w-0"><p class="font-medium truncate">${entry.artist}</p><p class="text-xs truncate" style="color:var(--muted)">${entry.plays || ""}</p></div>
+      <p class="playlist-current-title">${entry.title}</p>
+    </div>
+  `;
+}
+
 function renderHome() {
   return `
     <div class="surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-center overflow-hidden">
@@ -252,9 +265,15 @@ function renderPlaylist() {
       </section>
     </div>
     <div class="playlist-toast" data-playlist-toast role="status" aria-live="polite">플레이리스트에 추가 되었습니다.</div>
-    <div class="surface rounded-2xl p-4">
-      <h2 class="font-medium mb-3">최근 들은 곡</h2>
-      <div data-playlist-recent-list></div>
+    <div class="playlist-lower-grid">
+      <section class="surface rounded-2xl p-4">
+        <h2 class="font-medium mb-3">최근 들은 곡</h2>
+        <div data-playlist-recent-list></div>
+      </section>
+      <section class="surface rounded-2xl p-3 playlist-current-panel">
+        <div class="playlist-current-header"><input data-current-playlist-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름"><button type="button" data-current-playlist-play aria-label="플레이리스트 재생">▶</button></div>
+        <div data-current-playlist-list></div>
+      </section>
     </div>
   `;
 }
@@ -310,6 +329,39 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     renderRecentEntries();
   });
 
+  const currentPlaylistList = document.querySelector("[data-current-playlist-list]");
+  const currentPlaylistName = document.querySelector("[data-current-playlist-name]");
+  const currentPlaylistEntries = [];
+
+  function renderCurrentPlaylist() {
+    if (!currentPlaylistList) return;
+    currentPlaylistList.innerHTML = currentPlaylistEntries.length
+      ? currentPlaylistEntries.map(playlistCurrentRow).join("")
+      : `<p class="playlist-current-empty">저장한 곡이 없습니다.</p>`;
+  }
+
+  function saveCurrentPlaylistFromModal() {
+    const selectedArtists = [...modal.querySelectorAll("[data-playlist-modal-artist].is-selected")]
+      .map(button => artists[Number(button.dataset.playlistModalArtist)]);
+    if (!selectedArtists.length) return;
+    currentPlaylistEntries.splice(0, currentPlaylistEntries.length, ...selectedArtists.map((artist, index) => ({
+      artist: artist.name,
+      title: window.artistPageData?.artists?.find(item => item.name === artist.name)?.title || tracks[index]?.title || "대표곡 준비 중",
+      plays: artist.plays,
+      imageSrc: artist.imageSrc,
+      initial: artist.initial,
+      art: artist.art
+    })));
+    currentPlaylistName.value = modal.querySelector("[data-playlist-modal-current-name]").value;
+    renderCurrentPlaylist();
+  }
+
+  renderCurrentPlaylist();
+  document.querySelector("[data-current-playlist-play]")?.addEventListener("click", () => {
+    const firstArtist = artists.find(artist => artist.name === currentPlaylistEntries[0]?.artist);
+    if (firstArtist) playArtist(artists.indexOf(firstArtist), true);
+  });
+
   function setModalOpen(isOpen) {
     if (!modal) return;
     modal.hidden = !isOpen;
@@ -345,6 +397,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
   modal?.addEventListener("click", event => {
     if (event.target.closest("[data-playlist-modal-confirm]")) {
+      saveCurrentPlaylistFromModal();
       setModalOpen(false);
       showPlaylistToast();
       return;
