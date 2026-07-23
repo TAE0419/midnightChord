@@ -52,6 +52,37 @@ body {
 .page.active { display: block; }
 .mintText { color: var(--purple); }
 
+.trackit-app .sidebar,
+.trackit-app button,
+.trackit-app a,
+.trackit-app [data-header-user],
+.trackit-app header input {
+  transition: transform .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.trackit-app .sidebar:hover {
+  /* border-color: rgba(86, 233, 201, .38); */
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .24), 0 0 0 1px rgba(86, 233, 201, .08);
+}
+
+.trackit-app button:hover,
+.trackit-app [data-header-user]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .22);
+}
+
+.trackit-app a:hover {
+  /* opacity: .85; */
+  color: var(--purple);
+}
+
+.trackit-app header input:hover,
+.trackit-app header input:focus {
+  border-color: rgba(86, 233, 201, .5) !important;
+  box-shadow: 0 0 0 3px rgba(86, 233, 201, .1);
+  outline: none;
+}
+
 .album-art {
   background:
     radial-gradient(circle at 25% 25%, rgba(167, 139, 250, .9), transparent 26%),
