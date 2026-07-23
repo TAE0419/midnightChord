@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="../../" />
+  <title>Studio Midnight</title>
+  <link rel="stylesheet" href="pages/opening/page.css" />
+</head>
+
+<body>
+  <main class="opening" aria-labelledby="opening-title">
+    <div class="opening-frame" aria-hidden="true"></div>
+    <p class="opening-status">EST. 2026 · LISTENING ROOM</p>
+
+    <section class="opening-center">
+      <div class="opening-mark" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <img class="opening-logo" src="assets/images/logo.png" alt="Studio Midnight" />
+      <h1 id="opening-title" class="sr-only">Studio Midnight</h1>
+      <p class="opening-copy">오늘의 밤을 위한 사운드를 준비하고 있습니다.</p>
+      <button class="opening-enter" type="button" data-opening-enter>
+        <span>입장하기</span>
+        <span aria-hidden="true">→</span>
+      </button>
+    </section>
+
+    <div class="opening-footer">
+      <span data-opening-countdown>06</span>
+      <span>HOME</span>
+    </div>
+  </main>
+  <script src="pages/opening/opening.js"></script>
+</body>
+
+</html>
