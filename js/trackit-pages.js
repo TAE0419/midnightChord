@@ -243,7 +243,8 @@ function renderPlaylist() {
 window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   const carousel = document.querySelector("[data-playlist-carousel]");
   const track = document.querySelector("[data-playlist-carousel-track]");
-  if (!carousel || !track) return;
+  if (!carousel || !track || carousel.dataset.playlistCarouselInitialized === "true") return;
+  carousel.dataset.playlistCarouselInitialized = "true";
 
   const createButton = document.querySelector("[data-playlist-create]");
   const modal = document.querySelector("[data-playlist-modal]");
