@@ -2,6 +2,8 @@
 (() => {
   const artists = window.artistPageData.artists;
   const tracks = window.trackitData.tracks;
+  const artistsPerPage = 8;
+  let currentArtistPage = 1;
 
   function artistIcon(name, className = "w-4 h-4") {
     return `<i data-lucide="${name}" class="${className}"></i>`;
@@ -15,47 +17,54 @@
     return `<div class="${classes} purple-soft flex items-center justify-center text-4xl">${artist.initial}</div>`;
   }
 
+  function artistCard(artist, index) {
+    return `
+      <article class="artist-card surface rounded-2xl p-4 flex items-center gap-4" data-artist-search="${artist.name.toLocaleLowerCase()}">
+        <a class="artist-profile-link shrink-0 rounded-full" href="pages/artist-detail/?name=${encodeURIComponent(artist.name)}" aria-label="${artist.name} 상세 페이지 보기">${artistImage(artist)}</a>
+        <div class="artist-card-meta flex-1"><p class="font-medium">${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div>
+        <button type="button" class="artist-mini-player" data-personal-artist-audio="${index}" aria-label="아티스트 음악 재생"><span class="artist-mini-line" aria-hidden="true"><svg class="artist-wave" viewBox="0 0 180 30" preserveAspectRatio="none"><path d="M0 15 L180 15"></path></svg></span><span class="artist-mini-play" aria-hidden="true">${artistIcon("Play", "artist-mini-icon artist-mini-icon-play w-4 h-4")}${artistIcon("Pause", "artist-mini-icon artist-mini-icon-pause w-4 h-4")}</span></button>
+        <button type="button" class="surface rounded-xl px-3 py-2 text-sm" data-artist-name="${artist.name}">소개 보기</button>
+      </article>`;
+  }
+
+  function paginationButtons(totalPages) {
+    const groupStart = Math.floor((currentArtistPage - 1) / 5) * 5 + 1;
+    const pageNumbers = Array.from({ length: Math.min(5, totalPages - groupStart + 1) }, (_, index) => groupStart + index);
+    return `<nav class="artist-pagination" aria-label="아티스트 페이지 이동"><button type="button" data-artist-page-jump="prev" aria-label="이전 페이지 묶음">&lt;&lt;</button>${pageNumbers.map(page => `<button type="button" data-artist-page="${page}" class="${page === currentArtistPage ? "is-active" : ""}" aria-current="${page === currentArtistPage ? "page" : "false"}">${page}</button>`).join("")}<button type="button" data-artist-page-jump="next" aria-label="다음 페이지 묶음">&gt;&gt;</button></nav>`;
+  }
+
   function renderMyArtists() {
+    const totalPages = Math.ceil(artists.length / artistsPerPage);
     return `
       <div>
         <p class="text-sm" style="color:var(--muted)">ARTISTS</p>
         <h1 class="text-2xl font-medium mt-1">아티스트</h1>
       </div>
-      <div class="grid md:grid-cols-2 gap-4">
-        ${artists.map((artist, index) => `
-          <article class="artist-card surface rounded-2xl p-4 flex items-center gap-4" data-artist-search="${artist.name.toLocaleLowerCase()}">
-            <!-- 프로필 이미지를 누르면 해당 아티스트 상세 페이지로 이동합니다. -->
-            <a class="artist-profile-link shrink-0 rounded-full" href="pages/artist-detail/?name=${encodeURIComponent(artist.name)}" aria-label="${artist.name} 상세 페이지 보기">
-              ${artistImage(artist)}
-            </a>
-            <div class="artist-card-meta flex-1">
-              <p class="font-medium">${artist.name}</p>
-              <p class="text-sm" style="color:var(--muted)">${artist.plays}</p>
-            </div>
-
-            <!-- 아티스트 카드의 미니 음악 재생바 -->
-            <button type="button" class="artist-mini-player" data-personal-artist-audio="${index}" aria-label="아티스트 음악 재생">
-              <span class="artist-mini-line" aria-hidden="true">
-                <svg class="artist-wave" viewBox="0 0 180 30" preserveAspectRatio="none">
-                  <path d="M0 15 L180 15"></path>
-                </svg>
-              </span>
-              <span class="artist-mini-play" aria-hidden="true">
-                ${artistIcon("Play", "artist-mini-icon artist-mini-icon-play w-4 h-4")}
-                ${artistIcon("Pause", "artist-mini-icon artist-mini-icon-pause w-4 h-4")}
-              </span>
-            </button>
-
-            <button type="button" class="surface rounded-xl px-3 py-2 text-sm" data-artist-name="${artist.name}">소개 보기</button>
-          </article>
-        `).join("")}
-      </div>
+      <div class="grid md:grid-cols-2 gap-4" data-artist-grid>${artists.slice(0, artistsPerPage).map(artistCard).join("")}</div>
       <p class="artist-search-empty surface rounded-2xl p-6 text-center" data-artist-search-empty hidden>
         검색 결과가 없습니다.
       </p>
+      ${paginationButtons(totalPages)}
       <button type="button" class="artist-top-button" data-artist-top aria-label="페이지 맨 위로 이동">TOP</button>
       <button type="button" class="artist-bottom-button" data-artist-bottom aria-label="페이지 맨 아래로 이동">▼</button>
     `;
+  }
+
+  function updateArtistList(query = "") {
+    const matchedArtists = artists.filter(artist => !query || artist.name.toLocaleLowerCase().includes(query));
+    const totalPages = Math.max(1, Math.ceil(matchedArtists.length / artistsPerPage));
+    currentArtistPage = Math.min(currentArtistPage, totalPages);
+    const start = (currentArtistPage - 1) * artistsPerPage;
+    const grid = document.querySelector("[data-artist-grid]");
+    if (grid) {
+      grid.innerHTML = matchedArtists.slice(start, start + artistsPerPage)
+        .map(artist => artistCard(artist, artists.indexOf(artist))).join("");
+    }
+    const pager = document.querySelector(".artist-pagination");
+    if (pager) pager.outerHTML = paginationButtons(totalPages);
+    const emptyMessage = document.querySelector("[data-artist-search-empty]");
+    if (emptyMessage) emptyMessage.hidden = matchedArtists.length !== 0;
+    window.lucide?.createIcons?.();
   }
 
   // 공용 렌더러 중 아티스트 목록만 개인 렌더러로 교체합니다.
@@ -75,17 +84,20 @@
 
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.trim().toLocaleLowerCase();
-      const cards = [...document.querySelectorAll("[data-artist-search]")];
-      let visibleCount = 0;
+      currentArtistPage = 1;
+      updateArtistList(query);
+    });
 
-      cards.forEach(card => {
-        const matched = !query || card.dataset.artistSearch.includes(query);
-        card.hidden = !matched;
-        if (matched) visibleCount += 1;
-      });
-
-      const emptyMessage = document.querySelector("[data-artist-search-empty]");
-      if (emptyMessage) emptyMessage.hidden = visibleCount !== 0;
+    document.addEventListener("click", event => {
+      const pageButton = event.target.closest("[data-artist-page]");
+      const jumpButton = event.target.closest("[data-artist-page-jump]");
+      if (!pageButton && !jumpButton) return;
+      const query = searchInput.value.trim().toLocaleLowerCase();
+      const totalPages = Math.max(1, Math.ceil(artists.filter(artist => !query || artist.name.toLocaleLowerCase().includes(query)).length / artistsPerPage));
+      if (pageButton) currentArtistPage = Number(pageButton.dataset.artistPage);
+      if (jumpButton) currentArtistPage = Math.min(totalPages, Math.max(1, currentArtistPage + (jumpButton.dataset.artistPageJump === "next" ? 5 : -5)));
+      updateArtistList(query);
+      document.querySelector("[data-page-root]")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
@@ -164,10 +176,7 @@
     selectedAudioButton = button;
     selectedArtist = artist;
 
-    const preferredArtistAudio = typeof window.preferredStudioAudioSource === "function"
-      ? window.preferredStudioAudioSource(artist.audio)
-      : artist.audio;
-    const artistAudioUrl = new URL(preferredArtistAudio, document.baseURI).href;
+    const artistAudioUrl = new URL(artist.audio, document.baseURI).href;
     if (audio.src !== artistAudioUrl) {
       audio.src = artistAudioUrl;
       audio.load();

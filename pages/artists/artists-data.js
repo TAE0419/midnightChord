@@ -11,7 +11,7 @@ window.artistPageData = {
       plays: "200만 재생⭐",
       initial: "L",
       title: "Violet Afterglow",
-      imageSrc: "/img/img\ \(12\).jfif",
+      imageSrc: "imgW/img\ \(12\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
       des:
         "LUNA(루나)의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -26,7 +26,7 @@ window.artistPageData = {
       plays: "94만 재생",
       initial: "N",
       title: "Static Hearts",
-      imageSrc: "/img/img\ \(54\).jfif",
+      imageSrc: "imgW/img\ \(54\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
       des:
         "NOIR-노아의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -41,7 +41,7 @@ window.artistPageData = {
       plays: "81만 재생",
       initial: "M",
       title: "Neon Bloom",
-      imageSrc: "/img/img\ \(25\).jfif",
+      imageSrc: "imgW/img\ \(25\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
       des:
         "MUSE의 음악과 발매 소식을 소개하는 공간입니다." +
@@ -56,7 +56,7 @@ window.artistPageData = {
       plays: "77만 재생",
       initial: "W",
       title: "Blue Hour Drive",
-      imageSrc: "/img/img\ \(36\).jfif",
+      imageSrc: "imgW/img\ \(36\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
       des:
         "WAVE의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -73,7 +73,7 @@ window.artistPageData = {
       name: "김다현",
       plays: "65만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(10\).jfif",
+      imageSrc: "imgW/img\ \(10\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
       des:
         "김다현의 음악과 발매 소식을 소개하는 공간입니다." +
@@ -90,7 +90,7 @@ window.artistPageData = {
       name: "웨이브-푸른",
       plays: "126만 재생⭐",
       initial: "W",
-      imageSrc: "/img/img\ \(1\).jfif",
+      imageSrc: "imgW/img\ \(1\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
       des:
         "웨이브-푸른의 음악과 발매 소식을 소개하는 공간입니다." +
@@ -107,7 +107,7 @@ window.artistPageData = {
       name: "Nyan",
       plays: "34만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(45\).jfif",
+      imageSrc: "imgW/img\ \(45\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
       des:
         "Nyan의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -124,7 +124,7 @@ window.artistPageData = {
       name: "anna안나",
       plays: "77만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(22\).jfif",
+      imageSrc: "imgW/img\ \(22\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
       des:
         "anna안나의 음악과 발매 소식을 소개하는 공간입니다." +
@@ -141,7 +141,7 @@ window.artistPageData = {
       name: "도현",
       plays: "987만 재생⭐",
       initial: "W",
-      imageSrc: "/img/img\ \(19\).jfif",
+      imageSrc: "imgW/img\ \(19\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
       des:
         "도현의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -158,7 +158,7 @@ window.artistPageData = {
       name: "MUL",
       plays: "34만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(28\).jfif",
+      imageSrc: "imgW/img\ \(28\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
       des:
         "MUL의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -175,7 +175,7 @@ window.artistPageData = {
       name: "DA PUMP",
       plays: "57만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(14\).jfif",
+      imageSrc: "imgW/img\ \(14\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
       des:
         "DA PUMP의 음악과 발매 소식을 소개하는 공간입니다." +
@@ -192,7 +192,7 @@ window.artistPageData = {
       name: "MISOSHIRU",
       plays: "26만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(51\).jfif",
+      imageSrc: "imgW/img\ \(51\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
       des:
         "MISOSHIRU의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -209,7 +209,7 @@ window.artistPageData = {
       name: "도쿄푸딩",
       plays: "88만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(44\).jfif",
+      imageSrc: "imgW/img\ \(44\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
       des:
         "도쿄푸딩의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -226,7 +226,7 @@ window.artistPageData = {
       name: "허밍어반스테레오",
       plays: "37만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(33\).jfif",
+      imageSrc: "imgW/img\ \(33\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
       des:
         "허밍어반스테레오의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -243,7 +243,7 @@ window.artistPageData = {
       name: "PUPUPI",
       plays: "33만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(55\).jfif",
+      imageSrc: "imgW/img\ \(55\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       des:
         "PUPUPI의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -259,7 +259,7 @@ window.artistPageData = {
       name: "La노아",
       plays: "865만 재생⭐",
       initial: "W",
-      imageSrc: "/img/img\ \(2\).jfif",
+      imageSrc: "imgW/img\ \(2\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       des:
         "La노아의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -275,7 +275,7 @@ window.artistPageData = {
       name: "장훼이웨이",
       plays: "33만 재생",
       initial: "W",
-      imageSrc: "/img/img\ \(8\).jfif",
+      imageSrc: "imgW/img\ \(8\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       des:
         "장훼이웨이의 음악과 발매 소식을 소개하는 공간입니다. " +
@@ -292,7 +292,7 @@ window.artistPageData = {
       name: "ASTER",
       plays: "42만 재생",
       initial: "A",
-      imageSrc: "/img/img (1).jfif",
+      imageSrc: "imgW/img (1).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
       des:
         "ASTER의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -309,7 +309,7 @@ window.artistPageData = {
       name: "NOVA JUNE",
       plays: "79만 재생",
       initial: "N",
-      imageSrc: "/img/img (2).jfif",
+      imageSrc: "imgW/img (2).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
       des:
         "NOVA JUNE의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -326,7 +326,7 @@ window.artistPageData = {
       name: "RIN",
       plays: "54만 재생",
       initial: "R",
-      imageSrc: "/img/img (3).jfif",
+      imageSrc: "imgW/img (3).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
       des:
         "RIN의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -343,7 +343,7 @@ window.artistPageData = {
       name: "SOLACE",
       plays: "71만 재생",
       initial: "S",
-      imageSrc: "/img/img (4).jfif",
+      imageSrc: "imgW/img (4).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
       des:
         "SOLACE의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -360,7 +360,7 @@ window.artistPageData = {
       name: "VELA",
       plays: "88만 재생",
       initial: "V",
-      imageSrc: "/img/img (5).jfif",
+      imageSrc: "imgW/img (5).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
       des:
         "VELA의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -377,7 +377,7 @@ window.artistPageData = {
       name: "ECHO NINE",
       plays: "25만 재생",
       initial: "E",
-      imageSrc: "/img/img (6).jfif",
+      imageSrc: "imgW/img (6).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
       des:
         "ECHO NINE의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -394,7 +394,7 @@ window.artistPageData = {
       name: "하린",
       plays: "42만 재생",
       initial: "하",
-      imageSrc: "/img/img (7).jfif",
+      imageSrc: "imgW/img (7).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
       des:
         "하린의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -411,7 +411,7 @@ window.artistPageData = {
       name: "서윤",
       plays: "59만 재생",
       initial: "서",
-      imageSrc: "/img/img (8).jfif",
+      imageSrc: "imgW/img (8).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
       des:
         "서윤의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -428,7 +428,7 @@ window.artistPageData = {
       name: "민재",
       plays: "76만 재생",
       initial: "민",
-      imageSrc: "/img/img (9).jfif",
+      imageSrc: "imgW/img (9).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
       des:
         "민재의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -445,7 +445,7 @@ window.artistPageData = {
       name: "유나",
       plays: "93만 재생",
       initial: "유",
-      imageSrc: "/img/img (10).jfif",
+      imageSrc: "imgW/img (10).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
       des:
         "유나의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -462,7 +462,7 @@ window.artistPageData = {
       name: "MOONLIT",
       plays: "30만 재생",
       initial: "M",
-      imageSrc: "/img/img (11).jfif",
+      imageSrc: "imgW/img (11).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
       des:
         "MOONLIT의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -479,7 +479,7 @@ window.artistPageData = {
       name: "CIELO",
       plays: "47만 재생",
       initial: "C",
-      imageSrc: "/img/img (12).jfif",
+      imageSrc: "imgW/img (12).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
       des:
         "CIELO의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -496,7 +496,7 @@ window.artistPageData = {
       name: "REVERIE",
       plays: "64만 재생",
       initial: "R",
-      imageSrc: "/img/img (13).jfif",
+      imageSrc: "imgW/img (13).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
       des:
         "REVERIE의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -513,7 +513,7 @@ window.artistPageData = {
       name: "KODA",
       plays: "81만 재생",
       initial: "K",
-      imageSrc: "/img/img (14).jfif",
+      imageSrc: "imgW/img (14).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
       des:
         "KODA의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -530,7 +530,7 @@ window.artistPageData = {
       name: "ELIO",
       plays: "98만 재생",
       initial: "E",
-      imageSrc: "/img/img (15).jfif",
+      imageSrc: "imgW/img (15).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       des:
         "ELIO의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -547,7 +547,7 @@ window.artistPageData = {
       name: "SORA",
       plays: "35만 재생",
       initial: "S",
-      imageSrc: "/img/img (16).jfif",
+      imageSrc: "imgW/img (16).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
       des:
         "SORA의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -564,7 +564,7 @@ window.artistPageData = {
       name: "다온",
       plays: "52만 재생",
       initial: "다",
-      imageSrc: "/img/img (17).jfif",
+      imageSrc: "imgW/img (17).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
       des:
         "다온의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -581,7 +581,7 @@ window.artistPageData = {
       name: "세린",
       plays: "671만 재생⭐",
       initial: "세",
-      imageSrc: "/img/img (18).jfif",
+      imageSrc: "imgW/img (18).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
       des:
         "세린의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -598,7 +598,7 @@ window.artistPageData = {
       name: "지후",
       plays: "708만 재생⭐",
       initial: "지",
-      imageSrc: "/img/img (19).jfif",
+      imageSrc: "imgW/img (19).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
       des:
         "지후의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -615,7 +615,7 @@ window.artistPageData = {
       name: "채원",
       plays: "745만 재생⭐",
       initial: "채",
-      imageSrc: "/img/img (20).jfif",
+      imageSrc: "imgW/img (20).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
       des:
         "채원의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -632,7 +632,7 @@ window.artistPageData = {
       name: "NEON BIRD",
       plays: "782만 재생⭐",
       initial: "N",
-      imageSrc: "/img/img (21).jfif",
+      imageSrc: "imgW/img (21).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
       des:
         "NEON BIRD의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -649,7 +649,7 @@ window.artistPageData = {
       name: "LUCID",
       plays: "819만 재생⭐",
       initial: "L",
-      imageSrc: "/img/img (22).jfif",
+      imageSrc: "imgW/img (22).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
       des:
         "LUCID의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -666,7 +666,7 @@ window.artistPageData = {
       name: "ORBITAL",
       plays: "856만 재생⭐",
       initial: "O",
-      imageSrc: "/img/img (23).jfif",
+      imageSrc: "imgW/img (23).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
       des:
         "ORBITAL의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -683,7 +683,7 @@ window.artistPageData = {
       name: "AMBER",
       plays: "893만 재생⭐",
       initial: "A",
-      imageSrc: "/img/img (24).jfif",
+      imageSrc: "imgW/img (24).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
       des:
         "AMBER의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -700,7 +700,7 @@ window.artistPageData = {
       name: "MELLOW D",
       plays: "930만 재생⭐",
       initial: "M",
-      imageSrc: "/img/img (25).jfif",
+      imageSrc: "imgW/img (25).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
       des:
         "MELLOW D의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -717,7 +717,7 @@ window.artistPageData = {
       name: "ROAN",
       plays: "967만 재생⭐",
       initial: "R",
-      imageSrc: "/img/img (26).jfif",
+      imageSrc: "imgW/img (26).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
       des:
         "ROAN의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -734,7 +734,7 @@ window.artistPageData = {
       name: "가람",
       plays: "74만 재생",
       initial: "가",
-      imageSrc: "/img/img (27).jfif",
+      imageSrc: "imgW/img (27).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
       des:
         "가람의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -751,7 +751,7 @@ window.artistPageData = {
       name: "나린",
       plays: "69만 재생",
       initial: "나",
-      imageSrc: "/img/img (28).jfif",
+      imageSrc: "imgW/img (28).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
       des:
         "나린의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -768,7 +768,7 @@ window.artistPageData = {
       name: "시우",
       plays: "86만 재생",
       initial: "시",
-      imageSrc: "/img/img (29).jfif",
+      imageSrc: "imgW/img (29).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
       des:
         "시우의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -785,7 +785,7 @@ window.artistPageData = {
       name: "예린",
       plays: "23만 재생",
       initial: "예",
-      imageSrc: "/img/img (30).jfif",
+      imageSrc: "imgW/img (30).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       des:
         "예린의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -802,7 +802,7 @@ window.artistPageData = {
       name: "BLUE HAZE",
       plays: "40만 재생",
       initial: "B",
-      imageSrc: "/img/img (31).jfif",
+      imageSrc: "imgW/img (31).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
       des:
         "BLUE HAZE의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -819,7 +819,7 @@ window.artistPageData = {
       name: "MONO",
       plays: "57만 재생",
       initial: "M",
-      imageSrc: "/img/img (32).jfif",
+      imageSrc: "imgW/img (32).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
       des:
         "MONO의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -836,7 +836,7 @@ window.artistPageData = {
       name: "CARINA",
       plays: "74만 재생",
       initial: "C",
-      imageSrc: "/img/img (33).jfif",
+      imageSrc: "imgW/img (33).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
       des:
         "CARINA의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -853,7 +853,7 @@ window.artistPageData = {
       name: "FABLE",
       plays: "91만 재생",
       initial: "F",
-      imageSrc: "/img/img (34).jfif",
+      imageSrc: "imgW/img (34).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
       des:
         "FABLE의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -870,7 +870,7 @@ window.artistPageData = {
       name: "JUNO K",
       plays: "28만 재생",
       initial: "J",
-      imageSrc: "/img/img (35).jfif",
+      imageSrc: "imgW/img (35).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
       des:
         "JUNO K의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -887,7 +887,7 @@ window.artistPageData = {
       name: "MIRA",
       plays: "45만 재생",
       initial: "M",
-      imageSrc: "/img/img (36).jfif",
+      imageSrc: "imgW/img (36).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
       des:
         "MIRA의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -904,7 +904,7 @@ window.artistPageData = {
       name: "라온",
       plays: "62만 재생",
       initial: "라",
-      imageSrc: "/img/img (37).jfif",
+      imageSrc: "imgW/img (37).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
       des:
         "라온의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -921,7 +921,7 @@ window.artistPageData = {
       name: "은호",
       plays: "79만 재생",
       initial: "은",
-      imageSrc: "/img/img (38).jfif",
+      imageSrc: "imgW/img (38).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
       des:
         "은호의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -938,7 +938,7 @@ window.artistPageData = {
       name: "수아",
       plays: "96만 재생",
       initial: "수",
-      imageSrc: "/img/img (39).jfif",
+      imageSrc: "imgW/img (39).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
       des:
         "수아의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -955,7 +955,7 @@ window.artistPageData = {
       name: "태린",
       plays: "33만 재생",
       initial: "태",
-      imageSrc: "/img/img (40).jfif",
+      imageSrc: "imgW/img (40).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
       des:
         "태린의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -972,7 +972,7 @@ window.artistPageData = {
       name: "POLARIS",
       plays: "50만 재생",
       initial: "P",
-      imageSrc: "/img/img (41).jfif",
+      imageSrc: "imgW/img (41).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
       des:
         "POLARIS의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -989,7 +989,7 @@ window.artistPageData = {
       name: "DUSK",
       plays: "67만 재생",
       initial: "D",
-      imageSrc: "/img/img (42).jfif",
+      imageSrc: "imgW/img (42).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
       des:
         "DUSK의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1006,7 +1006,7 @@ window.artistPageData = {
       name: "AURA",
       plays: "666만 재생⭐",
       initial: "A",
-      imageSrc: "/img/img (43).jfif",
+      imageSrc: "imgW/img (43).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
       des:
         "AURA의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1023,7 +1023,7 @@ window.artistPageData = {
       name: "NOAH V",
       plays: "703만 재생⭐",
       initial: "N",
-      imageSrc: "/img/img (44).jfif",
+      imageSrc: "imgW/img (44).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
       des:
         "NOAH V의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1040,7 +1040,7 @@ window.artistPageData = {
       name: "LILAC",
       plays: "740만 재생⭐",
       initial: "L",
-      imageSrc: "/img/img (45).jfif",
+      imageSrc: "imgW/img (45).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       des:
         "LILAC의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1057,7 +1057,7 @@ window.artistPageData = {
       name: "REN",
       plays: "777만 재생⭐",
       initial: "R",
-      imageSrc: "/img/img (46).jfif",
+      imageSrc: "imgW/img (46).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
       des:
         "REN의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1074,7 +1074,7 @@ window.artistPageData = {
       name: "해온",
       plays: "814만 재생⭐",
       initial: "해",
-      imageSrc: "/img/img (47).jfif",
+      imageSrc: "imgW/img (47).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
       des:
         "해온의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1091,7 +1091,7 @@ window.artistPageData = {
       name: "아린",
       plays: "851만 재생⭐",
       initial: "아",
-      imageSrc: "/img/img (48).jfif",
+      imageSrc: "imgW/img (48).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
       des:
         "아린의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1108,7 +1108,7 @@ window.artistPageData = {
       name: "준서",
       plays: "888만 재생⭐",
       initial: "준",
-      imageSrc: "/img/img (49).jfif",
+      imageSrc: "imgW/img (49).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
       des:
         "준서의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1125,7 +1125,7 @@ window.artistPageData = {
       name: "다희",
       plays: "925만 재생⭐",
       initial: "다",
-      imageSrc: "/img/img (50).jfif",
+      imageSrc: "imgW/img (50).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
       des:
         "다희의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1142,7 +1142,7 @@ window.artistPageData = {
       name: "SATURN 8",
       plays: "962만 재생⭐",
       initial: "S",
-      imageSrc: "/img/img (51).jfif",
+      imageSrc: "imgW/img (51).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
       des:
         "SATURN 8의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1159,7 +1159,7 @@ window.artistPageData = {
       name: "VIOLET KID",
       plays: "69만 재생",
       initial: "V",
-      imageSrc: "/img/img (52).jfif",
+      imageSrc: "imgW/img (52).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
       des:
         "VIOLET KID의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1176,7 +1176,7 @@ window.artistPageData = {
       name: "MISTY",
       plays: "84만 재생",
       initial: "M",
-      imageSrc: "/img/img (53).jfif",
+      imageSrc: "imgW/img (53).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
       des:
         "MISTY의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1193,7 +1193,7 @@ window.artistPageData = {
       name: "CLOUD NINE",
       plays: "21만 재생",
       initial: "C",
-      imageSrc: "/img/img (54).jfif",
+      imageSrc: "imgW/img (54).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
       des:
         "CLOUD NINE의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1210,7 +1210,7 @@ window.artistPageData = {
       name: "LOOPA",
       plays: "38만 재생",
       initial: "L",
-      imageSrc: "/img/img (55).jfif",
+      imageSrc: "imgW/img (55).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
       des:
         "LOOPA의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1227,7 +1227,7 @@ window.artistPageData = {
       name: "ZENITH",
       plays: "55만 재생",
       initial: "Z",
-      imageSrc: "/img/img (56).jfif",
+      imageSrc: "imgW/img (56).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
       des:
         "ZENITH의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1244,7 +1244,7 @@ window.artistPageData = {
       name: "여울",
       plays: "72만 재생",
       initial: "여",
-      imageSrc: "/img/img (57).jfif",
+      imageSrc: "imgW/img (57).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
       des:
         "여울의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1261,7 +1261,7 @@ window.artistPageData = {
       name: "로하",
       plays: "89만 재생",
       initial: "로",
-      imageSrc: "/img/img (58).jfif",
+      imageSrc: "imgW/img (58).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
       des:
         "로하의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1278,7 +1278,7 @@ window.artistPageData = {
       name: "이든",
       plays: "26만 재생",
       initial: "이",
-      imageSrc: "/img/img (59).jfif",
+      imageSrc: "imgW/img (59).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
       des:
         "이든의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
@@ -1295,7 +1295,7 @@ window.artistPageData = {
       name: "소민",
       plays: "43만 재생",
       initial: "소",
-      imageSrc: "/img/img (60).jfif",
+      imageSrc: "imgW/img (59).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       des:
         "소민의 음악과 새로운 발매 소식을 소개하는 공간입니다. " +
