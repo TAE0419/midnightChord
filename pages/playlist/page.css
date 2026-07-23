@@ -1,2 +1,125 @@
-/* Playlist page specific styles. */
+/* Playlist page-specific presentation. */
+.playlist-muted { color: var(--muted); }
 
+[data-search-input] {
+  border-color: var(--border);
+  color: #f4f4f5;
+}
+
+[data-sidebar-player-progress],
+#playerProgress { width: 0%; }
+
+.playlist-carousel {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.playlist-carousel-track {
+  display: grid;
+  grid-auto-columns: calc((100% - 3rem) / 4);
+  grid-auto-flow: column;
+  gap: 1rem;
+  will-change: transform;
+}
+
+.playlist-carousel.is-dragging,
+.playlist-carousel.is-dragging * {
+  cursor: grabbing;
+}
+
+.playlist-carousel-card {
+  min-width: 0;
+}
+
+.playlist-card-progress {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 1px;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.playlist-card-progress::-webkit-slider-thumb {
+  appearance: none;
+  background: #f4f4f5;
+  border: 0;
+  border-radius: 999px;
+  height: .8rem;
+  margin-top: calc((1px - .8rem) / 2);
+  width: .8rem;
+}
+
+.playlist-card-progress::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #8b5cf6 0 var(--playlist-progress, 0%), #71717a var(--playlist-progress, 0%) 100%);
+  border: 0;
+  border-radius: 999px;
+  height: 1px;
+}
+
+.playlist-card-progress::-moz-range-track {
+  background: #71717a;
+  border: 0;
+  border-radius: 999px;
+  height: 1px;
+}
+
+.playlist-card-progress::-moz-range-progress {
+  background: #8b5cf6;
+  border-radius: 999px;
+  height: 1px;
+}
+
+.playlist-card-progress::-moz-range-thumb {
+  background: #f4f4f5;
+  border: 0;
+  border-radius: 999px;
+  height: .8rem;
+  width: .8rem;
+}
+
+.playlist-card-controls {
+  align-items: center;
+  display: flex;
+  gap: .65rem;
+  justify-content: center;
+  margin-top: .45rem;
+}
+
+.playlist-card-controls button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #f4f4f5;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0;
+  width: 1.8rem;
+}
+
+.playlist-card-controls button:hover,
+.playlist-card-add.is-added {
+  color: #a78bfa;
+}
+
+.playlist-card-play {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 767px) {
+  .playlist-carousel-track {
+    grid-auto-columns: calc((100% - 1rem) / 2);
+  }
+}
+
+.mini-wave span:nth-child(1) { height: 30%; }
+.mini-wave span:nth-child(2) { height: 70%; }
+.mini-wave span:nth-child(3) { height: 45%; }
+.mini-wave span:nth-child(4) { height: 90%; }
+.mini-wave span:nth-child(5) { height: 55%; }
+section{
+  margin-bottom: 15rem;
+}

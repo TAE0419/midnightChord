@@ -375,6 +375,11 @@ window.trackitData = {
       title: "Purple Drive",
       meta: "24곡 · 공개",
       art: "album-art-alt"
+    },
+    {
+      title: "Night Walk",
+      meta: "16곡 · 공개",
+      art: "album-art-warm"
     }
   ]
 };

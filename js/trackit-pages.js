@@ -192,19 +192,35 @@ function renderPodcasts() {
 }
 
 function renderPlaylist() {
+  const carouselItems = [...playlists, ...playlists];
+  window.setTimeout(() => window.trackitPlaylistCarousel?.(), 0);
+
   return `
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div><p class="text-sm" style="color:var(--muted)">MY LIBRARY</p><h1 class="text-2xl font-medium mt-1">플레이리스트</h1></div>
       <button type="button" class="purple-btn rounded-xl px-4 py-2">+ 새 플레이리스트</button>
     </div>
-    <div class="grid md:grid-cols-3 gap-4">
-      ${playlists.map(item => `
-        <article class="surface rounded-2xl p-4">
-          <div class="${item.art} rounded-xl aspect-square flex items-center justify-center text-4xl">${item.icon ? icon(item.icon, "w-10 h-10") : ""}</div>
-          <p class="font-medium mt-3">${item.title}</p>
-          <p class="text-sm" style="color:var(--muted)">${item.meta}</p>
+    <div class="playlist-carousel" data-playlist-carousel>
+      <div class="playlist-carousel-track" data-playlist-carousel-track>
+      ${carouselItems.map((item, index) => {
+        const artist = artists[index % playlists.length];
+        return `
+        <article class="playlist-carousel-card surface rounded-2xl p-3">
+          ${assetBox({ ...item, imageSrc: artist?.imageSrc }, "rounded-xl aspect-square w-full")}
+          <p class="font-medium mt-2">${artist?.name || item.title}</p>
+          <p class="text-sm" style="color:var(--muted)">${artist?.title || item.meta}</p>
+          <input class="playlist-card-progress" data-playlist-progress="${index % playlists.length}" type="range" min="0" max="100" value="0" aria-label="재생 위치">
+          <div class="playlist-card-controls" aria-label="${artist?.name || item.title} 재생 컨트롤">
+            <button type="button" class="playlist-card-add" aria-label="내 라이브러리에 추가">+</button>
+            <button type="button" data-playlist-action="previous" data-playlist-artist="${index % playlists.length}" aria-label="이전 곡">${icon("SkipBack", "w-4 h-4")}</button>
+            <button type="button" class="playlist-card-play" data-playlist-action="play" data-playlist-artist="${index % playlists.length}" aria-label="재생">${icon("Play", "w-5 h-5")}</button>
+            <button type="button" data-playlist-action="next" data-playlist-artist="${index % playlists.length}" aria-label="다음 곡">${icon("SkipForward", "w-4 h-4")}</button>
+            <button type="button" data-playlist-action="shuffle" data-playlist-artist="${index % playlists.length}" aria-label="셔플">${icon("Shuffle", "w-4 h-4")}</button>
+          </div>
         </article>
-      `).join("")}
+      `;
+      }).join("")}
+      </div>
     </div>
     <div class="surface rounded-2xl p-4">
       <h2 class="font-medium mb-3">최근 들은 곡</h2>
@@ -212,6 +228,137 @@ function renderPlaylist() {
     </div>
   `;
 }
+
+window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
+  const carousel = document.querySelector("[data-playlist-carousel]");
+  const track = document.querySelector("[data-playlist-carousel-track]");
+  if (!carousel || !track) return;
+
+  let position = 0;
+  const originalCardCount = playlists.length;
+
+  function cardStep() {
+    const card = track.querySelector(".playlist-carousel-card");
+    const gap = Number.parseFloat(window.getComputedStyle(track).gap) || 0;
+    return card ? card.offsetWidth + gap : 0;
+  }
+
+  function updateCardPlayers() {
+    const audio = document.getElementById("studioAudio");
+    const artistIndex = Number(audio?.dataset.playlistArtistIndex);
+    const percent = audio?.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+    document.querySelectorAll("[data-playlist-progress]").forEach(progress => {
+      if (Number(progress.dataset.playlistProgress) === artistIndex) {
+        progress.value = percent;
+        progress.style.setProperty("--playlist-progress", `${percent}%`);
+      }
+    });
+    document.querySelectorAll("[data-playlist-action='play']").forEach(button => {
+      const active = !audio?.paused && Number(button.dataset.playlistArtist) === artistIndex;
+      button.classList.toggle("is-playing", active);
+      button.innerHTML = icon(active ? "Pause" : "Play", "w-5 h-5");
+      button.setAttribute("aria-label", active ? "일시정지" : "재생");
+    });
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function playArtist(index, forcePlay = false) {
+    const artist = artists[index];
+    const audio = document.getElementById("studioAudio");
+    if (!artist?.audio || !audio) return;
+
+    const isCurrentArtist = Number(audio.dataset.playlistArtistIndex) === index;
+    if (isCurrentArtist && !audio.paused && !forcePlay) {
+      audio.pause();
+      updateCardPlayers();
+      return;
+    }
+
+    if (!isCurrentArtist) {
+      audio.src = artist.audio;
+      audio.dataset.playlistArtistIndex = String(index);
+      audio.load();
+    } else if (audio.ended) {
+      audio.currentTime = 0;
+    }
+    document.getElementById("playerTitle").textContent = artist.title || artist.name;
+    document.getElementById("playerArtist").textContent = artist.name;
+    document.getElementById("playerStatus").textContent = "재생 중";
+    document.querySelector("[data-sidebar-player-title]").textContent = artist.title || artist.name;
+    audio.play().then(updateCardPlayers).catch(updateCardPlayers);
+  }
+
+  window.trackitPlaylistPlayArtist = playArtist;
+
+  carousel.addEventListener("click", event => {
+    const action = event.target.closest("[data-playlist-action]");
+    const addButton = event.target.closest(".playlist-card-add");
+    if (addButton) {
+      addButton.classList.toggle("is-added");
+      return;
+    }
+    if (!action) return;
+    const index = Number(action.dataset.playlistArtist);
+    if (action.dataset.playlistAction === "previous") playArtist((index - 1 + playlists.length) % playlists.length, true);
+    if (action.dataset.playlistAction === "next") playArtist((index + 1) % playlists.length, true);
+    if (action.dataset.playlistAction === "shuffle") playArtist(Math.floor(Math.random() * playlists.length), true);
+    if (action.dataset.playlistAction === "play") playArtist(index);
+  });
+
+  carousel.addEventListener("input", event => {
+    const progress = event.target.closest("[data-playlist-progress]");
+    const audio = document.getElementById("studioAudio");
+    if (!progress || !audio?.duration || Number(progress.dataset.playlistProgress) !== Number(audio.dataset.playlistArtistIndex)) return;
+    progress.style.setProperty("--playlist-progress", `${progress.value}%`);
+    audio.currentTime = (Number(progress.value) / 100) * audio.duration;
+  });
+
+  let dragStartX = 0;
+  let dragStartPosition = 0;
+  let isDragging = false;
+
+  carousel.addEventListener("pointerdown", event => {
+    if (event.target.closest("button, input")) return;
+    isDragging = true;
+    carousel.classList.add("is-dragging");
+    dragStartX = event.clientX;
+    dragStartPosition = position;
+    track.style.transition = "none";
+    carousel.setPointerCapture(event.pointerId);
+  });
+
+  carousel.addEventListener("pointermove", event => {
+    if (!isDragging) return;
+    track.style.transform = `translateX(${-dragStartPosition * cardStep() + event.clientX - dragStartX}px)`;
+  });
+
+  function finishDrag(event) {
+    if (!isDragging) return;
+    isDragging = false;
+    carousel.classList.remove("is-dragging");
+    const draggedBy = event.clientX - dragStartX;
+    if (Math.abs(draggedBy) > cardStep() * 0.15) {
+      position = Math.max(0, Math.min(originalCardCount, dragStartPosition + (draggedBy < 0 ? 1 : -1)));
+    }
+    track.style.transition = "transform 300ms ease";
+    track.style.transform = `translateX(-${position * cardStep()}px)`;
+    if (position === originalCardCount) {
+      window.setTimeout(() => {
+        track.style.transition = "none";
+        track.style.transform = "translateX(0)";
+        position = 0;
+      }, 300);
+    }
+  }
+
+  carousel.addEventListener("pointerup", finishDrag);
+  carousel.addEventListener("pointercancel", finishDrag);
+
+  const audio = document.getElementById("studioAudio");
+  audio?.addEventListener("timeupdate", updateCardPlayers);
+  audio?.addEventListener("play", updateCardPlayers);
+  audio?.addEventListener("pause", updateCardPlayers);
+};
 
 function renderSearch(query = "") {
   const summary = query ? `"${query}" 검색 결과` : "검색 결과";
