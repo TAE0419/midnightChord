@@ -64,6 +64,9 @@
           </div>
         </section>
       </div>
+      <div class="artist-detail-back-wrap">
+        <button type="button" class="artist-detail-back" data-artist-detail-back>${detailIcon("ArrowLeft")} 뒤로</button>
+      </div>
     `;
   }
 
@@ -71,6 +74,15 @@
   window.trackitPages.artistDetail = renderMyArtistDetail;
 
   let activeDetailButton = null;
+
+  document.addEventListener("click", event => {
+    if (!event.target.closest("[data-artist-detail-back]")) return;
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    window.location.href = "pages/artists/";
+  });
 
   function updateDetailButton(button, playing) {
     if (!button) return;

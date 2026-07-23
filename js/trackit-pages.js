@@ -216,7 +216,7 @@ function renderPlaylist() {
             <button type="button" class="playlist-modal-artist ${index === 0 ? "is-selected" : ""}" data-playlist-modal-artist="${index}" data-playlist-modal-search-text="${artist.name} ${artist.title} ${artist.plays}">
               ${assetBox(artist, "w-11 h-11 rounded-full", artist.initial)}
               <span class="playlist-modal-artist-info"><strong>${artist.name}</strong><small>${artist.plays}</small></span>
-              <span class="playlist-modal-intro">소개 보기</span>
+              <span class="playlist-modal-intro" data-playlist-modal-detail="${encodeURIComponent(artist.name)}">소개 보기</span>
           </button>`).join("")}
           <p class="playlist-modal-empty" data-playlist-modal-empty hidden>검색 결과가 없습니다.</p>
         </div>
@@ -259,6 +259,11 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   modal?.addEventListener("click", event => {
     if (event.target.closest("[data-playlist-modal-close], [data-playlist-modal-confirm]")) {
       setModalOpen(false);
+      return;
+    }
+    const detailLink = event.target.closest("[data-playlist-modal-detail]");
+    if (detailLink) {
+      window.location.href = `pages/artist-detail/?name=${detailLink.dataset.playlistModalDetail}`;
       return;
     }
     const artistButton = event.target.closest("[data-playlist-modal-artist]");

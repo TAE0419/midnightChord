@@ -122,6 +122,28 @@
   font-weight: 500;
 }
 
+.artist-detail-back-wrap {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.artist-detail-back {
+  align-items: center;
+  background: #6953ae;
+  border: 0;
+  border-radius: .75rem;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  gap: .45rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+}
+
+.artist-detail-back:hover {
+  background: #b04fff;
+}
+
 @media (min-width: 768px) {
   .artist-detail-lower { grid-template-columns: 1.18fr .82fr; }
   .artist-tracks,
