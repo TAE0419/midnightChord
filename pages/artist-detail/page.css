@@ -96,7 +96,7 @@
 .artist-intro-card::before {
   content: "";
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   inset: 1px;
   border-radius: calc(1rem - 1px);
   background-image: var(--artist-detail-image);
@@ -107,6 +107,7 @@
 /* 아주 연한 보라색 유리 패널. 뒤 사진을 흐리게 보여줍니다. */
 .artist-intro-glass {
   position: absolute;
+  z-index: 1;
   inset: 1px;
   overflow: hidden;
   border-radius: calc(1rem - 1px);
@@ -148,4 +149,48 @@
   .artist-detail-lower { grid-template-columns: 1.18fr .82fr; }
   .artist-tracks,
   .artist-intro-card { min-height: 190px; }
+}
+
+/* Mobile (768px 이하): 프로필과 상세 콘텐츠를 한 열로 배치합니다. */
+@media (max-width: 768px) {
+  [data-page-root],
+  [data-page-root] * {
+    max-width: 100%;
+  }
+
+  [data-page-root] > .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem;
+  }
+
+  [data-page-root] > .surface.rounded-3xl {
+    padding: 1.25rem;
+  }
+
+  [data-page-root] > .surface.rounded-3xl > .aspect-square {
+    max-width: 7.5rem;
+  }
+
+  [data-page-root] h1 {
+    font-size: 1.875rem;
+    line-height: 1.2;
+  }
+
+  .artist-detail-hero,
+  .artist-intro-card {
+    min-height: 0;
+  }
+
+  .artist-intro-glass {
+    padding: 1rem;
+  }
+
+  .artist-detail-back-wrap {
+    justify-content: stretch;
+  }
+
+  .artist-detail-back {
+    justify-content: center;
+    width: 100%;
+  }
 }

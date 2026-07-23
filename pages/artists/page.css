@@ -16,6 +16,32 @@
   box-shadow: -6px 8px 20px rgba(0, 0, 0, .18);
 }
 
+.artist-pagination {
+  align-items: center;
+  display: flex;
+  gap: .45rem;
+  justify-content: center;
+  margin: 1.25rem 0 2rem;
+}
+
+.artist-pagination button {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: .45rem;
+  color: #f4f4f5;
+  cursor: pointer;
+  font-size: .85rem;
+  min-width: 2.2rem;
+  padding: .45rem .6rem;
+}
+
+.artist-pagination button:hover,
+.artist-pagination button.is-active {
+  background: #7057b8;
+  border-color: #7057b8;
+  color: #fff;
+}
+
 .artist-top-button,
 .artist-bottom-button {
   display: none;
@@ -273,6 +299,93 @@
     padding-left: .8rem;
   }
 }
-.space-y-6{
-  margin-bottom: 20rem;
+
+/* Mobile (768px 이하): 아티스트 목록을 한 열로 정리하고 카드 요소의 줄바꿈을 방지합니다. */
+@media (max-width: 768px) {
+  [data-page-root],
+  [data-page-root] * {
+    max-width: 100%;
+  }
+
+  [data-page-root] > .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: .75rem;
+  }
+
+  [data-page-root] > .grid > article {
+    min-width: 0;
+  }
+
+  [data-page-root] > .grid > .artist-card {
+    grid-template-columns: 52px minmax(0, 1fr);
+    padding: .875rem;
+  }
+
+  [data-page-root] > .grid > .artist-card .w-14 {
+    width: 52px;
+    height: 52px;
+  }
+
+  [data-page-root] > .grid > .artist-card .font-medium,
+  [data-page-root] > .grid > .artist-card p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* Mobile (768px 이하): 목록 밀도를 높이기 위해 아티스트 카드를 2열로 유지합니다. */
+@media (max-width: 768px) {
+  [data-page-root] > .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: .6rem;
+  }
+
+  [data-page-root] > .grid > .artist-card {
+    gap: .55rem;
+    grid-template-columns: 42px minmax(0, 1fr);
+    padding: .7rem;
+  }
+
+  [data-page-root] > .grid > .artist-card .w-14 {
+    width: 42px;
+    height: 42px;
+  }
+
+  [data-page-root] > .grid > .artist-card .font-medium {
+    font-size: .875rem;
+  }
+
+  [data-page-root] > .grid > .artist-card .text-sm {
+    font-size: .7rem;
+  }
+
+  .artist-mini-player {
+    height: 34px;
+    padding-left: .65rem;
+  }
+
+  .artist-mini-play {
+    width: 24px;
+    height: 24px;
+  }
+
+  [data-page-root] > .grid > .artist-card > button[data-artist-name] {
+    font-size: .75rem;
+    min-height: 2.2rem;
+  }
+}
+
+/* Mobile (768px 이하): 하단 페이지네이션을 카드 폭에 맞게 압축합니다. */
+@media (max-width: 768px) {
+  .artist-pagination {
+    gap: .3rem;
+    margin: .9rem 0 1.35rem;
+  }
+
+  .artist-pagination button {
+    font-size: .72rem;
+    min-width: 1.9rem;
+    padding: .38rem .45rem;
+  }
 }
