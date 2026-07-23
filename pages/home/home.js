@@ -59,6 +59,32 @@ function waitForHomePlayer() {
   }, 50);
 }
 
+function bindHomeMoodBackground() {
+  if (window.homeMoodBackgroundBound) {
+    return;
+  }
+
+  window.homeMoodBackgroundBound = true;
+  document.addEventListener("click", event => {
+    const moodCard = event.target.closest("[data-mood-bg]");
+    if (!moodCard || document.body.dataset.currentPage !== "home") {
+      return;
+    }
+
+    const moodSection = moodCard.closest("[data-mood-section]");
+    if (!moodSection) {
+      return;
+    }
+
+    moodSection.style.backgroundImage = `linear-gradient(180deg, rgba(17, 17, 21, .72), rgba(17, 17, 21, .82)), url("${moodCard.dataset.moodBg}")`;
+    moodSection.style.backgroundSize = "cover";
+    moodSection.style.backgroundPosition = "center";
+    moodSection.querySelectorAll("[data-mood-bg]").forEach(card => {
+      card.classList.toggle("is-active", card === moodCard);
+    });
+  });
+}
+
 async function loadHomeChartTracks() {
   try {
     const [tracksResponse, imagesResponse] = await Promise.all([
@@ -79,7 +105,11 @@ async function loadHomeChartTracks() {
       "img/img (25).jfif",
       "img/img (36).jfif",
       "img/img (10).jfif",
-      "img/img (1).jfif"
+      "img/img (1).jfif",
+      "img/img (22).jfif",
+      "img/img (45).jfif",
+      "img/img (19).jfif",
+      "img/img (28).jfif"
     ];
 
     if (!Array.isArray(loadedTracks)) {
@@ -162,21 +192,21 @@ function renderHome() {
   return `
     <div class="surface rounded-3xl p-5 md:p-7 overflow-hidden topBox home-hover-panel">
       <div class='textBox'>
-        <span class="viz-badge release">Featured release</span>
+        <span class="viz-badge release">Featured playlist</span>
         <h1 class="text-3xl md:text-4xl font-medium mt-4 title">Feel the purple wave</h1>
-        <p class="mt-3 text-sm md:text-base" style="color:var(--muted)">새롭게 공개된 아티스트와 플레이리스트를 만나보세요.</p>
+        <p class="mt-3 text-sm md:text-base titleSub" style="color:var(--muted)">새롭게 공개된 아티스트와 플레이리스트를 만나보세요.</p>
         <div class="flex gap-2 mt-5">
           <button type="button" class="purple-btn rounded-xl px-4 py-2 home-action-button" data-play-track="0">지금 재생</button>
           <button type="button" class="surface rounded-xl px-4 py-2 home-action-button" data-page-link="playlist">플레이리스트 보기</button>
         </div>
       </div>
-      <div class="album-art rounded-3xl aspect-square max-w-[270px] w-full flex items-end p-5 home-featured-album">
+      <button type="button" class="pliBox rounded-3xl aspect-square max-w-[270px] w-full flex items-end p-5 home-featured-album text-left" data-play-track="0" aria-label="Purple Wave 플레이리스트 재생">
         <div>
-          <p class="text-sm text-white/70">NEW ALBUM</p>
-          <p class="text-xl font-medium">Purple Orbit</p>
-          <p class="text-sm text-white/70">MUSE</p>
+          <p class="text-sm text-white/70">NEW PLAYLIST</p>
+          <p class="text-xl font-medium">Purple Wave</p>
+          <p class="text-sm text-white/70">10 tracks</p>
         </div>
-      </div>
+      </button>
     </div>
 
     <div>
@@ -195,20 +225,20 @@ function renderHome() {
         </div>
         <div class='mintText'>${tracks.slice(0, 10).map((track, index) => trackRow(track, index, { active: index === 0 })).join("")}</div>
       </section>
-      <section class="surface rounded-2xl p-4 home-hover-panel">
+      <section class="surface rounded-2xl p-4 home-hover-panel home-mood-section" data-mood-section>
         <h2 class="font-medium">오늘의 무드</h2>
         <p class="text-sm mt-1" style="color:var(--muted)">차분한 밤을 위한 추천</p>
-        <div class="purple-soft rounded-2xl mt-4 p-4 home-mood-card">
+        <div class="purple-soft rounded-2xl mt-4 p-4 home-mood-card" data-play-track="1" data-mood-bg="img/img (22).jfif">
           <p class="text-xs">MIDNIGHT MIX 26</p>
           <p class="font-medium mt-1">Deep Purple Flow</p>
           <p class="text-sm mt-4">24 tracks · 1h 32m</p>
         </div>
-        <div class="purple-soft rounded-2xl mt-4 p-4 home-mood-card">
+        <div class="purple-soft rounded-2xl mt-4 p-4 home-mood-card" data-play-track="2" data-mood-bg="img/img (45).jfif">
           <p class="text-xs">MIDNIGHT MIX 27</p>
           <p class="font-medium mt-1">Neon City</p>
           <p class="text-sm mt-4">12 tracks · 53m</p>
         </div>
-        <div class="purple-soft rounded-2xl mt-4 p-4 home-mood-card">
+        <div class="purple-soft rounded-2xl mt-4 p-4 home-mood-card" data-play-track="3" data-mood-bg="img/img (19).jfif">
           <p class="text-xs">MIDNIGHT MIX 28</p>
           <p class="font-medium mt-1">A Rainy Night</p>
           <p class="text-sm mt-4">21 tracks · 1h 15m</p>
@@ -220,6 +250,7 @@ function renderHome() {
 
 window.trackitPages = window.trackitPages || {};
 window.trackitPages.home = renderHome;
+bindHomeMoodBackground();
 loadHomeChartTracks();
 document.addEventListener("DOMContentLoaded", () => {
   syncHomePlayerCover();

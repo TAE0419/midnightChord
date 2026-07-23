@@ -39,7 +39,7 @@ body {
   border-radius: 20px;
   overflow: hidden;
   min-height: 720px;
-}
+} 
 
 .sidebar { background: var(--nav); border-right: 1px solid var(--border); }
 .surface { background: var(--panel); border: 1px solid var(--border); }
