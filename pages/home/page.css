@@ -25,6 +25,10 @@ background: linear-gradient(180deg,rgba(110, 98, 166, .8) 0%, rgba(17, 17, 21, 1
   display: flex; flex-direction: column;
   gap: 0.5rem;
 }
+.pliBox{
+  background-image: url(../../img/img\ \(28\).jfif);
+  background-size: cover;
+}
 .release{
   width: 7rem;
 }
@@ -93,14 +97,35 @@ background: linear-gradient(180deg,rgba(17, 17, 21, 1) 30%, rgba(77, 64, 129, 0.
 }
 
 .home-mood-card {
+  position: relative;
+  z-index: 1;
   cursor: pointer;
   border: 1px solid transparent;
+}
+
+.home-mood-section {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  transition: background-image .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.home-featured-album {
+  border: 0;
+  color: inherit;
+  cursor: pointer;
 }
 
 .home-mood-card:hover {
   background: rgba(86, 233, 201, .12);
   border-color: rgba(86, 233, 201, .34);
   color: #d9fff6;
+}
+
+.home-mood-card.is-active {
+  background: rgba(86, 233, 201, .18);
+  border-color: rgba(86, 233, 201, .58);
+  color: #ecfffb;
 }
 
 .home-action-button:hover,
@@ -113,9 +138,20 @@ background: linear-gradient(180deg,rgba(17, 17, 21, 1) 30%, rgba(77, 64, 129, 0.
   opacity: .85;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 767px) {
   .title{
   font-family: 'Nasa', sans-serif;
-  font-size: 2rem !important;
+  font-size: 2.25rem !important;
 }
+  .titleSub{
+    font-size: 0.7rem;
+  }
+
+  .topBox {
+    /* flex-direction: column; */
+    align-items: flex-start;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  
 }

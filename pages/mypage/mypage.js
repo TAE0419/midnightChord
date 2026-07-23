@@ -54,6 +54,7 @@ window.trackitPages.mypage = renderMypage;
   let activeMypageUser = null;
   let pendingProfileImage = null;
   let shouldRemoveProfileImage = false;
+  let pendingDeletePlaylistIndex = null;
   const clean = value => String(value ?? "").replace(/[&<>'"]/g, char => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
   })[char]);
@@ -128,6 +129,21 @@ window.trackitPages.mypage = renderMypage;
     return `<div class="mypage-profile-initial">${clean(user.name.slice(0, 1).toUpperCase())}</div>`;
   }
 
+  function syncMypageHeaderAvatar(user) {
+    const avatar = document.querySelector("[data-header-user]");
+    if (!avatar) return;
+    avatar.textContent = "";
+    if (user?.profileImage) {
+      const image = document.createElement("img");
+      image.src = user.profileImage;
+      image.alt = `${user.name || "사용자"} 프로필`;
+      image.style.cssText = "width:100%;height:100%;border-radius:9999px;object-fit:cover";
+      avatar.appendChild(image);
+    } else {
+      avatar.textContent = user?.name?.slice(0, 1).toUpperCase() || "MC";
+    }
+  }
+
   function profileEditDialog(user) {
     return `<dialog class="mypage-playlist-dialog mypage-profile-dialog" data-profile-dialog aria-labelledby="profile-edit-title">
       <form data-profile-edit-form>
@@ -143,6 +159,16 @@ window.trackitPages.mypage = renderMypage;
           <button type="submit" class="purple-btn mypage-edit-submit">프로필 저장</button>
         </div>
       </form>
+    </dialog>`;
+  }
+
+  function profileSaveDialog() {
+    return `<dialog class="mypage-profile-saved-dialog" data-profile-saved-dialog aria-labelledby="profile-saved-title">
+      <div class="mypage-profile-saved-icon"><i data-lucide="CircleCheck"></i></div>
+      <p class="mypage-eyebrow">PROFILE UPDATED</p>
+      <h2 id="profile-saved-title">프로필이 저장되었습니다</h2>
+      <p>변경한 이름과 프로필 이미지가 마이페이지와 상단 프로필에 적용됩니다.</p>
+      <button type="button" class="purple-btn" data-confirm-profile-saved>확인</button>
     </dialog>`;
   }
 
@@ -193,25 +219,29 @@ window.trackitPages.mypage = renderMypage;
         <button type="button" class="mypage-dialog-close" data-close-playlist aria-label="모달 닫기"><i data-lucide="X"></i></button>
       </div>
       <div class="mypage-dialog-tracks">
-        ${songs.length ? songs.map(song => {
+        ${songs.length ? songs.map((song, songIndex) => {
           const trackIndex = (window.trackitData.tracks || []).findIndex(track => track.title === song.title && track.artist === song.artist);
-          return `<button type="button" class="mypage-dialog-track" data-play-track="${Math.max(0, trackIndex)}"><span class="mypage-dialog-cover"><i data-lucide="Music2"></i></span><span class="min-w-0"><strong>${clean(song.title)}</strong><small>${clean(song.artist)}</small></span><span>${clean(song.time || "--:--")}</span><i data-lucide="Play"></i></button>`;
+          const playAttribute = trackIndex >= 0
+            ? `data-play-track="${trackIndex}"`
+            : `data-play-library-track="${playlistIndex}:${songIndex}"`;
+          return `<button type="button" class="mypage-dialog-track" ${playAttribute}><span class="mypage-dialog-cover"><i data-lucide="Music2"></i></span><span class="min-w-0"><strong>${clean(song.title)}</strong><small>${clean(song.artist)}</small></span><span>${clean(song.time || "--:--")}</span><i data-lucide="Play"></i></button>`;
         }).join("") : empty("플레이리스트에 담긴 곡이 없어요.")}
       </div>
     </dialog>`;
   }
 
-  function editableTracks(item, likes) {
+  function editableTracks(item, likes, playlistIndex = 0) {
     const unique = new Map();
-    [...(Array.isArray(item.tracks) ? item.tracks : []), ...(Array.isArray(likes) ? likes : [])].forEach(track => {
+    [...playlistTracks(item, playlistIndex), ...(Array.isArray(likes) ? likes : [])].forEach(track => {
       unique.set(`${track.title}::${track.artist}`, track);
     });
     return [...unique.values()];
   }
 
   function playlistEditDialog(item, playlistIndex, likes) {
-    const available = editableTracks(item, likes);
-    const selected = new Set((item.tracks || []).map(track => `${track.title}::${track.artist}`));
+    const currentTracks = playlistTracks(item, playlistIndex);
+    const available = editableTracks(item, likes, playlistIndex);
+    const selected = new Set(currentTracks.map(track => `${track.title}::${track.artist}`));
     return `<dialog class="mypage-playlist-dialog mypage-edit-dialog" data-edit-playlist-dialog="${playlistIndex}" aria-labelledby="edit-playlist-title-${playlistIndex}">
       <form data-edit-playlist-form="${playlistIndex}">
         <div class="mypage-dialog-head"><div><p class="mypage-eyebrow">EDIT PLAYLIST</p><h2 id="edit-playlist-title-${playlistIndex}">플레이리스트 수정</h2></div><button type="button" class="mypage-dialog-close" data-close-playlist aria-label="수정창 닫기"><i data-lucide="X"></i></button></div>
@@ -223,6 +253,21 @@ window.trackitPages.mypage = renderMypage;
           <button type="submit" class="purple-btn mypage-edit-submit">변경사항 저장</button>
         </div>
       </form>
+    </dialog>`;
+  }
+
+  function playlistDeleteDialog() {
+    return `<dialog class="mypage-delete-dialog" data-delete-playlist-dialog aria-labelledby="delete-playlist-title">
+      <div class="mypage-delete-icon"><i data-lucide="Trash2"></i></div>
+      <div class="mypage-delete-copy">
+        <p class="mypage-eyebrow">DELETE PLAYLIST</p>
+        <h2 id="delete-playlist-title">플레이리스트를 삭제할까요?</h2>
+        <p><strong data-delete-playlist-name></strong> 플레이리스트와 저장된 곡 목록이 마이페이지에서 삭제됩니다.</p>
+      </div>
+      <div class="mypage-delete-actions">
+        <button type="button" data-cancel-delete-playlist>취소</button>
+        <button type="button" class="danger" data-confirm-delete-playlist><i data-lucide="Trash2"></i> 삭제</button>
+      </div>
     </dialog>`;
   }
 
@@ -362,10 +407,12 @@ window.trackitPages.mypage = renderMypage;
   window.trackitPages.mypage = (user, error = "") => {
     if (!user) {
       setTimeout(() => window.lucide?.createIcons(), 0);
+      setTimeout(() => syncMypageHeaderAvatar(null), 0);
       return loginView(error);
     }
     activeMypageUser = user;
     setTimeout(() => window.lucide?.createIcons(), 0);
+    setTimeout(() => syncMypageHeaderAvatar(user), 0);
     const library = getLibrary(user);
     const follows = Array.isArray(library.follows) ? library.follows : [];
     const playlists = Array.isArray(library.playlists) ? library.playlists : [];
@@ -385,11 +432,58 @@ window.trackitPages.mypage = renderMypage;
       <section id="my-likes" data-library-panel="likes" ${activeLibraryTab !== "likes" ? "hidden" : ""} class="surface rounded-2xl p-4 md:p-5 mypage-section"><div class="mypage-section-title"><div><p class="mypage-eyebrow">LIKED TRACKS</p><h2>좋아요한 곡</h2></div><span>${likes.length}곡</span></div>
         ${likes.length ? `<div class="mypage-track-list">${likes.map((item, index) => {
           const trackIndex = (window.trackitData.tracks || []).findIndex(track => track.title === item.title && track.artist === item.artist);
-          return `<div role="button" tabindex="0" class="mypage-track" data-track-index="${Math.max(0, trackIndex)}"><span class="mypage-track-number">${String(index + 1).padStart(2, "0")}</span><span class="min-w-0"><strong>${clean(item.title)}</strong><small>${clean(item.artist)}</small></span><span class="mypage-track-time">${clean(item.time || "--:--")}</span><i data-lucide="Play"></i><button type="button" class="track-like-button is-liked" data-like-track="${Math.max(0, trackIndex)}" aria-label="${clean(item.title)} 좋아요 취소"><i data-lucide="Heart" class="w-4 h-4 fill-current"></i></button></div>`;
-        }).join("")}</div>` : empty("아직 좋아요한 곡이 없어요.")}</section>${profileEditDialog(user)}`;
+          const playAttribute = trackIndex >= 0 ? `data-track-index="${trackIndex}"` : `data-play-liked-track="${index}"`;
+          const likeAttribute = trackIndex >= 0 ? `data-like-track="${trackIndex}"` : `data-remove-liked-track="${index}"`;
+          return `<div role="button" tabindex="0" class="mypage-track" ${playAttribute}><span class="mypage-track-number">${String(index + 1).padStart(2, "0")}</span><span class="min-w-0"><strong>${clean(item.title)}</strong><small>${clean(item.artist)}</small></span><span class="mypage-track-time">${clean(item.time || "--:--")}</span><i data-lucide="Play"></i><button type="button" class="track-like-button is-liked" ${likeAttribute} aria-label="${clean(item.title)} 좋아요 취소"><i data-lucide="Heart" class="w-4 h-4 fill-current"></i></button></div>`;
+        }).join("")}</div>` : empty("아직 좋아요한 곡이 없어요.")}</section>${profileEditDialog(user)}${profileSaveDialog()}${playlistDeleteDialog()}`;
   };
 
   document.addEventListener("click", event => {
+    const likedTrackButton = event.target.closest("[data-play-liked-track]");
+    if (likedTrackButton && activeMypageUser && !event.target.closest("[data-remove-liked-track]")) {
+      const library = getLibrary(activeMypageUser);
+      const song = library.likes[Number(likedTrackButton.dataset.playLikedTrack)];
+      if (!song) return;
+      const targetIndex = window.trackitData.tracks.push({ ...song }) - 1;
+      if (typeof playTrackByIndex === "function") playTrackByIndex(targetIndex);
+      return;
+    }
+
+    const removeLikedButton = event.target.closest("[data-remove-liked-track]");
+    if (removeLikedButton && activeMypageUser) {
+      const index = Number(removeLikedButton.dataset.removeLikedTrack);
+      const accounts = readAccounts();
+      const userKey = activeMypageUser.email.toLowerCase();
+      if (accounts[userKey] && Array.isArray(accounts[userKey].likes)) {
+        accounts[userKey].likes.splice(index, 1);
+        localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
+      }
+      const library = getLibrary(activeMypageUser);
+      library.likes.splice(index, 1);
+      saveMypageLibrary(activeMypageUser, library);
+      activeMypageUser.likes = library.likes;
+      localStorage.setItem("studio-midnight-user", JSON.stringify(activeMypageUser));
+      activeLibraryTab = "likes";
+      refreshMypage();
+      return;
+    }
+
+    const libraryTrackButton = event.target.closest("[data-play-library-track]");
+    if (libraryTrackButton && activeMypageUser) {
+      const [playlistIndex, songIndex] = libraryTrackButton.dataset.playLibraryTrack.split(":").map(Number);
+      const library = getLibrary(activeMypageUser);
+      const song = playlistTracks(library.playlists[playlistIndex] || {}, playlistIndex)[songIndex];
+      if (!song) return;
+      const existingIndex = (window.trackitData.tracks || []).findIndex(track =>
+        track.title === song.title && track.artist === song.artist
+      );
+      const targetIndex = existingIndex >= 0
+        ? existingIndex
+        : window.trackitData.tracks.push({ ...song }) - 1;
+      if (typeof playTrackByIndex === "function") playTrackByIndex(targetIndex);
+      return;
+    }
+
     const libraryTab = event.target.closest("[data-library-tab]");
     if (libraryTab) {
       activeLibraryTab = libraryTab.dataset.libraryTab;
@@ -413,6 +507,9 @@ window.trackitPages.mypage = renderMypage;
       allFollowing[userKey] = (Array.isArray(allFollowing[userKey]) ? allFollowing[userKey] : [])
         .filter(item => item.name !== unfollowButton.dataset.unfollowArtist);
       localStorage.setItem(FOLLOWING_KEY, JSON.stringify(allFollowing));
+      window.dispatchEvent(new CustomEvent("studio-midnight:following-changed", {
+        detail: { userKey, artist: unfollowButton.dataset.unfollowArtist, followed: false }
+      }));
       activeLibraryTab = "follows";
       refreshMypage();
       return;
@@ -428,6 +525,11 @@ window.trackitPages.mypage = renderMypage;
 
     if (event.target.closest("[data-close-profile]")) {
       event.target.closest("dialog")?.close();
+      return;
+    }
+
+    if (event.target.closest("[data-confirm-profile-saved]")) {
+      window.location.reload();
       return;
     }
 
@@ -453,9 +555,30 @@ window.trackitPages.mypage = renderMypage;
       const library = getLibrary(activeMypageUser);
       const index = Number(deletePlaylist.dataset.deletePlaylist);
       const playlist = library.playlists[index];
-      if (!playlist || !confirm(`“${playlist.title}” 플레이리스트를 삭제할까요?`)) return;
-      library.playlists.splice(index, 1);
-      saveMypageLibrary(activeMypageUser, library);
+      if (!playlist) return;
+      pendingDeletePlaylistIndex = index;
+      const dialog = document.querySelector("[data-delete-playlist-dialog]");
+      dialog.querySelector("[data-delete-playlist-name]").textContent = `“${playlist.title}”`;
+      dialog.showModal();
+      setTimeout(() => window.lucide?.createIcons(), 0);
+      return;
+    }
+
+    if (event.target.closest("[data-cancel-delete-playlist]")) {
+      pendingDeletePlaylistIndex = null;
+      event.target.closest("dialog")?.close();
+      return;
+    }
+
+    if (event.target.closest("[data-confirm-delete-playlist]") && activeMypageUser) {
+      const library = getLibrary(activeMypageUser);
+      if (pendingDeletePlaylistIndex !== null && library.playlists[pendingDeletePlaylistIndex]) {
+        library.playlists.splice(pendingDeletePlaylistIndex, 1);
+        saveMypageLibrary(activeMypageUser, library);
+      }
+      pendingDeletePlaylistIndex = null;
+      document.querySelector("[data-delete-playlist-dialog]")?.close();
+      activeLibraryTab = "playlists";
       refreshMypage();
       return;
     }
@@ -488,6 +611,10 @@ window.trackitPages.mypage = renderMypage;
     if (closeButton) closeButton.closest("dialog")?.close();
     if (event.target.matches("[data-playlist-dialog]")) event.target.close();
     if (event.target.matches("[data-profile-dialog]")) event.target.close();
+    if (event.target.matches("[data-delete-playlist-dialog]")) {
+      pendingDeletePlaylistIndex = null;
+      event.target.close();
+    }
   });
 
   document.addEventListener("submit", async event => {
@@ -517,7 +644,12 @@ window.trackitPages.mypage = renderMypage;
         const updatedUser = { ...activeMypageUser, name, profileImage, profileUpdatedAt: account.profileUpdatedAt };
         localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
         localStorage.setItem("studio-midnight-user", JSON.stringify(updatedUser));
-        window.location.reload();
+        activeMypageUser = updatedUser;
+        form.closest("dialog")?.close();
+        const savedDialog = document.querySelector("[data-profile-saved-dialog]");
+        savedDialog?.addEventListener("cancel", cancelEvent => cancelEvent.preventDefault(), { once: true });
+        savedDialog?.showModal();
+        setTimeout(() => window.lucide?.createIcons(), 0);
       } catch (saveError) {
         console.error("Profile save failed", saveError);
         message.textContent = saveError?.name === "QuotaExceededError"
@@ -541,7 +673,7 @@ window.trackitPages.mypage = renderMypage;
       const title = String(data.get("title") || "").trim();
       const message = form.querySelector("[data-edit-message]");
       if (title.length < 2) { message.textContent = "이름을 2자 이상 입력해주세요."; return; }
-      const available = editableTracks(playlist, library.likes);
+      const available = editableTracks(playlist, library.likes, index);
       const selectedTracks = data.getAll("tracks").map(Number).map(trackIndex => available[trackIndex]).filter(Boolean);
       if (!selectedTracks.length) { message.textContent = "곡을 한 개 이상 선택해주세요."; return; }
       playlist.title = title;
@@ -588,5 +720,12 @@ window.trackitPages.mypage = renderMypage;
       form.querySelector("[data-profile-message]").textContent = "이미지를 불러오지 못했습니다. 다른 이미지를 선택해주세요.";
       event.target.value = "";
     });
+  });
+
+  document.addEventListener("keydown", event => {
+    if (!event.target.matches(".mypage-track[role='button']")) return;
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.target.click();
   });
 })();

@@ -290,6 +290,67 @@ function renderPodcasts() {
   `;
 }
 
+function playlistRecommendationData() {
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem("studio-midnight-user")); } catch { user = null; }
+  if (!user?.email) return null;
+
+  const userKey = user.email.toLowerCase();
+  try {
+    const settings = JSON.parse(localStorage.getItem("studio-midnight-settings")) || {};
+    if (settings[userKey]?.playlistRecommendations === false) return null;
+  } catch {
+    // 저장 데이터가 손상된 경우 기본값인 추천 켜짐 상태를 사용합니다.
+  }
+
+  let follows = [];
+  let likes = [];
+  try {
+    const following = JSON.parse(localStorage.getItem("studio-midnight-following")) || {};
+    follows = Array.isArray(following[userKey]) ? following[userKey] : [];
+  } catch {
+    follows = [];
+  }
+  try {
+    const accounts = JSON.parse(localStorage.getItem("studio-midnight-accounts")) || {};
+    likes = Array.isArray(accounts[userKey]?.likes) ? accounts[userKey].likes : [];
+  } catch {
+    likes = [];
+  }
+
+  const preferredNames = new Set([
+    ...follows.map(item => String(item.name || "").toLowerCase()),
+    ...likes.map(item => String(item.artist || "").toLowerCase())
+  ]);
+  const recommended = artists.filter(artist => {
+    const name = artist.name.toLowerCase();
+    return [...preferredNames].some(preferred => name.includes(preferred) || preferred.includes(name));
+  });
+  const selected = (recommended.length ? recommended : artists).slice(0, 4);
+  return {
+    artists: selected,
+    title: recommended.length ? "취향 기반 Midnight Mix" : "Midnight Discovery",
+    reason: recommended.length ? "좋아요와 팔로우를 반영한 추천입니다." : "새로운 아티스트를 발견해보세요."
+  };
+}
+
+function renderPlaylistRecommendation() {
+  const recommendation = playlistRecommendationData();
+  if (!recommendation?.artists.length) return "";
+  return `
+    <section class="surface rounded-2xl p-4" data-playlist-recommendation>
+      <div class="flex flex-col md:flex-row md:items-center gap-4">
+        <div class="flex-1 min-w-0">
+          <p class="text-xs" style="color:#b9a5ff">FOR YOU</p>
+          <h2 class="font-medium mt-1">${recommendation.title}</h2>
+          <p class="text-sm mt-1" style="color:var(--muted)">${recommendation.reason}</p>
+          <p class="text-sm mt-3 truncate">${recommendation.artists.map(artist => artist.name).join(" · ")}</p>
+        </div>
+        <button type="button" class="playlist-create-button rounded-xl px-4 py-2 shrink-0" data-save-playlist-recommendation="${recommendation.artists.map(artist => artists.indexOf(artist)).join(",")}">내 플리에 저장</button>
+      </div>
+    </section>`;
+}
+
 function renderPlaylist() {
   const carouselItems = Array.from({ length: 30 }, (_, index) => ({
     ...playlists[index % playlists.length],
@@ -303,6 +364,7 @@ function renderPlaylist() {
       <div><p class="text-sm" style="color:var(--muted)">MY LIBRARY</p><h1 class="text-2xl font-medium mt-1">플레이리스트</h1></div>
       <button type="button" class="playlist-create-button rounded-xl px-4 py-2" data-playlist-create>+ 새 플레이리스트</button>
     </div>
+    ${renderPlaylistRecommendation()}
     <div class="playlist-carousel-shell">
       <button type="button" class="playlist-carousel-jump playlist-carousel-jump-start" data-playlist-carousel-start aria-label="처음으로 이동">${icon("ChevronsLeft", "w-5 h-5")}</button>
       <button type="button" class="playlist-carousel-jump playlist-carousel-jump-end" data-playlist-carousel-end aria-label="마지막으로 이동">${icon("ChevronsRight", "w-5 h-5")}</button>
@@ -455,6 +517,16 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     return true;
   }
 
+  document.querySelector("[data-save-playlist-recommendation]")?.addEventListener("click", event => {
+    const selectedArtists = String(event.currentTarget.dataset.savePlaylistRecommendation || "")
+      .split(",")
+      .map(Number)
+      .map(index => artists[index])
+      .filter(Boolean);
+    if (!selectedArtists.length || !updateMypagePlaylist("Midnight Mix", selectedArtists)) return;
+    showPlaylistToast();
+  });
+
   function renderRecentEntries() {
     if (!recentList) return;
     recentList.innerHTML = recentEntries.length
@@ -600,6 +672,9 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     const artist = artists[index];
     const audio = document.getElementById("studioAudio");
     if (!artist?.audio || !audio) return;
+    const artistAudio = typeof window.preferredStudioAudioSource === "function"
+      ? window.preferredStudioAudioSource(artist.audio)
+      : artist.audio;
 
     const isCurrentArtist = Number(audio.dataset.playlistArtistIndex) === index;
     if (isCurrentArtist && !audio.paused && !forcePlay) {
@@ -609,7 +684,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     }
 
     if (!isCurrentArtist) {
-      audio.src = artist.audio;
+      audio.src = artistAudio;
       audio.dataset.playlistArtistIndex = String(index);
       audio.load();
     } else if (audio.ended) {
