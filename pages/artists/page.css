@@ -16,7 +16,8 @@
   box-shadow: -6px 8px 20px rgba(0, 0, 0, .18);
 }
 
-.artist-top-button {
+.artist-top-button,
+.artist-bottom-button {
   display: none;
 }
 
@@ -182,12 +183,12 @@
 }
 
 @media (max-width: 767px) {
-  .artist-top-button {
+  .artist-top-button,
+  .artist-bottom-button {
     align-items: center;
     background: #b04fff;
     border: 0;
     border-radius: 50%;
-    bottom: 5.25rem;
     color: #fff;
     cursor: pointer;
     display: inline-flex;
@@ -199,6 +200,14 @@
     right: 1rem;
     width: 35px;
     z-index: 10000;
+  }
+
+  .artist-top-button {
+    bottom: 7.75rem;
+  }
+
+  .artist-bottom-button {
+    bottom: 5.25rem;
   }
 
   [data-page-root] > .grid {

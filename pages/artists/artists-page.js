@@ -54,6 +54,7 @@
         검색 결과가 없습니다.
       </p>
       <button type="button" class="artist-top-button" data-artist-top aria-label="페이지 맨 위로 이동">TOP</button>
+      <button type="button" class="artist-bottom-button" data-artist-bottom aria-label="페이지 맨 아래로 이동">▼</button>
     `;
   }
 
@@ -128,6 +129,11 @@
 
   // 개인 데이터의 audio 주소를 하단 공용 <audio> 요소에 연결합니다.
   document.addEventListener("click", event => {
+    if (event.target.closest("[data-artist-bottom]")) {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+      return;
+    }
+
     if (event.target.closest("[data-artist-top]")) {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;

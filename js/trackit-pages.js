@@ -244,6 +244,13 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     if (!modal) return;
     modal.hidden = !isOpen;
     document.body.classList.toggle("playlist-modal-open", isOpen);
+    if (!isOpen) {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("modal") === "1") {
+        url.searchParams.delete("modal");
+        window.history.replaceState({}, "", url);
+      }
+    }
     if (isOpen) {
       const searchInput = modal.querySelector("[data-playlist-modal-search]");
       searchInput.value = "";
@@ -254,6 +261,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   }
 
   createButton?.addEventListener("click", () => setModalOpen(true));
+  if (new URLSearchParams(window.location.search).get("modal") === "1") setModalOpen(true);
   startButton?.addEventListener("click", () => carousel.scrollTo({ left: 0, behavior: "smooth" }));
   endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
   modal?.addEventListener("click", event => {
@@ -263,7 +271,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     }
     const detailLink = event.target.closest("[data-playlist-modal-detail]");
     if (detailLink) {
-      window.location.href = `pages/artist-detail/?name=${detailLink.dataset.playlistModalDetail}`;
+      window.location.href = `pages/artist-detail/?name=${detailLink.dataset.playlistModalDetail}&returnTo=playlist`;
       return;
     }
     const artistButton = event.target.closest("[data-playlist-modal-artist]");

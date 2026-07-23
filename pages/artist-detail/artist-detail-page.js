@@ -77,6 +77,10 @@
 
   document.addEventListener("click", event => {
     if (!event.target.closest("[data-artist-detail-back]")) return;
+    if (new URLSearchParams(window.location.search).get("returnTo") === "playlist") {
+      window.location.href = "pages/playlist/?modal=1";
+      return;
+    }
     if (window.history.length > 1) {
       window.history.back();
       return;
