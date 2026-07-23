@@ -16,6 +16,32 @@
   box-shadow: -6px 8px 20px rgba(0, 0, 0, .18);
 }
 
+.artist-pagination {
+  align-items: center;
+  display: flex;
+  gap: .45rem;
+  justify-content: center;
+  margin: 1.25rem 0 2rem;
+}
+
+.artist-pagination button {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: .45rem;
+  color: #f4f4f5;
+  cursor: pointer;
+  font-size: .85rem;
+  min-width: 2.2rem;
+  padding: .45rem .6rem;
+}
+
+.artist-pagination button:hover,
+.artist-pagination button.is-active {
+  background: #7057b8;
+  border-color: #7057b8;
+  color: #fff;
+}
+
 .artist-top-button,
 .artist-bottom-button {
   display: none;
@@ -272,7 +298,4 @@
   .artist-mini-player {
     padding-left: .8rem;
   }
-}
-.space-y-6{
-  margin-bottom: 20rem;
 }
