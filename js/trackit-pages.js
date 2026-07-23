@@ -220,9 +220,19 @@ function renderPlaylist() {
           </button>`).join("")}
           <p class="playlist-modal-empty" data-playlist-modal-empty hidden>검색 결과가 없습니다.</p>
         </div>
-        <div class="playlist-modal-actions"><button type="button" class="playlist-modal-confirm" data-playlist-modal-confirm>확인</button></div>
+        <div class="playlist-modal-actions">
+          <div class="playlist-modal-picker">
+            <input class="playlist-modal-current-name" data-playlist-modal-current-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름">
+            <button type="button" class="playlist-modal-other-button" data-playlist-modal-other aria-expanded="false">다른 플리</button>
+            <div class="playlist-modal-other-list" data-playlist-modal-other-list hidden>
+              ${["새벽 산책", "Purple Focus", "주말 드라이브"].map(name => `<button type="button" data-playlist-modal-name="${name}">${name}</button>`).join("")}
+            </div>
+          </div>
+          <button type="button" class="playlist-modal-confirm" data-playlist-modal-confirm>확인</button>
+        </div>
       </section>
     </div>
+    <div class="playlist-toast" data-playlist-toast role="status" aria-live="polite">플레이리스트에 추가 되었습니다.</div>
     <div class="surface rounded-2xl p-4">
       <h2 class="font-medium mb-3">최근 들은 곡</h2>
       ${tracks.slice(0, 2).map((track, index) => trackRow(track, index, { art: albums[index].art, trailing: index === 0 ? "2분 전" : "18분 전" })).join("")}
@@ -237,6 +247,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
 
   const createButton = document.querySelector("[data-playlist-create]");
   const modal = document.querySelector("[data-playlist-modal]");
+  const toast = document.querySelector("[data-playlist-toast]");
   const startButton = document.querySelector("[data-playlist-carousel-start]");
   const endButton = document.querySelector("[data-playlist-carousel-end]");
 
@@ -245,6 +256,8 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     modal.hidden = !isOpen;
     document.body.classList.toggle("playlist-modal-open", isOpen);
     if (!isOpen) {
+      modal.querySelector("[data-playlist-modal-other-list]").hidden = true;
+      modal.querySelector("[data-playlist-modal-other]").setAttribute("aria-expanded", "false");
       const url = new URL(window.location.href);
       if (url.searchParams.get("modal") === "1") {
         url.searchParams.delete("modal");
@@ -262,11 +275,39 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
 
   createButton?.addEventListener("click", () => setModalOpen(true));
   if (new URLSearchParams(window.location.search).get("modal") === "1") setModalOpen(true);
+  function showPlaylistToast() {
+    if (!toast) return;
+    toast.classList.remove("is-visible");
+    void toast.offsetWidth;
+    toast.classList.add("is-visible");
+    window.setTimeout(() => toast.classList.remove("is-visible"), 800);
+  }
   startButton?.addEventListener("click", () => carousel.scrollTo({ left: 0, behavior: "smooth" }));
   endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
   modal?.addEventListener("click", event => {
-    if (event.target.closest("[data-playlist-modal-close], [data-playlist-modal-confirm]")) {
+    if (event.target.closest("[data-playlist-modal-confirm]")) {
       setModalOpen(false);
+      showPlaylistToast();
+      return;
+    }
+    if (event.target.closest("[data-playlist-modal-close]")) {
+      setModalOpen(false);
+      return;
+    }
+    const otherPlaylistButton = event.target.closest("[data-playlist-modal-other]");
+    if (otherPlaylistButton) {
+      const list = modal.querySelector("[data-playlist-modal-other-list]");
+      const isOpen = list.hidden;
+      list.hidden = !isOpen;
+      otherPlaylistButton.setAttribute("aria-expanded", String(isOpen));
+      return;
+    }
+    const playlistNameButton = event.target.closest("[data-playlist-modal-name]");
+    if (playlistNameButton) {
+      modal.querySelector("[data-playlist-modal-current-name]").value = playlistNameButton.dataset.playlistModalName;
+      modal.querySelectorAll("[data-playlist-modal-name]").forEach(button => button.classList.toggle("is-selected", button === playlistNameButton));
+      modal.querySelector("[data-playlist-modal-other-list]").hidden = true;
+      modal.querySelector("[data-playlist-modal-other]").setAttribute("aria-expanded", "false");
       return;
     }
     const detailLink = event.target.closest("[data-playlist-modal-detail]");
@@ -276,7 +317,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     }
     const artistButton = event.target.closest("[data-playlist-modal-artist]");
     if (!artistButton) return;
-    modal.querySelectorAll("[data-playlist-modal-artist]").forEach(button => button.classList.toggle("is-selected", button === artistButton));
+    artistButton.classList.toggle("is-selected");
   });
   modal?.querySelector("[data-playlist-modal-search]")?.addEventListener("input", event => {
     const query = event.target.value.trim().toLocaleLowerCase();
