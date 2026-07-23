@@ -242,10 +242,21 @@
 .playlist-modal-artist-info {
   display: grid;
   gap: .15rem;
+  min-width: 0;
 }
 
 .playlist-modal-artist-info small {
   color: var(--muted);
+}
+
+.playlist-modal-featured-track {
+  color: #d4d4d8;
+  flex: 1;
+  font-size: .8rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .playlist-modal-intro,
@@ -522,6 +533,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .playlist-modal-featured-track {
+    display: none;
   }
 
   .playlist-modal-intro {

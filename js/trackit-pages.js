@@ -179,6 +179,11 @@ function renderPodcasts() {
 }
 
 function renderPlaylist() {
+  const featuredTitles = [
+    "Violet Afterglow", "Static Hearts", "Neon Bloom", "Blue Hour Drive", "별빛의 온도",
+    "Midnight Funk", "Paper Moon", "Slow Motion", "Electric Bloom", "Velvet Signal",
+    "City Lights", "Miso Soup", "After the Rain", "Night Choir", "Little Planet"
+  ];
   const carouselItems = Array.from({ length: 30 }, (_, index) => ({
     ...playlists[index % playlists.length],
     artist: artists[index % artists.length],
@@ -229,6 +234,7 @@ function renderPlaylist() {
             <button type="button" class="playlist-modal-artist ${index === 0 ? "is-selected" : ""}" data-playlist-modal-artist="${index}" data-playlist-modal-search-text="${artist.name} ${artist.title} ${artist.plays}">
               ${assetBox(artist, "w-11 h-11 rounded-full", artist.initial)}
               <span class="playlist-modal-artist-info"><strong>${artist.name}</strong><small>${artist.plays}</small></span>
+              <span class="playlist-modal-featured-track">${window.artistPageData?.artists?.find(item => item.name === artist.name)?.title || featuredTitles[index % featuredTitles.length]}</span>
               <span class="playlist-modal-intro" data-playlist-modal-detail="${encodeURIComponent(artist.name)}">소개 보기</span>
           </button>`).join("")}
           <p class="playlist-modal-empty" data-playlist-modal-empty hidden>검색 결과가 없습니다.</p>
