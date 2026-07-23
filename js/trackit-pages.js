@@ -258,6 +258,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   const track = document.querySelector("[data-playlist-carousel-track]");
   if (!carousel || !track || carousel.dataset.playlistCarouselInitialized === "true") return;
   carousel.dataset.playlistCarouselInitialized = "true";
+  const libraryKey = "studio-midnight-mypage-library";
 
   const createButton = document.querySelector("[data-playlist-create]");
   const modal = document.querySelector("[data-playlist-modal]");
@@ -272,6 +273,75 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     art: albums[index]?.art,
     time: index === 0 ? "2분 전" : "18분 전"
   }));
+
+  function currentPlaylistUser() {
+    try {
+      return JSON.parse(localStorage.getItem("studio-midnight-user"));
+    } catch {
+      return null;
+    }
+  }
+
+  function artistTrack(artist) {
+    const matched = tracks.find(item =>
+      item.artist === artist.name ||
+      artist.name.includes(item.artist) ||
+      item.artist.includes(artist.name)
+    );
+    if (matched) return { ...matched };
+    return {
+      title: artist.title || `${artist.name} Sample`,
+      artist: artist.name,
+      time: artist.time || "--:--",
+      audioSrc: artist.audio || ""
+    };
+  }
+
+  function updateMypagePlaylist(name, selectedArtists) {
+    const user = currentPlaylistUser();
+    if (!user?.email) {
+      alert("플레이리스트를 저장하려면 먼저 로그인해주세요.");
+      window.location.href = new URL("pages/mypage/", document.baseURI).href;
+      return false;
+    }
+
+    let libraries = {};
+    try {
+      libraries = JSON.parse(localStorage.getItem(libraryKey)) || {};
+    } catch {
+      libraries = {};
+    }
+
+    const userKey = user.email.toLowerCase();
+    const library = libraries[userKey] && typeof libraries[userKey] === "object"
+      ? libraries[userKey]
+      : { follows: [], playlists: [], likes: [] };
+    if (!Array.isArray(library.playlists)) library.playlists = [];
+
+    const additions = selectedArtists.map(artistTrack);
+    const playlist = library.playlists.find(item => item.title === name);
+    if (playlist) {
+      const uniqueTracks = new Map(
+        [...(Array.isArray(playlist.tracks) ? playlist.tracks : []), ...additions]
+          .map(item => [`${item.title}::${item.artist}`, item])
+      );
+      playlist.tracks = [...uniqueTracks.values()];
+      playlist.count = playlist.tracks.length;
+    } else {
+      library.playlists.unshift({
+        id: `playlist-${Date.now()}`,
+        title: name,
+        description: "플레이리스트 페이지에서 저장한 음악",
+        icon: "ListMusic",
+        tracks: additions,
+        count: additions.length
+      });
+    }
+
+    libraries[userKey] = library;
+    localStorage.setItem(libraryKey, JSON.stringify(libraries));
+    return true;
+  }
 
   function renderRecentEntries() {
     if (!recentList) return;
@@ -339,6 +409,15 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
   modal?.addEventListener("click", event => {
     if (event.target.closest("[data-playlist-modal-confirm]")) {
+      const selectedArtists = [...modal.querySelectorAll("[data-playlist-modal-artist].is-selected")]
+        .map(button => artists[Number(button.dataset.playlistModalArtist)])
+        .filter(Boolean);
+      if (!selectedArtists.length) {
+        alert("플레이리스트에 담을 아티스트를 선택해주세요.");
+        return;
+      }
+      const playlistName = modal.querySelector("[data-playlist-modal-current-name]").value.trim() || "미드나잇플리";
+      if (!updateMypagePlaylist(playlistName, selectedArtists)) return;
       setModalOpen(false);
       showPlaylistToast();
       return;
@@ -438,7 +517,11 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     const action = event.target.closest("[data-playlist-action]");
     const addButton = event.target.closest(".playlist-card-add");
     if (addButton) {
-      addButton.classList.toggle("is-added");
+      const card = addButton.closest("[data-playlist-card]");
+      const artist = artists[Number(card?.dataset.playlistCard)];
+      if (!artist || !updateMypagePlaylist("미드나잇플리", [artist])) return;
+      addButton.classList.add("is-added");
+      showPlaylistToast();
       return;
     }
     if (!action) return;
@@ -578,4 +661,3 @@ window.trackitPages = {
   mypage: renderMypage,
   settings: renderSettings
 };
-

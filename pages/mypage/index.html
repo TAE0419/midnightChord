@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <base href="../../">
   <title>Studio Midnight | 마이페이지</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <link rel="stylesheet" href="css/common.css" />
-  <link rel="stylesheet" href="pages/mypage/page.css" />
+  <link rel="stylesheet" href="pages/mypage/page.css?v=20260723-playlist-style1" />
 </head>
 <body class="bg-zinc-950 p-4 md:p-8" data-current-page="mypage">
   <section class="w-full">
     <div id="common-root"></div>
   </section>
   <script src="js/trackit-data.js"></script>
-  <script src="pages/mypage/mypage.js"></script>
+  <script src="pages/mypage/mypage.js?v=20260723-playlist-style1"></script>
   <script>
     async function loadCommonHtml() {
-      const response = await fetch(new URL("common.html", document.baseURI).href);
+      const response = await fetch(new URL("common.html?v=20260723-playlist-style1", document.baseURI).href, { cache: "no-store" });
       if (!response.ok) {
         console.error("공통 페이지를 불러오지 못했습니다.", response.status);
         return;
@@ -33,7 +36,7 @@
         slot.appendChild(pageRoot);
       }
       const appScript = document.createElement("script");
-      appScript.src = "js/trackit-app.js";
+      appScript.src = "js/trackit-app.js?v=20260723-playlist-style1";
       appScript.async = false;
       appScript.addEventListener("load", () => {
         if (typeof bootTrackit === "function") {
