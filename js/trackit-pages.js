@@ -280,7 +280,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     toast.classList.remove("is-visible");
     void toast.offsetWidth;
     toast.classList.add("is-visible");
-    window.setTimeout(() => toast.classList.remove("is-visible"), 800);
+    window.setTimeout(() => toast.classList.remove("is-visible"), 1500);
   }
   startButton?.addEventListener("click", () => carousel.scrollTo({ left: 0, behavior: "smooth" }));
   endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
