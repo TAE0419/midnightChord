@@ -53,6 +53,7 @@
       <p class="artist-search-empty surface rounded-2xl p-6 text-center" data-artist-search-empty hidden>
         검색 결과가 없습니다.
       </p>
+      <button type="button" class="artist-top-button" data-artist-top aria-label="페이지 맨 위로 이동">TOP</button>
     `;
   }
 
@@ -127,6 +128,11 @@
 
   // 개인 데이터의 audio 주소를 하단 공용 <audio> 요소에 연결합니다.
   document.addEventListener("click", event => {
+    if (event.target.closest("[data-artist-top]")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     const button = event.target.closest("[data-personal-artist-audio]");
     if (!button) return;
 

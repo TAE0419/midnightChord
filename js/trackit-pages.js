@@ -6,7 +6,7 @@ function icon(name, className = "w-4 h-4") {
 
 function assetBox(item, className, fallback = "") {
   if (item.imageSrc) {
-    return `<img src="${item.imageSrc}" alt="${item.title || item.name}" class="${className} object-cover" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: '${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl', textContent: '${fallback}' }))">`;
+    return `<img src="${item.imageSrc}" alt="${item.title || item.name}" draggable="false" class="${className} object-cover" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: '${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl', textContent: '${fallback}' }))">`;
   }
   return `<div class="${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl">${fallback}</div>`;
 }
@@ -166,35 +166,62 @@ function renderPodcasts() {
 }
 
 function renderPlaylist() {
-  const carouselItems = [...playlists, ...playlists];
+  const carouselItems = Array.from({ length: 30 }, (_, index) => ({
+    ...playlists[index % playlists.length],
+    artist: artists[index % artists.length],
+    artistIndex: index % artists.length
+  }));
   window.setTimeout(() => window.trackitPlaylistCarousel?.(), 0);
 
   return `
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div><p class="text-sm" style="color:var(--muted)">MY LIBRARY</p><h1 class="text-2xl font-medium mt-1">플레이리스트</h1></div>
-      <button type="button" class="purple-btn rounded-xl px-4 py-2">+ 새 플레이리스트</button>
+      <button type="button" class="playlist-create-button rounded-xl px-4 py-2" data-playlist-create>+ 새 플레이리스트</button>
     </div>
-    <div class="playlist-carousel" data-playlist-carousel>
+    <div class="playlist-carousel-shell">
+      <button type="button" class="playlist-carousel-jump playlist-carousel-jump-start" data-playlist-carousel-start aria-label="처음으로 이동">${icon("ChevronsLeft", "w-5 h-5")}</button>
+      <button type="button" class="playlist-carousel-jump playlist-carousel-jump-end" data-playlist-carousel-end aria-label="마지막으로 이동">${icon("ChevronsRight", "w-5 h-5")}</button>
+      <div class="playlist-carousel" data-playlist-carousel>
       <div class="playlist-carousel-track" data-playlist-carousel-track>
       ${carouselItems.map((item, index) => {
-        const artist = artists[index % playlists.length];
+        const artist = item.artist;
         return `
-        <article class="playlist-carousel-card surface rounded-2xl p-3">
+        <article class="playlist-carousel-card surface rounded-2xl p-3" data-playlist-card="${item.artistIndex}">
           ${assetBox({ ...item, imageSrc: artist?.imageSrc }, "rounded-xl aspect-square w-full")}
           <p class="font-medium mt-2">${artist?.name || item.title}</p>
           <p class="text-sm" style="color:var(--muted)">${artist?.title || item.meta}</p>
-          <input class="playlist-card-progress" data-playlist-progress="${index % playlists.length}" type="range" min="0" max="100" value="0" aria-label="재생 위치">
+          <span class="playlist-card-selected" aria-hidden="true">선택됨</span>
+          <input class="playlist-card-progress" data-playlist-progress="${item.artistIndex}" type="range" min="0" max="100" value="0" aria-label="재생 위치">
           <div class="playlist-card-controls" aria-label="${artist?.name || item.title} 재생 컨트롤">
             <button type="button" class="playlist-card-add" aria-label="내 라이브러리에 추가">+</button>
-            <button type="button" data-playlist-action="previous" data-playlist-artist="${index % playlists.length}" aria-label="이전 곡">${icon("SkipBack", "w-4 h-4")}</button>
-            <button type="button" class="playlist-card-play" data-playlist-action="play" data-playlist-artist="${index % playlists.length}" aria-label="재생">${icon("Play", "w-5 h-5")}</button>
-            <button type="button" data-playlist-action="next" data-playlist-artist="${index % playlists.length}" aria-label="다음 곡">${icon("SkipForward", "w-4 h-4")}</button>
-            <button type="button" data-playlist-action="shuffle" data-playlist-artist="${index % playlists.length}" aria-label="셔플">${icon("Shuffle", "w-4 h-4")}</button>
+            <button type="button" data-playlist-action="previous" data-playlist-artist="${item.artistIndex}" aria-label="이전 곡">${icon("SkipBack", "w-4 h-4")}</button>
+            <button type="button" class="playlist-card-play" data-playlist-action="play" data-playlist-artist="${item.artistIndex}" aria-label="재생">${icon("Play", "w-5 h-5")}</button>
+            <button type="button" data-playlist-action="next" data-playlist-artist="${item.artistIndex}" aria-label="다음 곡">${icon("SkipForward", "w-4 h-4")}</button>
+            <button type="button" data-playlist-action="shuffle" data-playlist-artist="${item.artistIndex}" aria-label="셔플">${icon("Shuffle", "w-4 h-4")}</button>
           </div>
         </article>
       `;
       }).join("")}
       </div>
+      </div>
+    </div>
+    <div class="playlist-modal" data-playlist-modal hidden>
+      <div class="playlist-modal-backdrop" data-playlist-modal-close></div>
+      <section class="playlist-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="playlist-modal-title">
+        <div class="playlist-modal-header"><h2 id="playlist-modal-title">새 플레이리스트</h2><button type="button" class="playlist-modal-close" data-playlist-modal-close aria-label="닫기">×</button></div>
+        <p class="playlist-modal-copy">플레이리스트에 담을 아티스트를 선택해 주세요.</p>
+        <label class="playlist-modal-search"><span class="sr-only">아티스트 검색</span><input type="search" data-playlist-modal-search placeholder="아티스트 또는 곡 검색" autocomplete="off"></label>
+        <div class="playlist-modal-artists" data-playlist-modal-artists>
+          ${artists.map((artist, index) => `
+            <button type="button" class="playlist-modal-artist ${index === 0 ? "is-selected" : ""}" data-playlist-modal-artist="${index}" data-playlist-modal-search-text="${artist.name} ${artist.title} ${artist.plays}">
+              ${assetBox(artist, "w-11 h-11 rounded-full", artist.initial)}
+              <span class="playlist-modal-artist-info"><strong>${artist.name}</strong><small>${artist.plays}</small></span>
+              <span class="playlist-modal-intro">소개 보기</span>
+          </button>`).join("")}
+          <p class="playlist-modal-empty" data-playlist-modal-empty hidden>검색 결과가 없습니다.</p>
+        </div>
+        <div class="playlist-modal-actions"><button type="button" class="playlist-modal-confirm" data-playlist-modal-confirm>확인</button></div>
+      </section>
     </div>
     <div class="surface rounded-2xl p-4">
       <h2 class="font-medium mb-3">최근 들은 곡</h2>
@@ -208,14 +235,49 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   const track = document.querySelector("[data-playlist-carousel-track]");
   if (!carousel || !track) return;
 
-  let position = 0;
-  const originalCardCount = playlists.length;
+  const createButton = document.querySelector("[data-playlist-create]");
+  const modal = document.querySelector("[data-playlist-modal]");
+  const startButton = document.querySelector("[data-playlist-carousel-start]");
+  const endButton = document.querySelector("[data-playlist-carousel-end]");
 
-  function cardStep() {
-    const card = track.querySelector(".playlist-carousel-card");
-    const gap = Number.parseFloat(window.getComputedStyle(track).gap) || 0;
-    return card ? card.offsetWidth + gap : 0;
+  function setModalOpen(isOpen) {
+    if (!modal) return;
+    modal.hidden = !isOpen;
+    document.body.classList.toggle("playlist-modal-open", isOpen);
+    if (isOpen) {
+      const searchInput = modal.querySelector("[data-playlist-modal-search]");
+      searchInput.value = "";
+      modal.querySelectorAll("[data-playlist-modal-artist]").forEach(button => { button.hidden = false; });
+      modal.querySelector("[data-playlist-modal-empty]").hidden = true;
+      searchInput.focus();
+    }
   }
+
+  createButton?.addEventListener("click", () => setModalOpen(true));
+  startButton?.addEventListener("click", () => carousel.scrollTo({ left: 0, behavior: "smooth" }));
+  endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
+  modal?.addEventListener("click", event => {
+    if (event.target.closest("[data-playlist-modal-close], [data-playlist-modal-confirm]")) {
+      setModalOpen(false);
+      return;
+    }
+    const artistButton = event.target.closest("[data-playlist-modal-artist]");
+    if (!artistButton) return;
+    modal.querySelectorAll("[data-playlist-modal-artist]").forEach(button => button.classList.toggle("is-selected", button === artistButton));
+  });
+  modal?.querySelector("[data-playlist-modal-search]")?.addEventListener("input", event => {
+    const query = event.target.value.trim().toLocaleLowerCase();
+    let matches = 0;
+    modal.querySelectorAll("[data-playlist-modal-artist]").forEach(button => {
+      const isMatch = button.dataset.playlistModalSearchText.toLocaleLowerCase().includes(query);
+      button.hidden = !isMatch;
+      if (isMatch) matches += 1;
+    });
+    modal.querySelector("[data-playlist-modal-empty]").hidden = matches > 0;
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !modal?.hidden) setModalOpen(false);
+  });
 
   function updateCardPlayers() {
     const audio = document.getElementById("studioAudio");
@@ -273,10 +335,20 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     }
     if (!action) return;
     const index = Number(action.dataset.playlistArtist);
-    if (action.dataset.playlistAction === "previous") playArtist((index - 1 + playlists.length) % playlists.length, true);
-    if (action.dataset.playlistAction === "next") playArtist((index + 1) % playlists.length, true);
-    if (action.dataset.playlistAction === "shuffle") playArtist(Math.floor(Math.random() * playlists.length), true);
+    if (action.dataset.playlistAction === "previous") playArtist((index - 1 + artists.length) % artists.length, true);
+    if (action.dataset.playlistAction === "next") playArtist((index + 1) % artists.length, true);
+    if (action.dataset.playlistAction === "shuffle") playArtist(Math.floor(Math.random() * artists.length), true);
     if (action.dataset.playlistAction === "play") playArtist(index);
+  });
+
+  carousel.addEventListener("click", event => {
+    if (event.target.closest("button, input")) return;
+    const card = event.target.closest("[data-playlist-card]");
+    if (!card) return;
+    const selectedIndex = card.dataset.playlistCard;
+    track.querySelectorAll("[data-playlist-card]").forEach(item => {
+      item.classList.toggle("is-selected", item.dataset.playlistCard === selectedIndex);
+    });
   });
 
   carousel.addEventListener("input", event => {
@@ -288,7 +360,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   });
 
   let dragStartX = 0;
-  let dragStartPosition = 0;
+  let dragStartScrollLeft = 0;
   let isDragging = false;
 
   carousel.addEventListener("pointerdown", event => {
@@ -296,37 +368,27 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     isDragging = true;
     carousel.classList.add("is-dragging");
     dragStartX = event.clientX;
-    dragStartPosition = position;
-    track.style.transition = "none";
+    dragStartScrollLeft = carousel.scrollLeft;
     carousel.setPointerCapture(event.pointerId);
   });
 
   carousel.addEventListener("pointermove", event => {
     if (!isDragging) return;
-    track.style.transform = `translateX(${-dragStartPosition * cardStep() + event.clientX - dragStartX}px)`;
+    carousel.scrollLeft = dragStartScrollLeft - (event.clientX - dragStartX);
   });
 
-  function finishDrag(event) {
+  function finishDrag() {
     if (!isDragging) return;
     isDragging = false;
     carousel.classList.remove("is-dragging");
-    const draggedBy = event.clientX - dragStartX;
-    if (Math.abs(draggedBy) > cardStep() * 0.15) {
-      position = Math.max(0, Math.min(originalCardCount, dragStartPosition + (draggedBy < 0 ? 1 : -1)));
-    }
-    track.style.transition = "transform 300ms ease";
-    track.style.transform = `translateX(-${position * cardStep()}px)`;
-    if (position === originalCardCount) {
-      window.setTimeout(() => {
-        track.style.transition = "none";
-        track.style.transform = "translateX(0)";
-        position = 0;
-      }, 300);
-    }
   }
 
   carousel.addEventListener("pointerup", finishDrag);
   carousel.addEventListener("pointercancel", finishDrag);
+  carousel.addEventListener("wheel", event => {
+    event.preventDefault();
+    carousel.scrollBy({ left: event.deltaX || event.deltaY, behavior: "smooth" });
+  }, { passive: false });
 
   const audio = document.getElementById("studioAudio");
   audio?.addEventListener("timeupdate", updateCardPlayers);

@@ -295,7 +295,7 @@ function bindPlayer() {
   player.audio.addEventListener("ended", () => {
     if (player.audio.dataset.playlistArtistIndex !== undefined && typeof window.trackitPlaylistPlayArtist === "function") {
       const currentArtistIndex = Number(player.audio.dataset.playlistArtistIndex);
-      window.trackitPlaylistPlayArtist((currentArtistIndex + 1) % window.trackitData.playlists.length, true);
+      window.trackitPlaylistPlayArtist((currentArtistIndex + 1) % window.trackitData.artists.length, true);
       return;
     }
     playTrackByIndex(appState.currentTrackIndex + 1);
