@@ -110,5 +110,45 @@
     "genre": "힙합/R&B",
     "time": "3:00",
     "audioSrc": "pages/browse/audio/Frank Bentley - TOO EZ.mp3"
+  },
+  {
+    "id": "kpop-02",
+    "title": "Because of You",
+    "artist": "Msick",
+    "genre": "케이팝",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Msick - Because of You.mp3"
+  },
+  {
+    "id": "kpop-03",
+    "title": "Play No Games",
+    "artist": "Henry Young",
+    "genre": "케이팝",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Henry Young - Play No Games.mp3"
+  },
+  {
+    "id": "jpop-02",
+    "title": "Boku to Tokyo",
+    "artist": "zomap",
+    "genre": "제이팝",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/zomap - Boku to Tokyo.mp3"
+  },
+  {
+    "id": "jpop-03",
+    "title": "You",
+    "artist": "macaroom",
+    "genre": "제이팝",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/macaroom - You.mp3"
+  },
+  {
+    "id": "pop-03",
+    "title": "Hypnotic",
+    "artist": "Jane & The Boy",
+    "genre": "팝",
+    "time": "3:00",
+    "audioSrc": "pages/browse/audio/Jane  The Boy - Hypnotic.mp3"
   }
 ]

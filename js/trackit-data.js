@@ -75,18 +75,25 @@ window.trackitData = {
   // ============================================================
   // audioSrc에 적힌 경로에 실제 mp3 파일이 있어야 재생됩니다.
   tracks: [
-    { title: "Violet Night", artist: "LUNA", time: "3:20", audioSrc: "assets/audio/violet-night.mp3" },
-    { title: "Purple Orbit", artist: "MUSE", time: "3:48", audioSrc: "assets/audio/purple-orbit.mp3" },
-    { title: "Night Drive", artist: "NOIR", time: "4:01", audioSrc: "assets/audio/night-drive.mp3" },
-    { title: "Moon Signal", artist: "LUNA", time: "3:54", audioSrc: "assets/audio/moon-signal.mp3" },
-    { title: "Rose Static", artist: "MUSE", time: "3:12", audioSrc: "assets/audio/rose-static.mp3" },
-    { title: "Blue Relay", artist: "KAI", time: "2:58", audioSrc: "assets/audio/blue-relay.mp3" },
-    { title: "안녕, 오늘도 빛난 당신에게", artist: "마키아또", time: "22:15", audioSrc: "assets/audio/podcasts/hello-ep01.mp3" },
-    { title: "아무것도 하지 않아도 괜찮은 밤", artist: "마키아또", time: "18:40", audioSrc: "assets/audio/podcasts/hello-ep02.mp3" },
-    { title: "사랑받은 멜로디는 어떻게 만들어졌나", artist: "Studio Midnight", time: "31:10", audioSrc: "assets/audio/podcasts/artist-ep01.mp3" },
-    { title: "새벽 3시, 공간이 바뀌는 시간", artist: "Studio Midnight", time: "25:50", audioSrc: "assets/audio/podcasts/artist-ep02.mp3" },
-    { title: "지친 하루를 내려놓는 문장들", artist: "북클럽 미드나잇", time: "28:30", audioSrc: "assets/audio/podcasts/book-ep01.mp3" },
-    { title: "길을 잃었을 때 읽는 모임의 소설", artist: "북클럽 미드나잇", time: "24:15", audioSrc: "assets/audio/podcasts/book-ep02.mp3" }
+    { id: "classic-01", title: "Radetzky March Op 228", artist: "Budapest Art Orchestra", genre: "클래식", time: "3:00", audioSrc: "pages/browse/audio/Budapest Art Orchestra - Radetzky March Op 228.mp3", imageSrc: "assets/images/covers/classic-masterpiece.svg" },
+    { id: "classic-02", title: "House of Secrets", artist: "Francesco DAndrea", genre: "클래식", time: "3:00", audioSrc: "pages/browse/audio/Francesco DAndrea - House of Secrets.mp3", imageSrc: "assets/images/covers/classic-masterpiece.svg" },
+    { id: "classic-03", title: "Te Deum", artist: "Yuval Shapiro", genre: "클래식", time: "3:00", audioSrc: "pages/browse/audio/Yuval  Shapiro - Te Deum.mp3", imageSrc: "assets/images/covers/classic-masterpiece.svg" },
+    { id: "kpop-01", title: "All Is My Time", artist: "Lemon", genre: "케이팝", time: "3:00", audioSrc: "pages/browse/audio/Lemon - All Is My Time.mp3", imageSrc: "assets/images/covers/kpop-color.svg" },
+    { id: "jpop-01", title: "Hoshifuru Yoruni", artist: "raz", genre: "제이팝", time: "3:00", audioSrc: "pages/browse/audio/raz - Hoshifuru Yoruni.mp3", imageSrc: "assets/images/covers/jpop-color.svg" },
+    { id: "pop-01", title: "Starry Eyed", artist: "Jane & The Boy", genre: "팝", time: "3:00", audioSrc: "pages/browse/audio/Jane  The Boy - Starry Eyed.mp3", imageSrc: "assets/images/covers/pop-color.svg" },
+    { id: "pop-02", title: "9 Lives", artist: "Anna Stefanie", genre: "팝", time: "3:00", audioSrc: "pages/browse/audio/Anna Stefanie - 9 Lives.mp3", imageSrc: "assets/images/covers/pop-color.svg" },
+    { id: "indie-band-01", title: "Falling for the Crown", artist: "IamDayLight", genre: "인디/밴드", time: "3:00", audioSrc: "pages/browse/audio/IamDayLight - Falling for the Crown.mp3", imageSrc: "assets/images/covers/indie-color.svg" },
+    { id: "indie-band-02", title: "We Had a Moment", artist: "SOURWAH", genre: "인디/밴드", time: "3:00", audioSrc: "pages/browse/audio/SOURWAH - We Had a Moment.mp3", imageSrc: "assets/images/covers/indie-color.svg" },
+    { id: "indie-band-03", title: "Slowly Sinking", artist: "two close", genre: "인디/밴드", time: "3:00", audioSrc: "pages/browse/audio/two close - Slowly Sinking.mp3", imageSrc: "assets/images/covers/indie-color.svg" },
+    { id: "hiphop-rnb-01", title: "There for You", artist: "call me joseph", genre: "힙합/R&B", time: "3:00", audioSrc: "pages/browse/audio/call me joseph - there for you.mp3", imageSrc: "assets/images/covers/hiphop-color.svg" },
+    { id: "hiphop-rnb-02", title: "Roll the Dice", artist: "Cruella", genre: "힙합/R&B", time: "3:00", audioSrc: "pages/browse/audio/Cruella - Roll the Dice.mp3", imageSrc: "assets/images/covers/hiphop-color.svg" },
+    { id: "hiphop-rnb-03", title: "Machine", artist: "FLAMEBOY", genre: "힙합/R&B", time: "3:00", audioSrc: "pages/browse/audio/FLAMEBOY - Machine.mp3", imageSrc: "assets/images/covers/hiphop-color.svg" },
+    { id: "hiphop-rnb-04", title: "TOO EZ", artist: "Frank Bentley", genre: "힙합/R&B", time: "3:00", audioSrc: "pages/browse/audio/Frank Bentley - TOO EZ.mp3", imageSrc: "assets/images/covers/hiphop-color.svg" },
+    { id: "kpop-02", title: "Because of You", artist: "Msick", genre: "케이팝", time: "3:00", audioSrc: "pages/browse/audio/Msick - Because of You.mp3", imageSrc: "assets/images/covers/kpop-color.svg" },
+    { id: "kpop-03", title: "Play No Games", artist: "Henry Young", genre: "케이팝", time: "3:00", audioSrc: "pages/browse/audio/Henry Young - Play No Games.mp3", imageSrc: "assets/images/covers/kpop-color.svg" },
+    { id: "jpop-02", title: "Boku to Tokyo", artist: "zomap", genre: "제이팝", time: "3:00", audioSrc: "pages/browse/audio/zomap - Boku to Tokyo.mp3", imageSrc: "assets/images/covers/jpop-color.svg" },
+    { id: "jpop-03", title: "You", artist: "macaroom", genre: "제이팝", time: "3:00", audioSrc: "pages/browse/audio/macaroom - You.mp3", imageSrc: "assets/images/covers/jpop-color.svg" },
+    { id: "pop-03", title: "Hypnotic", artist: "Jane & The Boy", genre: "팝", time: "3:00", audioSrc: "pages/browse/audio/Jane  The Boy - Hypnotic.mp3", imageSrc: "assets/images/covers/pop-color.svg" }
   ],
 
   // ============================================================

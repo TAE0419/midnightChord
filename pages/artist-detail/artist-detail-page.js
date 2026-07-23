@@ -2,6 +2,46 @@
 (() => {
   const artists = window.artistPageData.artists;
   const tracks = window.trackitData.tracks;
+  const FOLLOWING_KEY = "studio-midnight-following";
+  const LIBRARY_KEY = "studio-midnight-mypage-library";
+
+  function currentUser() {
+    try { return JSON.parse(localStorage.getItem("studio-midnight-user")); } catch { return null; }
+  }
+
+  function followingByUser() {
+    try { return JSON.parse(localStorage.getItem(FOLLOWING_KEY)) || {}; } catch { return {}; }
+  }
+
+  function isFollowing(artistName) {
+    const user = currentUser();
+    const list = user?.email ? followingByUser()[user.email.toLowerCase()] : [];
+    return Array.isArray(list) && list.some(item => item.name === artistName);
+  }
+
+  function saveFollowing(user, artist, followed) {
+    const userKey = user.email.toLowerCase();
+    const allFollowing = followingByUser();
+    const previous = Array.isArray(allFollowing[userKey]) ? allFollowing[userKey] : [];
+    allFollowing[userKey] = followed
+      ? [...previous.filter(item => item.name !== artist.name), {
+          name: artist.name,
+          initial: artist.initial || artist.name.slice(0, 1),
+          imageSrc: artist.imageSrc || "",
+          genre: artist.genre || "Artist"
+        }]
+      : previous.filter(item => item.name !== artist.name);
+    localStorage.setItem(FOLLOWING_KEY, JSON.stringify(allFollowing));
+
+    let libraries = {};
+    try { libraries = JSON.parse(localStorage.getItem(LIBRARY_KEY)) || {}; } catch { libraries = {}; }
+    libraries[userKey] = libraries[userKey] || { follows: [], playlists: [], likes: [] };
+    libraries[userKey].follows = allFollowing[userKey];
+    localStorage.setItem(LIBRARY_KEY, JSON.stringify(libraries));
+    window.dispatchEvent(new CustomEvent("studio-midnight:following-changed", {
+      detail: { userKey, artist: artist.name, followed }
+    }));
+  }
 
   function detailIcon(name, className = "w-4 h-4") {
     return `<i data-lucide="${name}" class="${className}"></i>`;
@@ -32,6 +72,7 @@
 
   function renderMyArtistDetail(artistName = "LUNA") {
     const artist = artists.find(item => item.name === artistName) || artists[0];
+    const followed = isFollowing(artist.name);
     return `
       <button type="button" class="text-sm flex items-center gap-2" style="color:#c4b5fd" data-page-link="artists">
         ${detailIcon("ArrowLeft")} 아티스트 목록
@@ -47,7 +88,7 @@
             <button type="button" class="artist-detail-play purple-btn" data-personal-detail-audio="${artists.indexOf(artist)}" aria-label="인기곡 재생">
               <span>인기곡재생</span>${detailIcon("Play")}
             </button>
-            <button type="button" class="artist-follow surface rounded-xl px-4 py-2" data-personal-follow aria-pressed="false">팔로우</button>
+            <button type="button" class="artist-follow surface rounded-xl px-4 py-2 ${followed ? "is-following" : ""}" data-personal-follow="${artists.indexOf(artist)}" aria-pressed="${followed}" aria-label="${followed ? "팔로우 취소" : "팔로우"}">${followed ? "❤️ 팔로잉" : "팔로우"}</button>
           </div>
         </div>
       </div>
@@ -104,10 +145,19 @@
     const button = event.target.closest("[data-personal-follow]");
     if (!button) return;
 
+    const user = currentUser();
+    if (!user?.email) {
+      alert("팔로우하려면 먼저 로그인해주세요.");
+      window.location.href = new URL("pages/mypage/", document.baseURI).href;
+      return;
+    }
+    const artist = artists[Number(button.dataset.personalFollow)];
+    if (!artist) return;
     const followed = button.getAttribute("aria-pressed") !== "true";
+    saveFollowing(user, artist, followed);
     button.setAttribute("aria-pressed", String(followed));
     button.classList.toggle("is-following", followed);
-    button.textContent = followed ? "❤️" : "팔로우";
+    button.textContent = followed ? "❤️ 팔로잉" : "팔로우";
     button.setAttribute("aria-label", followed ? "팔로우 취소" : "팔로우");
 
     // 누를 때마다 젤리 애니메이션을 처음부터 한 번 다시 실행합니다.
@@ -139,8 +189,11 @@
     activeDetailButton = button;
     updateDetailButton(button, true);
 
-    if (audio.src !== artist.audio) {
-      audio.src = artist.audio;
+    const preferredArtistAudio = typeof window.preferredStudioAudioSource === "function"
+      ? window.preferredStudioAudioSource(artist.audio)
+      : artist.audio;
+    if (audio.src !== preferredArtistAudio) {
+      audio.src = preferredArtistAudio;
       audio.load();
     }
 

@@ -25,6 +25,10 @@ background: linear-gradient(180deg,rgba(110, 98, 166, .8) 0%, rgba(17, 17, 21, 1
   display: flex; flex-direction: column;
   gap: 0.5rem;
 }
+.pliBox{
+  background-image: url(../../img/img\ \(28\).jfif);
+  background-size: cover;
+}
 .release{
   width: 7rem;
 }
@@ -32,4 +36,122 @@ background: linear-gradient(180deg,rgba(110, 98, 166, .8) 0%, rgba(17, 17, 21, 1
 .topBox{
   display: flex; align-items: center; justify-content: space-between;
   padding-left: 3rem; padding-right: 3rem;
+  background: #6e62a6;
+background: linear-gradient(180deg,rgba(17, 17, 21, 1) 30%, rgba(77, 64, 129, 0.3) 100%);
+}
+
+.home-hover-panel,
+.home-album-card,
+.home-mood-card,
+.home-featured-album,
+.home-action-button,
+.home-link-button {
+  transition: transform .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.home-hover-panel:hover {
+  border-color: rgba(86, 233, 201, .38);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .24), 0 0 0 1px rgba(86, 233, 201, .08);
+}
+
+.home-album-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.home-album-card:hover,
+.home-mood-card:hover,
+.home-featured-album:hover {
+  transform: translateY(-4px);
+}
+
+.home-album-card:hover img,
+.home-album-card:hover .album-art,
+.home-featured-album:hover {
+  filter: brightness(1.08) saturate(1.08);
+}
+
+.home-album-cover {
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.home-album-rank {
+  position: absolute;
+  z-index: 1;
+  left: .65rem;
+  top: .65rem;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(17, 17, 21, .78);
+  border: 1px solid rgba(86, 233, 201, .45);
+  color: var(--purple);
+  font-size: .85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  backdrop-filter: blur(8px);
+}
+
+.home-mood-card {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.home-mood-section {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  transition: background-image .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.home-featured-album {
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.home-mood-card:hover {
+  background: rgba(86, 233, 201, .12);
+  border-color: rgba(86, 233, 201, .34);
+  color: #d9fff6;
+}
+
+.home-mood-card.is-active {
+  background: rgba(86, 233, 201, .18);
+  border-color: rgba(86, 233, 201, .58);
+  color: #ecfffb;
+}
+
+.home-action-button:hover,
+.home-link-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .22);
+}
+
+.home-link-button:hover {
+  opacity: .85;
+}
+
+@media (max-width: 767px) {
+  .title{
+  font-family: 'Nasa', sans-serif;
+  font-size: 2.25rem !important;
+}
+  .titleSub{
+    font-size: 0.7rem;
+  }
+
+  .topBox {
+    /* flex-direction: column; */
+    align-items: flex-start;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  
 }
