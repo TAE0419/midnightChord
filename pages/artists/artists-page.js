@@ -144,11 +144,12 @@
     // 같은 카드 버튼은 실제 audio 상태에 따라 재생/일시정지를 토글합니다.
     if (selectedAudioButton === button && isSelectedArtistAudio(audio)) {
       if (audio.paused) {
-        audio.play().catch(() => {
+        audio.play().then(() => startArtistAudioButton(button)).catch(() => {
           stopArtistAudioButton(button);
         });
       } else {
         audio.pause();
+        stopArtistAudioButton(button);
       }
       return;
     }
@@ -168,7 +169,7 @@
     document.getElementById("playerArtist").textContent = artist.name;
     document.querySelector("[data-sidebar-player-title]").textContent = artist.name;
 
-    audio.play().catch(() => {
+    audio.play().then(() => startArtistAudioButton(button)).catch(() => {
       stopArtistAudioButton(button);
       selectedAudioButton = null;
       selectedArtist = null;

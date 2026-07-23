@@ -6,6 +6,41 @@ const appState = {
   searchQuery: ""
 };
 
+let artistWaveAnimationFrame = null;
+
+function setArtistWave(button, active) {
+  document.querySelectorAll("[data-personal-artist-audio]").forEach(item => {
+    item.classList.remove("is-wave-active");
+    item.setAttribute("aria-label", "아티스트 음악 재생");
+  });
+
+  if (artistWaveAnimationFrame) cancelAnimationFrame(artistWaveAnimationFrame);
+  artistWaveAnimationFrame = null;
+  if (!active || !button) return;
+
+  button.classList.add("is-wave-active");
+  button.setAttribute("aria-label", "아티스트 음악 일시정지");
+  const path = button.querySelector(".artist-wave path");
+  if (!path) return;
+
+  const drawWave = time => {
+    if (!button.classList.contains("is-wave-active")) return;
+    const points = [];
+    for (let x = 0; x <= 180; x += 2) {
+      const envelope = Math.sin((Math.PI * x) / 180);
+      const wave =
+        Math.sin(x * .68 + time * .018) * 4.5 +
+        Math.sin(x * .37 - time * .011) * 2.3 +
+        Math.sin(x * 1.08 + time * .024) * 1.2;
+      points.push(`${x === 0 ? "M" : "L"}${x} ${(15 + wave * envelope).toFixed(2)}`);
+    }
+    path.setAttribute("d", points.join(" "));
+    artistWaveAnimationFrame = requestAnimationFrame(drawWave);
+  };
+
+  artistWaveAnimationFrame = requestAnimationFrame(drawWave);
+}
+
 function currentPageId() {
   return document.body.dataset.currentPage || "home";
 }
