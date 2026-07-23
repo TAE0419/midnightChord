@@ -1,4 +1,4 @@
-const { albums, tracks, artists, playlists, podcastSeries = [] } = window.trackitData;
+const { albums, tracks, artists, playlists } = window.trackitData;
 
 function icon(name, className = "w-4 h-4") {
   return `<i data-lucide="${name}" class="${className}"></i>`;
@@ -123,25 +123,10 @@ function renderArtists() {
   return `
     <div><p class="text-sm" style="color:var(--muted)">ARTISTS</p><h1 class="text-2xl font-medium mt-1">아티스트</h1></div>
     <div class="grid md:grid-cols-2 gap-4">
-      ${artists.map((artist, index) => `
-        <article class="artist-card surface rounded-2xl p-4 flex items-center gap-4">
+      ${artists.map(artist => `
+        <article class="surface rounded-2xl p-4 flex items-center gap-4">
           ${assetBox(artist, "w-14 h-14 rounded-full", artist.initial)}
-          <div class="artist-card-meta flex-1"><p class="font-medium">${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div>
-          <!-- 미니 재생바: data-artist-play-track 값으로 재생할 곡 번호를 전달합니다. -->
-          <button type="button" class="artist-mini-player" data-artist-play-track="${index % tracks.length}" aria-label="아티스트 음악 재생">
-            <span class="artist-mini-line" aria-hidden="true">
-              <!-- 재생 중에는 아래 SVG의 흰 선 자체가 구불거리며 움직입니다. -->
-              <svg class="artist-wave" viewBox="0 0 180 30" preserveAspectRatio="none">
-                <path d="M0 15 L180 15"></path>
-              </svg>
-            </span>
-            <!-- 정지 상태에는 Play, 재생 상태에는 Pause 아이콘을 표시합니다. -->
-            <span class="artist-mini-play" aria-hidden="true">
-              ${icon("Play", "artist-mini-icon artist-mini-icon-play w-4 h-4")}
-              ${icon("Pause", "artist-mini-icon artist-mini-icon-pause w-4 h-4")}
-            </span>
-          </button>
-          <!-- 아티스트 카드의 '소개 보기' 버튼: 문구를 바꾸려면 아래 텍스트를 수정하세요. -->
+          <div class="flex-1"><p class="font-medium">${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div>
           <button type="button" class="surface rounded-xl px-3 py-2 text-sm" data-artist-name="${artist.name}">소개 보기</button>
         </article>
       `).join("")}
@@ -153,115 +138,30 @@ function renderArtistDetail(artistName = "LUNA") {
   const artist = artists.find(item => item.name === artistName) || artists[0];
   return `
     <button type="button" class="text-sm flex items-center gap-2" style="color:#c4b5fd" data-page-link="artists">${icon("ArrowLeft")} 아티스트 목록</button>
-    <div class="artist-detail-hero surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[150px_1fr] gap-6 items-center">
+    <div class="surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[150px_1fr] gap-6 items-center">
       ${assetBox(artist, "rounded-full aspect-square max-w-[150px] w-full mx-auto", artist.initial)}
       <div>
         <p class="text-sm" style="color:var(--muted)">ARTIST PROFILE</p>
         <h1 class="text-3xl md:text-4xl font-medium mt-2">${artist.name}</h1>
-        <!-- trackit-data.js의 artist.des를 표시하고, 값이 없으면 기본 문장을 사용합니다. -->
-        <p class="mt-3 text-sm md:text-base" style="color:var(--muted)">${artist.des || `${artist.name}의 음악과 발매 소식을 소개하는 공간입니다.`}</p>
-        <div class="flex gap-2 mt-5">
-          <!-- 상세 페이지 인기곡 버튼: 클릭하면 Play 아이콘이 Pause 아이콘으로 바뀝니다. -->
-          <button type="button" class="artist-detail-play purple-btn" data-artist-detail-play="0"><span>인기곡재생</span>${icon("Play")}</button>
-          <button type="button" class="artist-follow surface rounded-xl px-4 py-2">팔로우</button>
-        </div>
+        <p class="mt-3 text-sm md:text-base" style="color:var(--muted)">${artist.name}의 음악과 발매 소식을 소개하는 공간입니다. 보라빛 밤의 감성과 새로운 사운드를 만나보세요.</p>
+        <div class="flex gap-2 mt-5"><button type="button" class="purple-btn rounded-xl px-4 py-2" data-play-track="0">${icon("Play")} 인기곡 재생</button><button type="button" class="surface rounded-xl px-4 py-2">팔로우</button></div>
       </div>
     </div>
-    <div class="artist-detail-lower grid md:grid-cols-[1.1fr_.9fr] gap-4">
-      <section class="artist-tracks surface rounded-2xl p-4"><h2 class="font-medium mb-3">대표곡</h2>${tracks.slice(0, 3).map((track, index) => trackRow(track, index, { active: index === 0 })).join("")}</section>
-      <!-- 아티스트 사진 위에 연한 보라색 유리 패널을 올린 소개 영역 -->
-      <section class="artist-intro-card surface rounded-2xl" style='--artist-detail-image:url("${artist.imageSrc}")'>
-        <div class="artist-intro-glass">
-          <h2 class="font-medium">소개</h2>
-          <p class="text-sm leading-6 mt-3">${artist.bio || "장르를 넘나드는 사운드와 선명한 분위기를 지닌 아티스트입니다."}</p>
-        </div>
-      </section>
+    <div class="grid md:grid-cols-[1.1fr_.9fr] gap-4">
+      <section class="surface rounded-2xl p-4"><h2 class="font-medium mb-3">대표곡</h2>${tracks.slice(0, 3).map((track, index) => trackRow(track, index, { active: index === 0 })).join("")}</section>
+      <section class="surface rounded-2xl p-4"><h2 class="font-medium">소개</h2><p class="text-sm leading-6 mt-3" style="color:var(--muted)">장르를 넘나드는 사운드와 선명한 분위기를 지닌 아티스트입니다. 상세 콘텐츠는 이후 실제 소개 문구와 데이터 연동 단계에서 교체할 수 있습니다.</p></section>
     </div>
   `;
 }
 
 function renderPodcasts() {
-  const seriesList = podcastSeries.length ? podcastSeries : [];
-  const featured = seriesList.find(series => series.isFeatured) || seriesList[0];
-  const allEpisodes = seriesList.flatMap(series => series.episodes.map(episode => ({ ...episode, series })));
-  const latestEpisode = allEpisodes[0];
-  const latestTrackIndex = latestEpisode
-    ? tracks.findIndex(track => track.title === latestEpisode.title && track.artist === latestEpisode.series.host)
-    : 0;
-
-  if (!featured || !latestEpisode) {
-    return `
-      <div><p class="text-sm" style="color:var(--muted)">STUDIO VOICES</p><h1 class="text-2xl font-medium mt-1">팟캐스트</h1></div>
-      <section class="surface rounded-2xl p-5"><p style="color:var(--muted)">팟캐스트 에피소드를 준비 중입니다.</p></section>
-    `;
-  }
-
   return `
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-3">
-      <div><p class="text-sm" style="color:var(--muted)">STUDIO VOICES</p><h1 class="text-2xl font-medium mt-1">팟캐스트</h1></div>
-      <span class="viz-badge">${allEpisodes.length} EPISODES</span>
+    <div><p class="text-sm" style="color:var(--muted)">STUDIO VOICES</p><h1 class="text-2xl font-medium mt-1">팟캐스트</h1></div>
+    <div class="surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-center">
+      <div><span class="viz-badge">NEW EPISODE</span><h2 class="text-2xl md:text-3xl font-medium mt-4">Midnight Session</h2><p class="text-sm mt-3" style="color:var(--muted)">음악을 만드는 사람들의 이야기와 새로운 사운드를 소개합니다.</p><button type="button" class="purple-btn rounded-xl px-4 py-2 mt-5" data-play-track="0">${icon("Play")} 에피소드 재생</button></div>
+      <div class="album-art-dark rounded-3xl aspect-square max-w-[230px] w-full mx-auto flex items-center justify-center">${icon("Podcast", "w-14 h-14")}</div>
     </div>
-
-    <section class="podcast-hero surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[1.15fr_.85fr] gap-6 items-center overflow-hidden">
-      <div class="min-w-0">
-        <span class="viz-badge">NEW EPISODE</span>
-        <h2 class="text-2xl md:text-4xl font-medium mt-4">${latestEpisode.title}</h2>
-        <p class="text-sm mt-3" style="color:var(--muted)">${latestEpisode.summary}</p>
-        <div class="flex flex-wrap gap-2 mt-4 text-xs" style="color:var(--muted)">
-          <span>${latestEpisode.series.title}</span>
-          <span>${latestEpisode.series.host}</span>
-          <span>${latestEpisode.duration}</span>
-        </div>
-        <button type="button" class="purple-btn rounded-xl px-4 py-2 mt-5 inline-flex items-center gap-2" data-play-track="${latestTrackIndex >= 0 ? latestTrackIndex : 0}">${icon("Play")} 에피소드 재생</button>
-      </div>
-      <div class="podcast-cover-wrap">
-        ${assetBox({ title: featured.title, imageSrc: featured.coverImage }, "podcast-cover rounded-3xl aspect-square w-full", "SM")}
-      </div>
-    </section>
-
-    <div class="grid lg:grid-cols-[.95fr_1.05fr] gap-4">
-      <section class="surface rounded-2xl p-4">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="font-medium">시리즈 카드</h2>
-          <span class="text-sm" style="color:var(--muted)">${seriesList.length}개 채널</span>
-        </div>
-        <div class="grid md:grid-cols-3 lg:grid-cols-1 gap-3">
-          ${seriesList.map(series => `
-            <article class="podcast-series-card rounded-2xl p-3">
-              <div class="flex gap-3">
-                ${assetBox({ title: series.title, imageSrc: series.coverImage }, "w-16 h-16 rounded-xl shrink-0", "SM")}
-                <div class="min-w-0">
-                  <p class="font-medium truncate">${series.title}</p>
-                  <p class="text-xs mt-1" style="color:var(--muted)">${series.category}</p>
-                  <p class="text-xs mt-2 line-clamp-2" style="color:var(--muted)">${series.description}</p>
-                </div>
-              </div>
-            </article>
-          `).join("")}
-        </div>
-      </section>
-
-      <section class="surface rounded-2xl overflow-hidden">
-        <div class="p-4 flex justify-between items-center">
-          <h2 class="font-medium">에피소드 목록</h2>
-          <span class="text-sm" style="color:var(--muted)">클릭해서 재생</span>
-        </div>
-        ${allEpisodes.map(({ series, ...episode }, index) => {
-          const trackIndex = tracks.findIndex(track => track.title === episode.title && track.artist === series.host);
-          return `
-            <button type="button" class="podcast-episode-row track-row grid grid-cols-[52px_1fr_auto] gap-3 p-4 items-start text-left w-full ${index === 0 ? "purple-soft" : ""}" data-track-index="${trackIndex >= 0 ? trackIndex : 0}">
-              <div class="podcast-episode-number rounded-xl flex items-center justify-center">${episode.epNumber}</div>
-              <div class="min-w-0">
-                <p class="font-medium">${episode.title}</p>
-                <p class="text-sm mt-1" style="color:var(--muted)">${series.title} · ${series.host} · ${episode.publishedAt}</p>
-                <p class="text-sm mt-2 leading-6 podcast-description" style="color:var(--muted)">${episode.summary}</p>
-              </div>
-              <span class="text-sm whitespace-nowrap">${episode.duration}</span>
-            </button>
-          `;
-        }).join("")}
-      </section>
-    </div>
+    <section class="surface rounded-2xl overflow-hidden"><div class="p-4 flex justify-between items-center"><h2 class="font-medium">최근 에피소드</h2><span class="text-sm" style="color:var(--muted)">준비 중</span></div>${["밤의 작업실", "아티스트와 플레이리스트", "앨범이 완성되는 시간"].map((title, index) => trackRow({ title, artist: "Studio Midnight", time: `${18 + index * 6}:00` }, index, { active: index === 0 })).join("")}</section>
   `;
 }
 
