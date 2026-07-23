@@ -114,21 +114,133 @@ function renderBrowse() {
   `;
 }
 
+function getAlbumCoverInfo(track) {
+  const genre = (track.genre || "").toLowerCase();
+  if (genre.includes("클래식")) {
+    return {
+      cover: "assets/images/covers/classic-masterpiece.svg",
+      tag: "CLASSIC",
+      type: "클래식 앨범",
+      mood: "우아한 밤의 음악",
+      description: "고전 관현악의 깊은 울림이 담긴 트랙입니다. 관악기와 현악기의 풍부한 텍스처가 밤의 감성을 촉촉하게 채웁니다."
+    };
+  }
+  if (genre.includes("케이팝")) {
+    return {
+      cover: "assets/images/covers/kpop-color.svg",
+      tag: "K-POP",
+      type: "케이팝 싱글",
+      mood: "빛나는 밤의 리듬",
+      description: "경쾌한 비트와 선명한 멜로디가 돋보이는 트랙입니다. 화려한 사운드가 이어지는 밤을 연출합니다."
+    };
+  }
+  if (genre.includes("제이팝")) {
+    return {
+      cover: "assets/images/covers/jpop-color.svg",
+      tag: "J-POP",
+      type: "제이팝 싱글",
+      mood: "몽환적인 감성",
+      description: "부드러운 선율과 반짝이는 사운드가 어우러진 곡입니다. 꿈결 같은 무드를 밤에 담아냅니다."
+    };
+  }
+  if (genre.includes("힙합") || genre.includes("r&b")) {
+    return {
+      cover: "assets/images/covers/hiphop-color.svg",
+      tag: "HIPHOP/R&B",
+      type: "힙합/R&B 싱글",
+      mood: "도시적인 밤의 무드",
+      description: "무게감 있는 비트와 리듬이 돋보이는 트랙입니다. 도심 속 밤의 감성을 은은하게 채웁니다."
+    };
+  }
+  if (genre.includes("인디") || genre.includes("밴드")) {
+    return {
+      cover: "assets/images/covers/indie-color.svg",
+      tag: "INDIE",
+      type: "인디/밴드 싱글",
+      mood: "감성적인 여운",
+      description: "어쿠스틱과 일렉트릭이 어우러진 매력적인 트랙입니다. 아늑한 밤의 감성으로 잔잔히 흐릅니다."
+    };
+  }
+  if (genre.includes("electronic") || genre.includes("electronica")) {
+    return {
+      cover: "assets/images/covers/electronic-color.svg",
+      tag: "ELECTRONIC",
+      type: "일렉트로닉 싱글",
+      mood: "미래적인 야간 감성",
+      description: "신비로운 신스와 리듬이 어우러진 트랙입니다. 밤의 공기를 전자음으로 물들입니다."
+    };
+  }
+  if (genre.includes("팝")) {
+    return {
+      cover: "assets/images/covers/pop-color.svg",
+      tag: "POP",
+      type: "팝 싱글",
+      mood: "달빛 아래 감성",
+      description: "세련된 멜로디와 감각적인 편곡이 돋보이는 트랙입니다. 밤의 공기를 가볍게 물들입니다."
+    };
+  }
+  return {
+    cover: "pages/album/album-cover.svg",
+    tag: track.genre || "ALBUM",
+    type: "싱글",
+    mood: "다채로운 감성",
+    description: "Studio Midnight이 큐레이션한 트랙입니다. 음악의 색감과 분위기를 담아낸 상세 페이지입니다."
+  };
+}
+
 function renderAlbum() {
+  const track = tracks[0];
+  const coverInfo = getAlbumCoverInfo(track);
+
   return `
-    <div class="grid md:grid-cols-[250px_1fr] gap-6 items-end">
-      <div class="album-art rounded-3xl aspect-square"></div>
-      <div>
-        <p class="text-sm" style="color:var(--muted)">ALBUM</p>
-        <h1 class="text-3xl md:text-5xl font-medium mt-2">Violet Night</h1>
-        <p class="mt-3">LUNA · 2026 · 10곡</p>
-        <div class="flex gap-2 mt-5">
-          <button type="button" class="purple-btn rounded-xl px-5 py-2" data-play-track="0">전체 재생</button>
-          <button type="button" class="surface rounded-xl px-4 py-2">${icon("Heart")} 저장</button>
+    <div class="grid gap-6 lg:grid-cols-[360px_1fr]">
+      <section class="surface rounded-[28px] p-6 album-detail-card">
+        <div class="relative overflow-hidden rounded-[28px] cover-card mb-6">
+          <img id="albumCover" src="${coverInfo.cover}" alt="앨범 커버" class="w-full h-full object-cover" />
+          <div id="albumCoverTag" class="cover-tag">${coverInfo.tag}</div>
         </div>
-      </div>
+        <div class="space-y-3">
+          <p class="text-sm" style="color:var(--muted)">앨범 상세</p>
+          <h1 id="albumTitle" class="text-3xl font-semibold">${track.title}</h1>
+          <p id="albumArtist" class="text-sm" style="color:var(--muted)">${track.artist} · ${track.genre} · 1곡</p>
+          <div class="grid gap-3 mt-4">
+            <div class="metric-card">
+              <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">트랙</p>
+              <p id="detailTrackName" class="viz-stat-value text-xl">${track.title}</p>
+            </div>
+            <div class="metric-card">
+              <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">길이</p>
+              <p id="detailTrackTime" class="viz-stat-value text-xl">${track.time}</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3 mt-5">
+            <button id="detailPlay" type="button" class="purple-btn rounded-full px-5 py-3 font-medium" data-play-track="0">재생</button>
+            <button id="detailNext" type="button" class="surface rounded-full px-5 py-3 font-medium">다음 트랙</button>
+          </div>
+        </div>
+      </section>
+      <section class="surface rounded-[28px] p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold">트랙 상세</h2>
+          <span id="albumGenreTag" class="chip">${track.genre}</span>
+        </div>
+        <p id="trackDetailDescription" class="text-sm leading-7" style="color:#d4d4d8">${coverInfo.description}</p>
+        <div class="mt-6 grid gap-3">
+          <div class="metric-card">
+            <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">앨범 유형</p>
+            <p id="albumType" class="viz-stat-value text-xl">${coverInfo.type}</p>
+          </div>
+          <div class="metric-card">
+            <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">추천 분위기</p>
+            <p id="albumMoodDetail" class="viz-stat-value text-xl">${coverInfo.mood}</p>
+          </div>
+          <div class="metric-card">
+            <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">아티스트</p>
+            <p id="albumArtistMeta" class="viz-stat-value text-xl">${track.artist}</p>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="surface rounded-2xl overflow-hidden">${tracks.slice(0, 4).map((track, index) => trackRow(track, index, { active: index === 1 })).join("")}</div>
   `;
 }
 
