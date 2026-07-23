@@ -10,6 +10,7 @@ window.artistPageData = {
       name: "LUNA(루나)",
       plays: "200만 재생⭐",
       initial: "L",
+      title: "Violet Afterglow",
       imageSrc: "/img/img\ \(12\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
       des:
@@ -24,6 +25,7 @@ window.artistPageData = {
       name: "NOIR-노아",
       plays: "94만 재생",
       initial: "N",
+      title: "Static Hearts",
       imageSrc: "/img/img\ \(54\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
       des:
@@ -38,6 +40,7 @@ window.artistPageData = {
       name: "MUSE",
       plays: "81만 재생",
       initial: "M",
+      title: "Neon Bloom",
       imageSrc: "/img/img\ \(25\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
       des:
@@ -52,6 +55,7 @@ window.artistPageData = {
       name: "WAVE",
       plays: "77만 재생",
       initial: "W",
+      title: "Blue Hour Drive",
       imageSrc: "/img/img\ \(36\).jfif",
       audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
       des:

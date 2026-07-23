@@ -16,6 +16,11 @@
   box-shadow: -6px 8px 20px rgba(0, 0, 0, .18);
 }
 
+.artist-top-button,
+.artist-bottom-button {
+  display: none;
+}
+
 /* 클릭 가능한 프로필 이미지 */
 .artist-profile-link {
   display: block;
@@ -167,6 +172,105 @@
   /* 제목 위에 있는 작은 'ARTISTS' 안내 문구 */
   [data-page-root] > div:first-child p {
     font-size: 10px;
+  }
+}
+
+/* Tablet: keep each artist card wide enough for its player and action button. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  [data-page-root] > .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .artist-top-button,
+  .artist-bottom-button {
+    align-items: center;
+    background: #b04fff;
+    border: 0;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: .6rem;
+    font-weight: 700;
+    height: 35px;
+    justify-content: center;
+    position: fixed;
+    right: 1rem;
+    width: 35px;
+    z-index: 10000;
+  }
+
+  .artist-top-button {
+    bottom: 7.75rem;
+  }
+
+  .artist-bottom-button {
+    bottom: 5.25rem;
+  }
+
+  [data-page-root] > .grid {
+    gap: .85rem;
+  }
+
+  [data-page-root] > .grid > .artist-card {
+    align-items: center;
+    display: grid;
+    gap: .75rem;
+    grid-template-columns: 56px minmax(0, 1fr);
+    padding: 1rem;
+  }
+
+  [data-page-root] > .grid > .artist-card > .artist-profile-link {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  [data-page-root] > .grid > .artist-card > .artist-card-meta {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  [data-page-root] > .grid > .artist-card > .artist-mini-player,
+  [data-page-root] > .grid > .artist-card > button[data-artist-name] {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .artist-mini-player {
+    min-width: 0;
+  }
+
+  [data-page-root] > .grid > .artist-card > button[data-artist-name] {
+    background-color: #6953ae;
+    border-radius: 9999px;
+    color: #fff;
+    min-height: 2.5rem;
+  }
+}
+
+@media (max-width: 370px) {
+  [data-page-root] > .grid > .artist-card {
+    gap: .65rem;
+    grid-template-columns: 48px minmax(0, 1fr);
+    padding: .85rem;
+  }
+
+  [data-page-root] > .grid > .artist-card .w-14 {
+    height: 48px;
+    width: 48px;
+  }
+
+  [data-page-root] > .grid > .artist-card .font-medium {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .artist-mini-player {
+    padding-left: .8rem;
   }
 }
 .space-y-6{

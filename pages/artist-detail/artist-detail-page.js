@@ -64,6 +64,9 @@
           </div>
         </section>
       </div>
+      <div class="artist-detail-back-wrap">
+        <button type="button" class="artist-detail-back" data-artist-detail-back>${detailIcon("ArrowLeft")} 뒤로</button>
+      </div>
     `;
   }
 
@@ -71,6 +74,19 @@
   window.trackitPages.artistDetail = renderMyArtistDetail;
 
   let activeDetailButton = null;
+
+  document.addEventListener("click", event => {
+    if (!event.target.closest("[data-artist-detail-back]")) return;
+    if (new URLSearchParams(window.location.search).get("returnTo") === "playlist") {
+      window.location.href = "pages/playlist/?modal=1";
+      return;
+    }
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    window.location.href = "pages/artists/";
+  });
 
   function updateDetailButton(button, playing) {
     if (!button) return;
@@ -141,7 +157,7 @@
   });
 
   // 하단 플레이어로 재생/정지해도 버튼과 프로필 회전 상태를 동기화합니다.
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("trackit:ready", () => {
     const audio = document.getElementById("studioAudio");
     if (!audio) return;
 
