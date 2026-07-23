@@ -53,6 +53,8 @@
       <p class="artist-search-empty surface rounded-2xl p-6 text-center" data-artist-search-empty hidden>
         검색 결과가 없습니다.
       </p>
+      <button type="button" class="artist-top-button" data-artist-top aria-label="페이지 맨 위로 이동">TOP</button>
+      <button type="button" class="artist-bottom-button" data-artist-bottom aria-label="페이지 맨 아래로 이동">▼</button>
     `;
   }
 
@@ -60,7 +62,7 @@
   window.trackitPages.artists = renderMyArtists;
 
   // 공용 검색 페이지로 이동하지 않고 현재 아티스트 목록 안에서만 검색합니다.
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("trackit:ready", () => {
     const searchInput = document.querySelector("[data-search-input]");
     if (!searchInput) return;
 
@@ -127,6 +129,16 @@
 
   // 개인 데이터의 audio 주소를 하단 공용 <audio> 요소에 연결합니다.
   document.addEventListener("click", event => {
+    if (event.target.closest("[data-artist-bottom]")) {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+      return;
+    }
+
+    if (event.target.closest("[data-artist-top]")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     const button = event.target.closest("[data-personal-artist-audio]");
     if (!button) return;
 
@@ -138,11 +150,12 @@
     // 같은 카드 버튼은 실제 audio 상태에 따라 재생/일시정지를 토글합니다.
     if (selectedAudioButton === button && isSelectedArtistAudio(audio)) {
       if (audio.paused) {
-        audio.play().catch(() => {
+        audio.play().then(() => startArtistAudioButton(button)).catch(() => {
           stopArtistAudioButton(button);
         });
       } else {
         audio.pause();
+        stopArtistAudioButton(button);
       }
       return;
     }
@@ -162,7 +175,7 @@
     document.getElementById("playerArtist").textContent = artist.name;
     document.querySelector("[data-sidebar-player-title]").textContent = artist.name;
 
-    audio.play().catch(() => {
+    audio.play().then(() => startArtistAudioButton(button)).catch(() => {
       stopArtistAudioButton(button);
       selectedAudioButton = null;
       selectedArtist = null;
@@ -171,7 +184,7 @@
   });
 
   // 카드 클릭뿐 아니라 하단 플레이어의 재생/정지 상태도 버튼과 동기화합니다.
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("trackit:ready", () => {
     const audio = document.getElementById("studioAudio");
     if (!audio) return;
 
