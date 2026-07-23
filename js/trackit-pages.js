@@ -256,12 +256,19 @@ function renderPlaylist() {
           <div class="playlist-modal-picker">
             <input class="playlist-modal-current-name" data-playlist-modal-current-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름">
             <button type="button" class="playlist-modal-other-button" data-playlist-modal-other aria-expanded="false">다른 플리</button>
+            <button type="button" class="playlist-modal-add-button" data-playlist-modal-add aria-label="새 플레이리스트 만들기">+</button>
             <div class="playlist-modal-other-list" data-playlist-modal-other-list hidden>
               ${["새벽 산책", "Purple Focus", "주말 드라이브"].map(name => `<button type="button" data-playlist-modal-name="${name}">${name}</button>`).join("")}
             </div>
           </div>
           <button type="button" class="playlist-modal-confirm" data-playlist-modal-confirm>확인</button>
         </div>
+      </section>
+    </div>
+    <div class="playlist-name-modal" data-playlist-name-modal hidden>
+      <section class="playlist-name-dialog" role="dialog" aria-modal="true" aria-labelledby="playlist-name-title">
+        <h2 id="playlist-name-title">플레이리스트의 이름을 알려주세요</h2>
+        <div class="playlist-name-actions"><input type="text" data-playlist-name-input maxlength="30" aria-label="플레이리스트 이름" autocomplete="off"><button type="button" data-playlist-name-confirm>확인</button></div>
       </section>
     </div>
     <div class="playlist-toast" data-playlist-toast role="status" aria-live="polite">플레이리스트에 추가 되었습니다.</div>
@@ -271,7 +278,7 @@ function renderPlaylist() {
         <div data-playlist-recent-list></div>
       </section>
       <section class="surface rounded-2xl p-3 playlist-current-panel">
-        <div class="playlist-current-header"><input data-current-playlist-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름"><button type="button" data-current-playlist-play aria-label="플레이리스트 재생">▶</button></div>
+        <div class="playlist-current-header"><div class="playlist-current-picker"><input data-current-playlist-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름"><div class="playlist-current-options" data-current-playlist-options hidden>${["Purple Focus", "새벽 산책", "주말 드라이브"].map(name => `<button type="button" data-current-playlist-option="${name}">${name}</button>`).join("")}</div></div><button type="button" data-current-playlist-play aria-label="플레이리스트 재생">▶ 재생</button><button type="button" class="playlist-current-delete" data-current-playlist-delete>삭제</button></div>
         <div data-current-playlist-list></div>
       </section>
     </div>
@@ -286,6 +293,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
 
   const createButton = document.querySelector("[data-playlist-create]");
   const modal = document.querySelector("[data-playlist-modal]");
+  const playlistNameModal = document.querySelector("[data-playlist-name-modal]");
   const toast = document.querySelector("[data-playlist-toast]");
   const startButton = document.querySelector("[data-playlist-carousel-start]");
   const endButton = document.querySelector("[data-playlist-carousel-end]");
@@ -331,7 +339,56 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
 
   const currentPlaylistList = document.querySelector("[data-current-playlist-list]");
   const currentPlaylistName = document.querySelector("[data-current-playlist-name]");
-  const currentPlaylistEntries = [];
+  const playlistCollections = new Map([
+    ["미드나잇플리", []],
+    ["Purple Focus", []],
+    ["새벽 산책", []],
+    ["주말 드라이브", []]
+  ]);
+  let currentPlaylistEntries = playlistCollections.get("미드나잇플리");
+
+  function appendPlaylistOption(name) {
+    const modalList = modal?.querySelector("[data-playlist-modal-other-list]");
+    const currentList = document.querySelector("[data-current-playlist-options]");
+    if (modalList && ![...modalList.querySelectorAll("[data-playlist-modal-name]")].some(button => button.dataset.playlistModalName === name)) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.playlistModalName = name;
+      button.textContent = name;
+      modalList.append(button);
+    }
+    if (currentList && ![...currentList.querySelectorAll("[data-current-playlist-option]")].some(button => button.dataset.currentPlaylistOption === name)) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.currentPlaylistOption = name;
+      button.textContent = name;
+      currentList.append(button);
+    }
+  }
+
+  function setPlaylistNameModalOpen(isOpen) {
+    if (!playlistNameModal) return;
+    playlistNameModal.hidden = !isOpen;
+    if (isOpen) {
+      const input = playlistNameModal.querySelector("[data-playlist-name-input]");
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  function createPlaylistFromNameModal() {
+    const input = playlistNameModal?.querySelector("[data-playlist-name-input]");
+    const name = input?.value.trim();
+    if (!name) {
+      input?.focus();
+      return;
+    }
+    if (!playlistCollections.has(name)) playlistCollections.set(name, []);
+    appendPlaylistOption(name);
+    const currentNameInput = modal?.querySelector("[data-playlist-modal-current-name]");
+    if (currentNameInput) currentNameInput.value = name;
+    setPlaylistNameModalOpen(false);
+  }
 
   function renderCurrentPlaylist() {
     if (!currentPlaylistList) return;
@@ -344,6 +401,9 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     const selectedArtists = [...modal.querySelectorAll("[data-playlist-modal-artist].is-selected")]
       .map(button => artists[Number(button.dataset.playlistModalArtist)]);
     if (!selectedArtists.length) return;
+    const playlistName = modal.querySelector("[data-playlist-modal-current-name]").value;
+    if (!playlistCollections.has(playlistName)) playlistCollections.set(playlistName, []);
+    currentPlaylistEntries = playlistCollections.get(playlistName);
     currentPlaylistEntries.splice(0, currentPlaylistEntries.length, ...selectedArtists.map((artist, index) => ({
       artist: artist.name,
       title: window.artistPageData?.artists?.find(item => item.name === artist.name)?.title || tracks[index]?.title || "대표곡 준비 중",
@@ -352,7 +412,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
       initial: artist.initial,
       art: artist.art
     })));
-    currentPlaylistName.value = modal.querySelector("[data-playlist-modal-current-name]").value;
+    currentPlaylistName.value = playlistName;
     renderCurrentPlaylist();
   }
 
@@ -360,6 +420,24 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   document.querySelector("[data-current-playlist-play]")?.addEventListener("click", () => {
     const firstArtist = artists.find(artist => artist.name === currentPlaylistEntries[0]?.artist);
     if (firstArtist) playArtist(artists.indexOf(firstArtist), true);
+  });
+  document.querySelector("[data-current-playlist-delete]")?.addEventListener("click", () => {
+    currentPlaylistEntries.splice(0, currentPlaylistEntries.length);
+    renderCurrentPlaylist();
+  });
+  currentPlaylistName?.addEventListener("click", () => {
+    const options = document.querySelector("[data-current-playlist-options]");
+    options.hidden = !options.hidden;
+  });
+  document.querySelector("[data-current-playlist-options]")?.addEventListener("click", event => {
+    const option = event.target.closest("[data-current-playlist-option]");
+    if (!option) return;
+    const playlistName = option.dataset.currentPlaylistOption;
+    if (!playlistCollections.has(playlistName)) playlistCollections.set(playlistName, []);
+    currentPlaylistEntries = playlistCollections.get(playlistName);
+    currentPlaylistName.value = playlistName;
+    event.currentTarget.hidden = true;
+    renderCurrentPlaylist();
   });
 
   function setModalOpen(isOpen) {
@@ -385,6 +463,14 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   }
 
   createButton?.addEventListener("click", () => setModalOpen(true));
+  modal?.querySelector("[data-playlist-modal-add]")?.addEventListener("click", () => setPlaylistNameModalOpen(true));
+  playlistNameModal?.querySelector("[data-playlist-name-confirm]")?.addEventListener("click", createPlaylistFromNameModal);
+  playlistNameModal?.querySelector("[data-playlist-name-input]")?.addEventListener("keydown", event => {
+    if (event.key === "Enter") createPlaylistFromNameModal();
+  });
+  playlistNameModal?.addEventListener("click", event => {
+    if (event.target === playlistNameModal) setPlaylistNameModalOpen(false);
+  });
   if (new URLSearchParams(window.location.search).get("modal") === "1") setModalOpen(true);
   function showPlaylistToast() {
     if (!toast) return;

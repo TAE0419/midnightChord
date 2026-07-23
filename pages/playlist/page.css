@@ -305,6 +305,77 @@
   white-space: nowrap;
 }
 
+.playlist-modal-add-button {
+  align-items: center;
+  background: #7057b8;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.8rem;
+  height: 2.8rem;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  width: 2.8rem;
+}
+
+.playlist-name-modal[hidden] {
+  display: none;
+}
+
+.playlist-name-modal {
+  align-items: center;
+  background: rgba(0, 0, 0, .6);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1.25rem;
+  position: fixed;
+  z-index: 55;
+}
+
+.playlist-name-dialog {
+  background: #1b1b21;
+  border: 1px solid var(--border);
+  border-radius: 1.35rem;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .45);
+  padding: 2rem;
+  width: min(34rem, 100%);
+}
+
+.playlist-name-dialog h2 {
+  color: #f4f4f5;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1.4rem;
+}
+
+.playlist-name-actions {
+  display: flex;
+  gap: .65rem;
+}
+
+.playlist-name-actions input {
+  background: transparent;
+  border: 1px solid #666673;
+  border-radius: .65rem;
+  color: #f4f4f5;
+  flex: 1;
+  min-width: 0;
+  padding: .75rem .85rem;
+}
+
+.playlist-name-actions button {
+  background: #7057b8;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  padding: .7rem 1.3rem;
+}
+
 .playlist-modal-other-list {
   background: #202027;
   border: 1px solid #6953ae;
@@ -489,9 +560,18 @@
 }
 
 .playlist-current-header {
+  align-items: stretch;
   display: flex;
   gap: .5rem;
+  justify-content: flex-start;
   margin-bottom: .85rem;
+  text-align: left;
+}
+
+.playlist-current-picker {
+  flex: 1;
+  min-width: 0;
+  position: relative;
 }
 
 .playlist-current-header input {
@@ -499,23 +579,99 @@
   border: 1px solid var(--border);
   border-radius: .45rem;
   color: #f4f4f5;
+  cursor: pointer;
   min-width: 0;
   padding: .55rem .7rem;
+  text-align: left;
   width: 100%;
+}
+
+.playlist-current-options {
+  background: #202027;
+  border: 1px solid #7057b8;
+  border-radius: .45rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: calc(100% + .35rem);
+  width: 100%;
+  z-index: 3;
+}
+
+.playlist-current-options button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  color: #f4f4f5;
+  cursor: pointer;
+  display: block;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: .65rem .7rem;
+  text-align: left;
+  width: 100%;
+}
+
+.playlist-current-options button:last-child {
+  border-bottom: 0;
+}
+
+.playlist-current-options button:hover {
+  background: rgba(112, 87, 184, .25);
 }
 
 .playlist-current-header button {
   align-items: center;
-  background: #7057b8;
-  border: 0;
-  border-radius: 999px;
+  background: #202027;
+  border: 1px solid var(--border);
+  border-radius: .45rem;
   color: #fff;
   cursor: pointer;
   display: inline-flex;
-  font-size: .8rem;
+  font-size: .82rem;
   justify-content: center;
-  min-width: 2.5rem;
-  padding: .5rem;
+  min-width: 4.5rem;
+  padding: .5rem .75rem;
+  text-align: left;
+}
+
+.playlist-current-header button:hover {
+  background: #2a2934;
+  border-color: #7057b8;
+}
+
+.playlist-current-header .playlist-current-delete {
+  background: #7057b8;
+  border-color: transparent;
+  border-radius: .45rem;
+  justify-content: center;
+  min-width: 3.3rem;
+  text-align: center;
+}
+
+.playlist-current-header .playlist-current-delete:hover {
+  background: #b04fff;
+  border-color: transparent;
+}
+
+/* 재생 버튼 공통 스타일보다 우선하여 플리 목록은 항상 왼쪽 정렬한다. */
+.playlist-current-header .playlist-current-options button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: .65rem .7rem;
+  text-align: left;
+  width: 100%;
+}
+
+.playlist-current-header .playlist-current-options button:last-child {
+  border-bottom: 0;
 }
 
 .playlist-current-row {
@@ -557,6 +713,19 @@
 }
 
 @media (max-width: 767px) {
+  /* 72px 사이드바가 370px 화면의 본문 폭을 지나치게 줄이지 않도록 한다. */
+  .trackit-app {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .trackit-app > .sidebar {
+    display: none;
+  }
+
+  .trackit-app > .fixed-player {
+    grid-column: 1;
+  }
+
   .playlist-lower-grid {
     grid-template-columns: 1fr;
   }
@@ -585,9 +754,119 @@
   .playlist-modal-artists {
     max-height: 42svh;
   }
+
+  .playlist-modal-actions {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .playlist-modal-picker {
+    flex: 1 1 100%;
+  }
+
+  .playlist-modal-current-name {
+    flex: 1;
+    width: auto;
+  }
+
+  .playlist-modal-confirm {
+    margin-left: auto;
+  }
+
+  .playlist-name-dialog {
+    border-radius: 1rem;
+    padding: 1.35rem;
+  }
 }
 
 @media (max-width: 370px) {
+  [data-page-root] > div:first-child {
+    align-items: stretch;
+    gap: .55rem;
+  }
+
+  [data-page-root] > div:first-child h1 {
+    font-size: 1.35rem;
+  }
+
+  [data-page-root] > div:first-child p {
+    font-size: .72rem;
+  }
+
+  .playlist-create-button {
+    align-self: stretch;
+    font-size: .82rem;
+    padding: .6rem .75rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .playlist-carousel-track {
+    gap: .65rem;
+    grid-auto-columns: 100%;
+  }
+
+  .playlist-carousel-card {
+    border-radius: 1rem;
+    padding: .65rem;
+  }
+
+  .playlist-carousel-card > p {
+    font-size: .82rem;
+  }
+
+  .playlist-lower-grid {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+  }
+
+  .playlist-lower-grid > section {
+    margin: 0;
+    padding: .75rem;
+    width: 100%;
+  }
+
+  .playlist-current-panel {
+    max-height: none;
+  }
+
+  [data-playlist-recent-list] > div {
+    display: grid !important;
+    gap: .45rem !important;
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+    padding: .55rem !important;
+  }
+
+  [data-playlist-recent-list] > div > :first-child {
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+  }
+
+  [data-playlist-recent-list] > div > :last-child {
+    gap: .35rem !important;
+  }
+
+  [data-playlist-recent-list] .playlist-recent-delete,
+  [data-playlist-recent-list] span {
+    font-size: .72rem;
+  }
+
+  .playlist-current-header {
+    flex-direction: column;
+  }
+
+  .playlist-current-header > button[data-current-playlist-play] {
+    justify-content: center;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .playlist-current-header > .playlist-current-delete {
+    border-radius: .45rem;
+    width: 100%;
+  }
+
   .playlist-card-controls {
     gap: .4rem;
   }
@@ -648,6 +927,3 @@
 .mini-wave span:nth-child(3) { height: 45%; }
 .mini-wave span:nth-child(4) { height: 90%; }
 .mini-wave span:nth-child(5) { height: 55%; }
-section{
-  margin-bottom: 15rem;
-}
