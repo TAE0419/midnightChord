@@ -456,7 +456,15 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   renderCurrentPlaylist();
   document.querySelector("[data-current-playlist-play]")?.addEventListener("click", () => {
     const firstArtist = artists.find(artist => artist.name === currentPlaylistEntries[0]?.artist);
-    if (firstArtist) playArtist(artists.indexOf(firstArtist), true);
+    const audio = document.getElementById("studioAudio");
+    const firstArtistIndex = artists.indexOf(firstArtist);
+    if (!firstArtist || !audio) return;
+    if (Number(audio.dataset.playlistArtistIndex) === firstArtistIndex && !audio.paused) {
+      audio.pause();
+      updateCardPlayers();
+      return;
+    }
+    playArtist(firstArtistIndex, true);
   });
   document.querySelector("[data-current-playlist-delete]")?.addEventListener("click", () => {
     currentPlaylistEntries.splice(0, currentPlaylistEntries.length);
@@ -598,6 +606,14 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
       button.innerHTML = icon(active ? "Pause" : "Play", "w-5 h-5");
       button.setAttribute("aria-label", active ? "일시정지" : "재생");
     });
+    const currentPlaylistPlay = document.querySelector("[data-current-playlist-play]");
+    const firstPlaylistArtist = artists.find(artist => artist.name === currentPlaylistEntries[0]?.artist);
+    const currentPlaylistPlaying = !audio?.paused && firstPlaylistArtist && Number(audio.dataset.playlistArtistIndex) === artists.indexOf(firstPlaylistArtist);
+    if (currentPlaylistPlay) {
+      currentPlaylistPlay.classList.toggle("is-playing", Boolean(currentPlaylistPlaying));
+      currentPlaylistPlay.textContent = currentPlaylistPlaying ? "Ⅱ 일시정지" : "▶ 재생";
+      currentPlaylistPlay.setAttribute("aria-label", currentPlaylistPlaying ? "플레이리스트 일시정지" : "플레이리스트 재생");
+    }
     if (window.lucide) window.lucide.createIcons();
   }
 
@@ -698,6 +714,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   audio?.addEventListener("timeupdate", updateCardPlayers);
   audio?.addEventListener("play", updateCardPlayers);
   audio?.addEventListener("pause", updateCardPlayers);
+  audio?.addEventListener("ended", updateCardPlayers);
 };
 
 function renderSearch(query = "") {
