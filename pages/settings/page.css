@@ -1,2 +1,21 @@
 /* Settings page specific styles. */
-
+.settings-eyebrow { color:#b9a5ff; font-size:.72rem; letter-spacing:.12em; }
+.settings-description { margin-top:.45rem; color:var(--muted); font-size:.82rem; }
+.settings-card { display:grid; gap:.35rem; }
+.settings-card-title { display:flex; align-items:flex-start; gap:.7rem; margin-bottom:.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border); }
+.settings-card-title>svg { width:1.15rem; margin-top:.15rem; color:#a78bfa; }
+.settings-card-title h2 { font-size:.95rem; font-weight:500; }
+.settings-card-title p { margin-top:.2rem; color:var(--muted); font-size:.72rem; }
+.settings-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; border-radius:.8rem; padding:.85rem .6rem; cursor:pointer; transition:background .2s; }
+.settings-row:hover { background:rgba(139,92,246,.07); }
+.settings-row>span { min-width:0; }
+.settings-row strong,.settings-row small { display:block; }
+.settings-row strong { font-size:.82rem; font-weight:500; }
+.settings-row small { margin-top:.25rem; color:var(--muted); font-size:.68rem; line-height:1.45; }
+.settings-row>input { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+.settings-switch { position:relative; width:2.5rem; height:1.4rem; flex:none; border-radius:999px; background:#3f3f46; transition:background .2s,box-shadow .2s; }
+.settings-switch::after { content:""; position:absolute; top:.2rem; left:.2rem; width:1rem; height:1rem; border-radius:50%; background:#f4f4f5; transition:transform .2s; box-shadow:0 2px 5px rgba(0,0,0,.35); }
+.settings-row>input:checked+.settings-switch { background:#7c3aed; box-shadow:0 0 16px rgba(124,58,237,.28); }
+.settings-row>input:checked+.settings-switch::after { transform:translateX(1.1rem); }
+.settings-row>input:focus-visible+.settings-switch { outline:2px solid #c4b5fd; outline-offset:2px; }
+.settings-save-message { min-height:1.25rem; color:#b9a5ff; font-size:.75rem; text-align:right; }

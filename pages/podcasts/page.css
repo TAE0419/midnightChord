@@ -1,2 +1,201 @@
 /* Podcast page specific styles. */
 
+.podcast-hero {
+  border-color: rgba(168, 85, 247, 0.22);
+}
+
+.podcast-cover-wrap {
+  max-width: 260px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.podcast-cover {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.podcast-series-card {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.025);
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.podcast-series-card:hover,
+.podcast-series-card.active {
+  border-color: rgba(196, 181, 253, 0.5);
+  background: rgba(139, 92, 246, 0.12);
+}
+
+.podcast-series-card:hover {
+  transform: translateY(-1px);
+}
+
+.podcast-episode-row {
+  border-top: 1px solid var(--border);
+}
+
+.podcast-episode-number {
+  min-height: 52px;
+  border: 1px solid rgba(196, 181, 253, 0.22);
+  color: #c4b5fd;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.podcast-description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.podcast-page-button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 0.875rem;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.podcast-page-button:hover,
+.podcast-page-button.active {
+  border-color: rgba(196, 181, 253, 0.55);
+  background: rgba(139, 92, 246, 0.16);
+  color: #f4f4f5;
+}
+
+@media (max-width: 767px) {
+  body[data-current-page="podcasts"] {
+    padding: 0;
+  }
+
+  body[data-current-page="podcasts"] .trackit-app {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-height: 100svh;
+    border-radius: 0;
+  }
+
+  body[data-current-page="podcasts"] .sidebar {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    flex-direction: row;
+    gap: 0.5rem;
+    overflow: hidden;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0.55rem 0.75rem;
+  }
+
+  body[data-current-page="podcasts"] .sidebar > a {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  body[data-current-page="podcasts"] .sidebar > a > div {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  body[data-current-page="podcasts"] .sidebar [data-nav] {
+    display: flex;
+    min-width: 0;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  body[data-current-page="podcasts"] .sidebar [data-nav]::-webkit-scrollbar {
+    display: none;
+  }
+
+  body[data-current-page="podcasts"] .sidebar .nav-link {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+  }
+
+  body[data-current-page="podcasts"] .trackit-app > main {
+    padding: 1rem;
+  }
+
+  body[data-current-page="podcasts"] .fixed-player {
+    left: 0;
+    right: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .podcast-hero {
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .podcast-hero h2 {
+    font-size: 1.65rem;
+    line-height: 1.25;
+  }
+
+  .podcast-cover-wrap {
+    max-width: 11rem;
+  }
+
+  .podcast-series-card {
+    min-height: 5.5rem;
+  }
+
+  .podcast-series-card .w-16 {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .podcast-episode-row {
+    grid-template-columns: 2.65rem minmax(0, 1fr) !important;
+    gap: 0.75rem;
+    padding: 0.9rem;
+  }
+
+  .podcast-episode-number {
+    min-height: 2.65rem;
+    border-radius: 6px;
+    font-size: 0.66rem;
+  }
+
+  .podcast-episode-row > :last-child {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: -0.15rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .podcast-episode-row p.text-sm {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .podcast-description {
+    -webkit-line-clamp: 1;
+  }
+
+  .podcast-pagination {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0.85rem;
+    scrollbar-width: none;
+  }
+
+  .podcast-pagination::-webkit-scrollbar {
+    display: none;
+  }
+
+  .podcast-page-button {
+    min-width: 2.4rem;
+    min-height: 2.4rem;
+    flex: 0 0 auto;
+  }
+}

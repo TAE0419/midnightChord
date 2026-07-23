@@ -1,2 +1,315 @@
-/* Search page specific styles. */
+.search-page {
+  --search-accent: #56e9c9;
+  --search-accent-soft: rgba(86, 233, 201, 0.12);
+  --search-accent-border: rgba(86, 233, 201, 0.38);
+}
 
+.search-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.search-eyebrow {
+  color: var(--search-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.search-summary {
+  color: var(--muted);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.search-filters {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: thin;
+}
+
+.search-filter {
+  min-height: 2.25rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.search-filter:hover,
+.search-filter:focus-visible {
+  border-color: var(--search-accent-border);
+  color: #f0eef3;
+}
+
+.search-filter.is-active {
+  border-color: var(--search-accent-border);
+  background: var(--search-accent-soft);
+  color: var(--search-accent);
+}
+
+.search-section {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.search-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.search-section-count {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.search-track {
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+  min-height: 4.5rem;
+}
+
+.search-result-cover {
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--panel-soft);
+  color: var(--muted);
+}
+
+.search-result-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.search-card {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) 1rem;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 5.25rem;
+  padding: 0.85rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  transition: background 160ms ease;
+}
+
+.search-card:nth-child(2n) {
+  border-right: 0;
+}
+
+.search-card:hover,
+.search-card:focus-visible {
+  background: #222229;
+}
+
+.search-card-cover {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--panel-soft);
+  color: var(--muted);
+}
+
+.search-card-cover.is-artist {
+  border-radius: 50%;
+}
+
+.search-card-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-empty {
+  display: grid;
+  place-items: center;
+  min-height: 18rem;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  text-align: center;
+}
+
+.search-empty-icon {
+  display: inline-flex;
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--search-accent-soft);
+  color: var(--search-accent);
+}
+
+@media (max-width: 640px) {
+  .search-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .search-summary {
+    white-space: normal;
+  }
+
+  .search-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .search-card,
+  .search-card:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .search-track {
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+    padding: 0.75rem;
+  }
+
+  .search-result-cover {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  body[data-current-page="search"] {
+    padding: 0;
+  }
+
+  body[data-current-page="search"] .trackit-app {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-height: 100svh;
+    border-radius: 0;
+  }
+
+  body[data-current-page="search"] .sidebar {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    flex-direction: row;
+    gap: 0.5rem;
+    overflow: hidden;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0.55rem 0.75rem;
+  }
+
+  body[data-current-page="search"] .sidebar > a {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  body[data-current-page="search"] .sidebar > a > div {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  body[data-current-page="search"] .sidebar [data-nav] {
+    display: flex;
+    min-width: 0;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  body[data-current-page="search"] .sidebar [data-nav]::-webkit-scrollbar {
+    display: none;
+  }
+
+  body[data-current-page="search"] .sidebar .nav-link {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+  }
+
+  body[data-current-page="search"] .trackit-app > main {
+    padding: 1rem;
+  }
+
+  body[data-current-page="search"] .fixed-player {
+    left: 0;
+    right: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .search-filters {
+    margin-inline: -0.15rem;
+    padding-inline: 0.15rem;
+    scroll-snap-type: x proximity;
+  }
+
+  .search-filter {
+    min-height: 2.5rem;
+    padding-inline: 0.9rem;
+    scroll-snap-align: start;
+  }
+
+  .search-section-header {
+    min-height: 3.25rem;
+    padding: 0.75rem;
+  }
+
+  .search-section-count {
+    max-width: 8.5rem;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-card {
+    grid-template-columns: 3.1rem minmax(0, 1fr) 0.9rem;
+    min-height: 4.85rem;
+    gap: 0.7rem;
+    padding: 0.75rem;
+  }
+
+  .search-card-cover {
+    width: 3.1rem;
+    height: 3.1rem;
+  }
+
+  .search-empty {
+    min-height: 14rem;
+    padding: 1.5rem;
+  }
+}
