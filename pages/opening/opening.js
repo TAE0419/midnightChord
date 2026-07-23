@@ -185,7 +185,6 @@
 
     window.gsap.timeline()
       .from(".opening-header", { opacity: 0, y: -12, duration: 0.55 })
-      .from(".opening-record", { opacity: 0, scale: 0.7, duration: 0.8 }, "<")
       .from(".opening-eyebrow", { opacity: 0, y: 12, duration: 0.4 }, "-=0.18")
       .from(".opening-mark", { opacity: 0, scaleX: 0.35, duration: 0.45 }, "-=0.12")
       .from(".opening-logo-wrap", { opacity: 0, y: 18, duration: 0.7 }, "-=0.15")
