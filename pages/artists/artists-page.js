@@ -61,7 +61,7 @@
   window.trackitPages.artists = renderMyArtists;
 
   // 공용 검색 페이지로 이동하지 않고 현재 아티스트 목록 안에서만 검색합니다.
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("trackit:ready", () => {
     const searchInput = document.querySelector("[data-search-input]");
     if (!searchInput) return;
 
@@ -177,7 +177,7 @@
   });
 
   // 카드 클릭뿐 아니라 하단 플레이어의 재생/정지 상태도 버튼과 동기화합니다.
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("trackit:ready", () => {
     const audio = document.getElementById("studioAudio");
     if (!audio) return;
 

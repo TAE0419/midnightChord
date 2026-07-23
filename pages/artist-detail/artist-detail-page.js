@@ -153,7 +153,7 @@
   });
 
   // 하단 플레이어로 재생/정지해도 버튼과 프로필 회전 상태를 동기화합니다.
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("trackit:ready", () => {
     const audio = document.getElementById("studioAudio");
     if (!audio) return;
 
