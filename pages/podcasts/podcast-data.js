@@ -1,0 +1,314 @@
+(function () {
+  const podcastSeries = [
+  {
+    "id": "series-01",
+    "title": "미드나잇 25시 정각",
+    "host": "마키아또",
+    "category": "일상 / 힐링",
+    "description": "지친 하루 끝, 조용히 켜놓고 듣는 밤의 라디오. 특별하지 않아도 따뜻한 우리들의 소소한 일상과 위로를 담아 전합니다.",
+    "coverImage": "assets/images/podcasts/midnight-hello.jpg",
+    "isFeatured": true,
+    "episodes": [
+      {
+        "id": "ep-101",
+        "epNumber": "EP.01",
+        "title": "수고했어, 오늘도 빛난 당신에게",
+        "duration": "22:15",
+        "publishedAt": "2026-04-01",
+        "audioUrl": "assets/audio/podcasts/hello-ep01.mp3",
+        "summary": "온종일 달리느라 고생한 스스로에게 전하는 밤의 메시지. 차 한 잔과 함께 편안하게 들어보세요."
+      },
+      {
+        "id": "ep-102",
+        "epNumber": "EP.02",
+        "title": "아무것도 하지 않아도 괜찮은 밤",
+        "duration": "18:40",
+        "publishedAt": "2026-04-08",
+        "audioUrl": "assets/audio/podcasts/hello-ep02.mp3",
+        "summary": "생각이 너무 많아 잠들지 못하는 밤, 모든 부담감을 잠시 내려놓는 연습."
+      },
+      {
+        "id": "ep-103",
+        "epNumber": "EP.03",
+        "title": "스쳐 지나가는 계절의 온도",
+        "duration": "20:05",
+        "publishedAt": "2026-04-15",
+        "audioUrl": "assets/audio/podcasts/hello-ep03.mp3",
+        "summary": "바람의 느낌이 달라지는 밤, 계절의 변화 속에서 느끼는 소소한 감정들을 나눕니다."
+      },
+      {
+        "id": "ep-104",
+        "epNumber": "EP.04",
+        "title": "나만의 작은 방, 가장 편안한 시간",
+        "duration": "21:30",
+        "publishedAt": "2026-04-22",
+        "audioUrl": "assets/audio/podcasts/hello-ep04.mp3",
+        "summary": "조명을 낮추고 온전히 혼자만의 공간에 잠길 때 찾아오는 깊은 평온함에 대하여."
+      }
+    ]
+  },
+  {
+    "id": "series-02",
+    "title": "아티스트의 야간 작업실",
+    "host": "Studio Midnight",
+    "category": "음악 / 아티스트",
+    "description": "명곡과 명작이 탄생한 바로 그 새벽. 아티스트들의 비하인드 스토리와 몽환적인 보랏빛 작업실 속 깊은 이야기.",
+    "coverImage": "assets/images/podcasts/artist-studio.jpg",
+    "isFeatured": false,
+    "episodes": [
+      {
+        "id": "ep-201",
+        "epNumber": "EP.01",
+        "title": "대중에게 사랑받은 그 멜로디는 어떻게 만들어졌나",
+        "duration": "31:10",
+        "publishedAt": "2026-04-03",
+        "audioUrl": "assets/audio/podcasts/artist-ep01.mp3",
+        "summary": "스튜디오 미드나잇의 시그니처 사운드 'Violet Night' 제작 비하인드 및 프로듀서 인터뷰."
+      },
+      {
+        "id": "ep-202",
+        "epNumber": "EP.02",
+        "title": "새벽 3시, 영감이 밀려오는 시간",
+        "duration": "25:50",
+        "publishedAt": "2026-04-10",
+        "audioUrl": "assets/audio/podcasts/artist-ep02.mp3",
+        "summary": "낮에는 들리지 않던 소리들이 새벽에 특별해지는 이유. 뮤지션들이 말하는 밤의 창작욕."
+      },
+      {
+        "id": "ep-203",
+        "epNumber": "EP.03",
+        "title": "악기들의 숨소리가 스며들 때",
+        "duration": "27:15",
+        "publishedAt": "2026-04-17",
+        "audioUrl": "assets/audio/podcasts/artist-ep03.mp3",
+        "summary": "베이스와 아날로그 신스의 정교한 레이어링, 그 섬세한 질감을 함께 들어봅니다."
+      },
+      {
+        "id": "ep-204",
+        "epNumber": "EP.04",
+        "title": "버려진 데모 곡에 숨겨진 비밀",
+        "duration": "29:40",
+        "publishedAt": "2026-04-24",
+        "audioUrl": "assets/audio/podcasts/artist-ep04.mp3",
+        "summary": "앨범에 실리지 못했던 아쉬운 수록곡 후보와 그 안의 특별한 악상 모음."
+      },
+      {
+        "id": "ep-205",
+        "epNumber": "EP.05",
+        "title": "비가 내리는 새벽, 계절감을 담다",
+        "duration": "29:40",
+        "publishedAt": "2026-04-24",
+        "audioUrl": "assets/audio/podcasts/artist-ep05.mp3",
+        "summary": " 차분하고 서정적인 계절의 감각, 새벽의 작업실."
+      }
+    ]
+  },
+  {
+    "id": "series-03",
+    "title": "밤 11시, 문장 수집가들",
+    "host": "북클럽 미드나잇",
+    "category": "도서 / 에세이",
+    "description": "잠들기 전 마음에 오래도록 맴도는 단 한 줄의 문장. 당신의 밤을 포근하게 채워줄 소설과 에세이 추천.",
+    "coverImage": "assets/images/podcasts/book-collectors.jpg",
+    "isFeatured": false,
+    "episodes": [
+      {
+        "id": "ep-301",
+        "epNumber": "EP.01",
+        "title": "지친 날 나를 살려낸 보랏빛 문장들",
+        "duration": "28:30",
+        "publishedAt": "2026-04-05",
+        "audioUrl": "assets/audio/podcasts/book-ep01.mp3",
+        "summary": "마음이 조급할 때 가만히 펼쳐보기 좋은 밤의 에세이 추천작 3권."
+      },
+      {
+        "id": "ep-302",
+        "epNumber": "EP.02",
+        "title": "길을 잃었을 때 읽는 몰입의 소설",
+        "duration": "24:15",
+        "publishedAt": "2026-04-12",
+        "audioUrl": "assets/audio/podcasts/book-ep02.mp3",
+        "summary": "현실을 잠시 잊고 다른 세계관 속으로 푹 빠져들게 만드는 매력적인 소설 이야기."
+      },
+      {
+        "id": "ep-303",
+        "epNumber": "EP.03",
+        "title": "오래된 종이 냄새와 수필의 온기",
+        "duration": "22:50",
+        "publishedAt": "2026-04-19",
+        "audioUrl": "assets/audio/podcasts/book-ep03.mp3",
+        "summary": "빛바랜 책장에서 건져 올린 클래식 수필의 한 단락, 조용한 밤에 들려드립니다."
+      },
+      {
+        "id": "ep-304",
+        "epNumber": "EP.04",
+        "title": "마음의 밑줄을 긋는 단어들",
+        "duration": "26:10",
+        "publishedAt": "2026-04-26",
+        "audioUrl": "assets/audio/podcasts/book-ep04.mp3",
+        "summary": "언어 뒤에 숨은 시인의 깊은 감정선과 당신의 마음을 두드릴 언어 모음."
+      }
+    ]
+  },
+  {
+    "id": "series-04",
+    "title": "브런치 플레이리스트",
+    "host": "모닝레터",
+    "category": "라이프 / 음악",
+    "description": "가벼운 식사와 커피 한 잔 사이에 듣기 좋은 음악 이야기. 주말 오전의 리듬, 동네의 소리, 일상을 환하게 여는 플레이리스트를 소개합니다.",
+    "coverImage": "assets/images/podcasts/brunch-playlist.jpg",
+    "isFeatured": false,
+    "episodes": [
+      {
+        "id": "ep-401",
+        "epNumber": "EP.01",
+        "title": "햇살 좋은 창가에서 고른 첫 곡",
+        "duration": "21:40",
+        "publishedAt": "2026-04-06",
+        "audioUrl": "assets/audio/podcasts/walk-ep01.mp3",
+        "summary": "분주하지 않은 오전에 어울리는 곡들을 골라보고, 하루의 속도를 부드럽게 맞추는 작은 습관을 이야기합니다."
+      },
+      {
+        "id": "ep-402",
+        "epNumber": "EP.02",
+        "title": "동네 카페에서 들은 산뜻한 리듬",
+        "duration": "26:15",
+        "publishedAt": "2026-04-13",
+        "audioUrl": "assets/audio/podcasts/walk-ep02.mp3",
+        "summary": "커피 머신 소리와 낮은 대화 사이로 흐르는 음악을 따라가며, 편안한 주말 무드를 만드는 사운드를 나눕니다."
+      },
+      {
+        "id": "ep-403",
+        "epNumber": "EP.03",
+        "title": "나른한 늦은 오전, 클래식 한 잔",
+        "duration": "23:50",
+        "publishedAt": "2026-04-20",
+        "audioUrl": "assets/audio/podcasts/walk-ep03.mp3",
+        "summary": "점심을 준비하며 차분하게 들을 수 있는 가벼운 소품곡과 클래식 재즈 리듬을 담았습니다."
+      },
+      {
+        "id": "ep-404",
+        "epNumber": "EP.04",
+        "title": "바람이 부는 야외 테이블의 그루브",
+        "duration": "25:10",
+        "publishedAt": "2026-04-27",
+        "audioUrl": "assets/audio/podcasts/walk-ep04.mp3",
+        "summary": "선선한 바람과 함께하기 좋은 어쿠스틱 라이브 사운드와 산뜻한 어쿠스틱 기타 선율."
+      },
+      {
+        "id": "ep-405",
+        "epNumber": "EP.05",
+        "title": "주말 오후로 이어지는 느긋한 템포",
+        "duration": "24:30",
+        "publishedAt": "2026-05-04",
+        "audioUrl": "assets/audio/podcasts/walk-ep05.mp3",
+        "summary": "브런치 시간을 지나 기분 좋게 늘어지는 오후 2시, 여유를 한껏 더해줄 로파이 BGM."
+      }
+    ]
+  },
+  {
+    "id": "series-05",
+    "title": "주말의 영사실",
+    "host": "시네마 미드나잇",
+    "category": "영화 / 문화",
+    "description": "주말 오후에 다시 꺼내 보고 싶은 영화와 그 장면을 오래 남게 만든 OST 이야기. 장면, 음악, 감정을 편안한 속도로 함께 감상합니다.",
+    "coverImage": "assets/images/podcasts/weekend-cinema.jpg",
+    "isFeatured": false,
+    "episodes": [
+      {
+        "id": "ep-501",
+        "epNumber": "EP.01",
+        "title": "비 오는 오후에 다시 보는 영화 음악",
+        "duration": "30:05",
+        "publishedAt": "2026-04-09",
+        "audioUrl": "assets/audio/podcasts/cinema-ep01.mp3",
+        "summary": "익숙한 영화의 장면을 다른 온도로 들려주는 OST를 골라보고, 음악이 장면의 기억을 바꾸는 순간을 이야기합니다."
+      },
+      {
+        "id": "ep-502",
+        "epNumber": "EP.02",
+        "title": "엔딩 크레딧이 끝나도 남는 멜로디",
+        "duration": "27:50",
+        "publishedAt": "2026-04-16",
+        "audioUrl": "assets/audio/podcasts/cinema-ep02.mp3",
+        "summary": "영화가 끝난 뒤에도 머릿속에 남는 테마곡과 엔딩 음악을 중심으로, 여운을 만드는 사운드의 힘을 살펴봅니다."
+      },
+      {
+        "id": "ep-503",
+        "epNumber": "EP.03",
+        "title": "해 질 녘 노을과 닮은 영화의 오프닝",
+        "duration": "29:10",
+        "publishedAt": "2026-04-23",
+        "audioUrl": "assets/audio/podcasts/cinema-ep03.mp3",
+        "summary": "주말 저녁으로 넘어가는 시간, 강렬한 첫인상으로 영화 전체의 분위기를 잡아주었던 오프닝 스코어를 소개합니다."
+      },
+      {
+        "id": "ep-504",
+        "epNumber": "EP.04",
+        "title": "어린 시절의 추억을 부르는 애니메이션 사운드트랙",
+        "duration": "26:40",
+        "publishedAt": "2026-04-30",
+        "audioUrl": "assets/audio/podcasts/cinema-ep04.mp3",
+        "summary": "순수했던 기억을 자극하는 오케스트라 선율과 몽환적인 스튜디오 지브리 스타일의 배경음악들."
+      },
+      {
+        "id": "ep-505",
+        "epNumber": "EP.05",
+        "title": "심야 영화관에서 홀로 들었던 테마",
+        "duration": "28:15",
+        "publishedAt": "2026-05-07",
+        "audioUrl": "assets/audio/podcasts/cinema-ep05.mp3",
+        "summary": "조용한 극장에서 마주한 묵직한 감동. 주말 밤을 깊이 있게 마무리해 주는 영화 테마 곡."
+      }
+    ]
+  }
+];
+
+  const tracks = podcastSeries.flatMap(series =>
+    series.episodes.map(episode => ({
+      title: episode.title,
+      artist: series.host,
+      time: episode.duration,
+      audioSrc: episode.audioUrl,
+      imageSrc: series.coverImage
+    }))
+  );
+
+  window.trackitPodcastData = {
+    podcastSeries,
+    tracks
+  };
+
+  function applyPodcastData() {
+    window.trackitData = window.trackitData || {};
+    window.trackitData.podcastSeries = podcastSeries;
+    window.trackitData.tracks = [
+      ...(window.trackitData.tracks || []).filter(track => !track.audioSrc || !track.audioSrc.includes("assets/audio/podcasts/")),
+      ...tracks
+    ];
+  }
+
+  applyPodcastData();
+
+  const originalFetch = window.fetch ? window.fetch.bind(window) : null;
+  window.fetch = function (resource, options) {
+    const url = typeof resource === "string" ? resource : resource && resource.url;
+    if (url && url.includes("data/podcast-episodes.json")) {
+      const body = JSON.stringify(podcastSeries);
+      if (typeof Response === "function") {
+        return Promise.resolve(new Response(body, {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        }));
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(podcastSeries)
+      });
+    }
+    if (!originalFetch) {
+      return Promise.reject(new TypeError("fetch is not available"));
+    }
+    return originalFetch(resource, options);
+  };
+})();
