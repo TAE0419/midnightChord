@@ -164,7 +164,10 @@
     selectedAudioButton = button;
     selectedArtist = artist;
 
-    const artistAudioUrl = new URL(artist.audio, document.baseURI).href;
+    const preferredArtistAudio = typeof window.preferredStudioAudioSource === "function"
+      ? window.preferredStudioAudioSource(artist.audio)
+      : artist.audio;
+    const artistAudioUrl = new URL(preferredArtistAudio, document.baseURI).href;
     if (audio.src !== artistAudioUrl) {
       audio.src = artistAudioUrl;
       audio.load();
