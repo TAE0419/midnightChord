@@ -123,25 +123,10 @@ function renderArtists() {
   return `
     <div><p class="text-sm" style="color:var(--muted)">ARTISTS</p><h1 class="text-2xl font-medium mt-1">아티스트</h1></div>
     <div class="grid md:grid-cols-2 gap-4">
-      ${artists.map((artist, index) => `
-        <article class="artist-card surface rounded-2xl p-4 flex items-center gap-4">
+      ${artists.map(artist => `
+        <article class="surface rounded-2xl p-4 flex items-center gap-4">
           ${assetBox(artist, "w-14 h-14 rounded-full", artist.initial)}
-          <div class="artist-card-meta flex-1"><p class="font-medium">${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div>
-          <!-- 미니 재생바: data-artist-play-track 값으로 재생할 곡 번호를 전달합니다. -->
-          <button type="button" class="artist-mini-player" data-artist-play-track="${index % tracks.length}" aria-label="아티스트 음악 재생">
-            <span class="artist-mini-line" aria-hidden="true">
-              <!-- 재생 중에는 아래 SVG의 흰 선 자체가 구불거리며 움직입니다. -->
-              <svg class="artist-wave" viewBox="0 0 180 30" preserveAspectRatio="none">
-                <path d="M0 15 L180 15"></path>
-              </svg>
-            </span>
-            <!-- 정지 상태에는 Play, 재생 상태에는 Pause 아이콘을 표시합니다. -->
-            <span class="artist-mini-play" aria-hidden="true">
-              ${icon("Play", "artist-mini-icon artist-mini-icon-play w-4 h-4")}
-              ${icon("Pause", "artist-mini-icon artist-mini-icon-pause w-4 h-4")}
-            </span>
-          </button>
-          <!-- 아티스트 카드의 '소개 보기' 버튼: 문구를 바꾸려면 아래 텍스트를 수정하세요. -->
+          <div class="flex-1"><p class="font-medium">${artist.name}</p><p class="text-sm" style="color:var(--muted)">${artist.plays}</p></div>
           <button type="button" class="surface rounded-xl px-3 py-2 text-sm" data-artist-name="${artist.name}">소개 보기</button>
         </article>
       `).join("")}
@@ -153,29 +138,18 @@ function renderArtistDetail(artistName = "LUNA") {
   const artist = artists.find(item => item.name === artistName) || artists[0];
   return `
     <button type="button" class="text-sm flex items-center gap-2" style="color:#c4b5fd" data-page-link="artists">${icon("ArrowLeft")} 아티스트 목록</button>
-    <div class="artist-detail-hero surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[150px_1fr] gap-6 items-center">
+    <div class="surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[150px_1fr] gap-6 items-center">
       ${assetBox(artist, "rounded-full aspect-square max-w-[150px] w-full mx-auto", artist.initial)}
       <div>
         <p class="text-sm" style="color:var(--muted)">ARTIST PROFILE</p>
         <h1 class="text-3xl md:text-4xl font-medium mt-2">${artist.name}</h1>
-        <!-- trackit-data.js의 artist.des를 표시하고, 값이 없으면 기본 문장을 사용합니다. -->
-        <p class="mt-3 text-sm md:text-base" style="color:var(--muted)">${artist.des || `${artist.name}의 음악과 발매 소식을 소개하는 공간입니다.`}</p>
-        <div class="flex gap-2 mt-5">
-          <!-- 상세 페이지 인기곡 버튼: 클릭하면 Play 아이콘이 Pause 아이콘으로 바뀝니다. -->
-          <button type="button" class="artist-detail-play purple-btn" data-artist-detail-play="0"><span>인기곡재생</span>${icon("Play")}</button>
-          <button type="button" class="artist-follow surface rounded-xl px-4 py-2">팔로우</button>
-        </div>
+        <p class="mt-3 text-sm md:text-base" style="color:var(--muted)">${artist.name}의 음악과 발매 소식을 소개하는 공간입니다. 보라빛 밤의 감성과 새로운 사운드를 만나보세요.</p>
+        <div class="flex gap-2 mt-5"><button type="button" class="purple-btn rounded-xl px-4 py-2" data-play-track="0">${icon("Play")} 인기곡 재생</button><button type="button" class="surface rounded-xl px-4 py-2">팔로우</button></div>
       </div>
     </div>
-    <div class="artist-detail-lower grid md:grid-cols-[1.1fr_.9fr] gap-4">
-      <section class="artist-tracks surface rounded-2xl p-4"><h2 class="font-medium mb-3">대표곡</h2>${tracks.slice(0, 3).map((track, index) => trackRow(track, index, { active: index === 0 })).join("")}</section>
-      <!-- 아티스트 사진 위에 연한 보라색 유리 패널을 올린 소개 영역 -->
-      <section class="artist-intro-card surface rounded-2xl" style='--artist-detail-image:url("${artist.imageSrc}")'>
-        <div class="artist-intro-glass">
-          <h2 class="font-medium">소개</h2>
-          <p class="text-sm leading-6 mt-3">${artist.bio || "장르를 넘나드는 사운드와 선명한 분위기를 지닌 아티스트입니다."}</p>
-        </div>
-      </section>
+    <div class="grid md:grid-cols-[1.1fr_.9fr] gap-4">
+      <section class="surface rounded-2xl p-4"><h2 class="font-medium mb-3">대표곡</h2>${tracks.slice(0, 3).map((track, index) => trackRow(track, index, { active: index === 0 })).join("")}</section>
+      <section class="surface rounded-2xl p-4"><h2 class="font-medium">소개</h2><p class="text-sm leading-6 mt-3" style="color:var(--muted)">장르를 넘나드는 사운드와 선명한 분위기를 지닌 아티스트입니다. 상세 콘텐츠는 이후 실제 소개 문구와 데이터 연동 단계에서 교체할 수 있습니다.</p></section>
     </div>
   `;
 }
