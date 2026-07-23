@@ -412,6 +412,16 @@ window.trackitData = {
           summary: "현실을 잠시 다른 시선으로 보게 만드는 매력적인 소설 이야기를 나눕니다."
         }
       ]
+    },
+    {
+      title: "Purple Drive",
+      meta: "24곡 · 공개",
+      art: "album-art-alt"
+    },
+    {
+      title: "Night Walk",
+      meta: "16곡 · 공개",
+      art: "album-art-warm"
     }
   ]
 };

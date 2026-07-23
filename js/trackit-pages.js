@@ -6,7 +6,7 @@ function icon(name, className = "w-4 h-4") {
 
 function assetBox(item, className, fallback = "") {
   if (item.imageSrc) {
-    return `<img src="${item.imageSrc}" alt="${item.title || item.name}" class="${className} object-cover" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: '${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl', textContent: '${fallback}' }))">`;
+    return `<img src="${item.imageSrc}" alt="${item.title || item.name}" draggable="false" class="${className} object-cover" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: '${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl', textContent: '${fallback}' }))">`;
   }
   return `<div class="${className} ${item.art || 'purple-soft'} flex items-center justify-center text-4xl">${fallback}</div>`;
 }
@@ -34,6 +34,19 @@ function trackRow(track, index, options = {}) {
       </div>
       <span class="text-sm">${options.trailing || track.time}</span>
     </button>
+  `;
+}
+
+function playlistRecentRow(entry, index) {
+  const art = entry.imageSrc
+    ? assetBox(entry, "w-11 h-11 rounded-lg shrink-0", entry.initial || "")
+    : `<div class="${entry.art || "purple-soft"} w-11 h-11 rounded-lg shrink-0"></div>`;
+  return `
+    <div class="flex items-center gap-3 p-3 border-b last:border-b-0" style="border-color:var(--border)">
+      ${art}
+      <div class="min-w-0 flex-1"><p class="truncate">${entry.title}</p><p class="text-sm truncate" style="color:var(--muted)">${entry.artist}</p></div>
+      <div class="flex items-center gap-4 shrink-0"><button type="button" class="playlist-recent-delete" data-playlist-recent-delete="${index}">삭제</button><span class="text-sm">${entry.time}</span></div>
+    </div>
   `;
 }
 
@@ -166,26 +179,413 @@ function renderPodcasts() {
 }
 
 function renderPlaylist() {
+  const carouselItems = Array.from({ length: 30 }, (_, index) => ({
+    ...playlists[index % playlists.length],
+    artist: artists[index % artists.length],
+    artistIndex: index % artists.length
+  }));
+  window.setTimeout(() => window.trackitPlaylistCarousel?.(), 0);
+
   return `
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div><p class="text-sm" style="color:var(--muted)">MY LIBRARY</p><h1 class="text-2xl font-medium mt-1">플레이리스트</h1></div>
-      <button type="button" class="purple-btn rounded-xl px-4 py-2">+ 새 플레이리스트</button>
+      <button type="button" class="playlist-create-button rounded-xl px-4 py-2" data-playlist-create>+ 새 플레이리스트</button>
     </div>
-    <div class="grid md:grid-cols-3 gap-4">
-      ${playlists.map(item => `
-        <article class="surface rounded-2xl p-4">
-          <div class="${item.art} rounded-xl aspect-square flex items-center justify-center text-4xl">${item.icon ? icon(item.icon, "w-10 h-10") : ""}</div>
-          <p class="font-medium mt-3">${item.title}</p>
-          <p class="text-sm" style="color:var(--muted)">${item.meta}</p>
+    <div class="playlist-carousel-shell">
+      <button type="button" class="playlist-carousel-jump playlist-carousel-jump-start" data-playlist-carousel-start aria-label="처음으로 이동">${icon("ChevronsLeft", "w-5 h-5")}</button>
+      <button type="button" class="playlist-carousel-jump playlist-carousel-jump-end" data-playlist-carousel-end aria-label="마지막으로 이동">${icon("ChevronsRight", "w-5 h-5")}</button>
+      <div class="playlist-carousel" data-playlist-carousel>
+      <div class="playlist-carousel-track" data-playlist-carousel-track>
+      ${carouselItems.map((item, index) => {
+        const artist = item.artist;
+        return `
+        <article class="playlist-carousel-card surface rounded-2xl p-3" data-playlist-card="${item.artistIndex}">
+          ${assetBox({ ...item, imageSrc: artist?.imageSrc }, "rounded-xl aspect-square w-full")}
+          <p class="font-medium mt-2">${artist?.name || item.title}</p>
+          <p class="text-sm" style="color:var(--muted)">${artist?.title || item.meta}</p>
+          <span class="playlist-card-selected" aria-hidden="true">선택됨</span>
+          <input class="playlist-card-progress" data-playlist-progress="${item.artistIndex}" type="range" min="0" max="100" value="0" aria-label="재생 위치">
+          <div class="playlist-card-controls" aria-label="${artist?.name || item.title} 재생 컨트롤">
+            <button type="button" class="playlist-card-add" aria-label="내 라이브러리에 추가">+</button>
+            <button type="button" data-playlist-action="previous" data-playlist-artist="${item.artistIndex}" aria-label="이전 곡">${icon("SkipBack", "w-4 h-4")}</button>
+            <button type="button" class="playlist-card-play" data-playlist-action="play" data-playlist-artist="${item.artistIndex}" aria-label="재생">${icon("Play", "w-5 h-5")}</button>
+            <button type="button" data-playlist-action="next" data-playlist-artist="${item.artistIndex}" aria-label="다음 곡">${icon("SkipForward", "w-4 h-4")}</button>
+            <button type="button" data-playlist-action="shuffle" data-playlist-artist="${item.artistIndex}" aria-label="셔플">${icon("Shuffle", "w-4 h-4")}</button>
+          </div>
         </article>
-      `).join("")}
+      `;
+      }).join("")}
+      </div>
+      </div>
     </div>
+    <div class="playlist-modal" data-playlist-modal hidden>
+      <div class="playlist-modal-backdrop" data-playlist-modal-close></div>
+      <section class="playlist-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="playlist-modal-title">
+        <div class="playlist-modal-header"><h2 id="playlist-modal-title">새 플레이리스트</h2><button type="button" class="playlist-modal-close" data-playlist-modal-close aria-label="닫기">×</button></div>
+        <p class="playlist-modal-copy">플레이리스트에 담을 아티스트를 선택해 주세요.</p>
+        <label class="playlist-modal-search"><span class="sr-only">아티스트 검색</span><input type="search" data-playlist-modal-search placeholder="아티스트 또는 곡 검색" autocomplete="off"></label>
+        <div class="playlist-modal-artists" data-playlist-modal-artists>
+          ${artists.map((artist, index) => `
+            <button type="button" class="playlist-modal-artist ${index === 0 ? "is-selected" : ""}" data-playlist-modal-artist="${index}" data-playlist-modal-search-text="${artist.name} ${artist.title} ${artist.plays}">
+              ${assetBox(artist, "w-11 h-11 rounded-full", artist.initial)}
+              <span class="playlist-modal-artist-info"><strong>${artist.name}</strong><small>${artist.plays}</small></span>
+              <span class="playlist-modal-intro" data-playlist-modal-detail="${encodeURIComponent(artist.name)}">소개 보기</span>
+          </button>`).join("")}
+          <p class="playlist-modal-empty" data-playlist-modal-empty hidden>검색 결과가 없습니다.</p>
+        </div>
+        <div class="playlist-modal-actions">
+          <div class="playlist-modal-picker">
+            <input class="playlist-modal-current-name" data-playlist-modal-current-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름">
+            <button type="button" class="playlist-modal-other-button" data-playlist-modal-other aria-expanded="false">다른 플리</button>
+            <div class="playlist-modal-other-list" data-playlist-modal-other-list hidden>
+              ${["새벽 산책", "Purple Focus", "주말 드라이브"].map(name => `<button type="button" data-playlist-modal-name="${name}">${name}</button>`).join("")}
+            </div>
+          </div>
+          <button type="button" class="playlist-modal-confirm" data-playlist-modal-confirm>확인</button>
+        </div>
+      </section>
+    </div>
+    <div class="playlist-toast" data-playlist-toast role="status" aria-live="polite">플레이리스트에 추가 되었습니다.</div>
     <div class="surface rounded-2xl p-4">
       <h2 class="font-medium mb-3">최근 들은 곡</h2>
-      ${tracks.slice(0, 2).map((track, index) => trackRow(track, index, { art: albums[index].art, trailing: index === 0 ? "2분 전" : "18분 전" })).join("")}
+      <div data-playlist-recent-list></div>
     </div>
   `;
 }
+
+window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
+  const carousel = document.querySelector("[data-playlist-carousel]");
+  const track = document.querySelector("[data-playlist-carousel-track]");
+  if (!carousel || !track || carousel.dataset.playlistCarouselInitialized === "true") return;
+  carousel.dataset.playlistCarouselInitialized = "true";
+  const libraryKey = "studio-midnight-mypage-library";
+
+  const createButton = document.querySelector("[data-playlist-create]");
+  const modal = document.querySelector("[data-playlist-modal]");
+  const toast = document.querySelector("[data-playlist-toast]");
+  const startButton = document.querySelector("[data-playlist-carousel-start]");
+  const endButton = document.querySelector("[data-playlist-carousel-end]");
+  const recentList = document.querySelector("[data-playlist-recent-list]");
+  const recentEntries = tracks.slice(0, 2).map((track, index) => ({
+    ...track,
+    imageSrc: artists[index]?.imageSrc,
+    initial: artists[index]?.initial,
+    art: albums[index]?.art,
+    time: index === 0 ? "2분 전" : "18분 전"
+  }));
+
+  function currentPlaylistUser() {
+    try {
+      return JSON.parse(localStorage.getItem("studio-midnight-user"));
+    } catch {
+      return null;
+    }
+  }
+
+  function artistTrack(artist) {
+    const matched = tracks.find(item =>
+      item.artist === artist.name ||
+      artist.name.includes(item.artist) ||
+      item.artist.includes(artist.name)
+    );
+    if (matched) return { ...matched };
+    return {
+      title: artist.title || `${artist.name} Sample`,
+      artist: artist.name,
+      time: artist.time || "--:--",
+      audioSrc: artist.audio || ""
+    };
+  }
+
+  function updateMypagePlaylist(name, selectedArtists) {
+    const user = currentPlaylistUser();
+    if (!user?.email) {
+      alert("플레이리스트를 저장하려면 먼저 로그인해주세요.");
+      window.location.href = new URL("pages/mypage/", document.baseURI).href;
+      return false;
+    }
+
+    let libraries = {};
+    try {
+      libraries = JSON.parse(localStorage.getItem(libraryKey)) || {};
+    } catch {
+      libraries = {};
+    }
+
+    const userKey = user.email.toLowerCase();
+    const library = libraries[userKey] && typeof libraries[userKey] === "object"
+      ? libraries[userKey]
+      : { follows: [], playlists: [], likes: [] };
+    if (!Array.isArray(library.playlists)) library.playlists = [];
+
+    const additions = selectedArtists.map(artistTrack);
+    const playlist = library.playlists.find(item => item.title === name);
+    if (playlist) {
+      const uniqueTracks = new Map(
+        [...(Array.isArray(playlist.tracks) ? playlist.tracks : []), ...additions]
+          .map(item => [`${item.title}::${item.artist}`, item])
+      );
+      playlist.tracks = [...uniqueTracks.values()];
+      playlist.count = playlist.tracks.length;
+    } else {
+      library.playlists.unshift({
+        id: `playlist-${Date.now()}`,
+        title: name,
+        description: "플레이리스트 페이지에서 저장한 음악",
+        icon: "ListMusic",
+        tracks: additions,
+        count: additions.length
+      });
+    }
+
+    libraries[userKey] = library;
+    localStorage.setItem(libraryKey, JSON.stringify(libraries));
+    return true;
+  }
+
+  function renderRecentEntries() {
+    if (!recentList) return;
+    recentList.innerHTML = recentEntries.length
+      ? recentEntries.map(playlistRecentRow).join("")
+      : `<p class="text-sm p-3" style="color:var(--muted)">최근 들은 곡이 없습니다.</p>`;
+  }
+
+  function addRecentArtist(artist) {
+    const title = artist.title || artist.name;
+    const existingIndex = recentEntries.findIndex(entry => entry.artist === artist.name && entry.title === title);
+    if (existingIndex >= 0) recentEntries.splice(existingIndex, 1);
+    recentEntries.unshift({
+      title,
+      artist: artist.name,
+      imageSrc: artist.imageSrc,
+      initial: artist.initial,
+      art: artist.art,
+      time: "방금 전"
+    });
+    recentEntries.splice(5);
+    renderRecentEntries();
+  }
+
+  renderRecentEntries();
+  recentList?.addEventListener("click", event => {
+    const deleteButton = event.target.closest("[data-playlist-recent-delete]");
+    if (!deleteButton) return;
+    recentEntries.splice(Number(deleteButton.dataset.playlistRecentDelete), 1);
+    renderRecentEntries();
+  });
+
+  function setModalOpen(isOpen) {
+    if (!modal) return;
+    modal.hidden = !isOpen;
+    document.body.classList.toggle("playlist-modal-open", isOpen);
+    if (!isOpen) {
+      modal.querySelector("[data-playlist-modal-other-list]").hidden = true;
+      modal.querySelector("[data-playlist-modal-other]").setAttribute("aria-expanded", "false");
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("modal") === "1") {
+        url.searchParams.delete("modal");
+        window.history.replaceState({}, "", url);
+      }
+    }
+    if (isOpen) {
+      const searchInput = modal.querySelector("[data-playlist-modal-search]");
+      searchInput.value = "";
+      modal.querySelectorAll("[data-playlist-modal-artist]").forEach(button => { button.hidden = false; });
+      modal.querySelector("[data-playlist-modal-empty]").hidden = true;
+      searchInput.focus();
+    }
+  }
+
+  createButton?.addEventListener("click", () => setModalOpen(true));
+  if (new URLSearchParams(window.location.search).get("modal") === "1") setModalOpen(true);
+  function showPlaylistToast() {
+    if (!toast) return;
+    toast.classList.remove("is-visible");
+    void toast.offsetWidth;
+    toast.classList.add("is-visible");
+    window.setTimeout(() => toast.classList.remove("is-visible"), 1500);
+  }
+  startButton?.addEventListener("click", () => carousel.scrollTo({ left: 0, behavior: "smooth" }));
+  endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
+  modal?.addEventListener("click", event => {
+    if (event.target.closest("[data-playlist-modal-confirm]")) {
+      const selectedArtists = [...modal.querySelectorAll("[data-playlist-modal-artist].is-selected")]
+        .map(button => artists[Number(button.dataset.playlistModalArtist)])
+        .filter(Boolean);
+      if (!selectedArtists.length) {
+        alert("플레이리스트에 담을 아티스트를 선택해주세요.");
+        return;
+      }
+      const playlistName = modal.querySelector("[data-playlist-modal-current-name]").value.trim() || "미드나잇플리";
+      if (!updateMypagePlaylist(playlistName, selectedArtists)) return;
+      setModalOpen(false);
+      showPlaylistToast();
+      return;
+    }
+    if (event.target.closest("[data-playlist-modal-close]")) {
+      setModalOpen(false);
+      return;
+    }
+    const otherPlaylistButton = event.target.closest("[data-playlist-modal-other]");
+    if (otherPlaylistButton) {
+      const list = modal.querySelector("[data-playlist-modal-other-list]");
+      const isOpen = list.hidden;
+      list.hidden = !isOpen;
+      otherPlaylistButton.setAttribute("aria-expanded", String(isOpen));
+      return;
+    }
+    const playlistNameButton = event.target.closest("[data-playlist-modal-name]");
+    if (playlistNameButton) {
+      modal.querySelector("[data-playlist-modal-current-name]").value = playlistNameButton.dataset.playlistModalName;
+      modal.querySelectorAll("[data-playlist-modal-name]").forEach(button => button.classList.toggle("is-selected", button === playlistNameButton));
+      modal.querySelector("[data-playlist-modal-other-list]").hidden = true;
+      modal.querySelector("[data-playlist-modal-other]").setAttribute("aria-expanded", "false");
+      return;
+    }
+    const detailLink = event.target.closest("[data-playlist-modal-detail]");
+    if (detailLink) {
+      window.location.href = `pages/artist-detail/?name=${detailLink.dataset.playlistModalDetail}&returnTo=playlist`;
+      return;
+    }
+    const artistButton = event.target.closest("[data-playlist-modal-artist]");
+    if (!artistButton) return;
+    artistButton.classList.toggle("is-selected");
+  });
+  modal?.querySelector("[data-playlist-modal-search]")?.addEventListener("input", event => {
+    const query = event.target.value.trim().toLocaleLowerCase();
+    let matches = 0;
+    modal.querySelectorAll("[data-playlist-modal-artist]").forEach(button => {
+      const isMatch = button.dataset.playlistModalSearchText.toLocaleLowerCase().includes(query);
+      button.hidden = !isMatch;
+      if (isMatch) matches += 1;
+    });
+    modal.querySelector("[data-playlist-modal-empty]").hidden = matches > 0;
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !modal?.hidden) setModalOpen(false);
+  });
+
+  function updateCardPlayers() {
+    const audio = document.getElementById("studioAudio");
+    const artistIndex = Number(audio?.dataset.playlistArtistIndex);
+    const percent = audio?.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+    document.querySelectorAll("[data-playlist-progress]").forEach(progress => {
+      if (Number(progress.dataset.playlistProgress) === artistIndex) {
+        progress.value = percent;
+        progress.style.setProperty("--playlist-progress", `${percent}%`);
+      }
+    });
+    document.querySelectorAll("[data-playlist-action='play']").forEach(button => {
+      const active = !audio?.paused && Number(button.dataset.playlistArtist) === artistIndex;
+      button.classList.toggle("is-playing", active);
+      button.innerHTML = icon(active ? "Pause" : "Play", "w-5 h-5");
+      button.setAttribute("aria-label", active ? "일시정지" : "재생");
+    });
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function playArtist(index, forcePlay = false) {
+    const artist = artists[index];
+    const audio = document.getElementById("studioAudio");
+    if (!artist?.audio || !audio) return;
+
+    const isCurrentArtist = Number(audio.dataset.playlistArtistIndex) === index;
+    if (isCurrentArtist && !audio.paused && !forcePlay) {
+      audio.pause();
+      updateCardPlayers();
+      return;
+    }
+
+    if (!isCurrentArtist) {
+      audio.src = artist.audio;
+      audio.dataset.playlistArtistIndex = String(index);
+      audio.load();
+    } else if (audio.ended) {
+      audio.currentTime = 0;
+    }
+    document.getElementById("playerTitle").textContent = artist.title || artist.name;
+    document.getElementById("playerArtist").textContent = artist.name;
+    document.getElementById("playerStatus").textContent = "재생 중";
+    document.querySelector("[data-sidebar-player-title]").textContent = artist.title || artist.name;
+    addRecentArtist(artist);
+    audio.play().then(updateCardPlayers).catch(updateCardPlayers);
+  }
+
+  window.trackitPlaylistPlayArtist = playArtist;
+
+  carousel.addEventListener("click", event => {
+    const action = event.target.closest("[data-playlist-action]");
+    const addButton = event.target.closest(".playlist-card-add");
+    if (addButton) {
+      const card = addButton.closest("[data-playlist-card]");
+      const artist = artists[Number(card?.dataset.playlistCard)];
+      if (!artist || !updateMypagePlaylist("미드나잇플리", [artist])) return;
+      addButton.classList.add("is-added");
+      showPlaylistToast();
+      return;
+    }
+    if (!action) return;
+    const index = Number(action.dataset.playlistArtist);
+    if (action.dataset.playlistAction === "previous") playArtist((index - 1 + artists.length) % artists.length, true);
+    if (action.dataset.playlistAction === "next") playArtist((index + 1) % artists.length, true);
+    if (action.dataset.playlistAction === "shuffle") playArtist(Math.floor(Math.random() * artists.length), true);
+    if (action.dataset.playlistAction === "play") playArtist(index);
+  });
+
+  carousel.addEventListener("click", event => {
+    if (event.target.closest("button, input")) return;
+    const card = event.target.closest("[data-playlist-card]");
+    if (!card) return;
+    const selectedIndex = card.dataset.playlistCard;
+    track.querySelectorAll("[data-playlist-card]").forEach(item => {
+      item.classList.toggle("is-selected", item.dataset.playlistCard === selectedIndex);
+    });
+  });
+
+  carousel.addEventListener("input", event => {
+    const progress = event.target.closest("[data-playlist-progress]");
+    const audio = document.getElementById("studioAudio");
+    if (!progress || !audio?.duration || Number(progress.dataset.playlistProgress) !== Number(audio.dataset.playlistArtistIndex)) return;
+    progress.style.setProperty("--playlist-progress", `${progress.value}%`);
+    audio.currentTime = (Number(progress.value) / 100) * audio.duration;
+  });
+
+  let dragStartX = 0;
+  let dragStartScrollLeft = 0;
+  let isDragging = false;
+
+  carousel.addEventListener("pointerdown", event => {
+    if (event.target.closest("button, input")) return;
+    isDragging = true;
+    carousel.classList.add("is-dragging");
+    dragStartX = event.clientX;
+    dragStartScrollLeft = carousel.scrollLeft;
+    carousel.setPointerCapture(event.pointerId);
+  });
+
+  carousel.addEventListener("pointermove", event => {
+    if (!isDragging) return;
+    carousel.scrollLeft = dragStartScrollLeft - (event.clientX - dragStartX);
+  });
+
+  function finishDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    carousel.classList.remove("is-dragging");
+  }
+
+  carousel.addEventListener("pointerup", finishDrag);
+  carousel.addEventListener("pointercancel", finishDrag);
+  carousel.addEventListener("wheel", event => {
+    event.preventDefault();
+    carousel.scrollBy({ left: event.deltaX || event.deltaY, behavior: "smooth" });
+  }, { passive: false });
+
+  const audio = document.getElementById("studioAudio");
+  audio?.addEventListener("timeupdate", updateCardPlayers);
+  audio?.addEventListener("play", updateCardPlayers);
+  audio?.addEventListener("pause", updateCardPlayers);
+};
 
 function renderSearch(query = "") {
   const summary = query ? `"${query}" 검색 결과` : "검색 결과";
@@ -261,4 +661,3 @@ window.trackitPages = {
   mypage: renderMypage,
   settings: renderSettings
 };
-
