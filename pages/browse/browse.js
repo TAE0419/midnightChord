@@ -139,11 +139,3 @@ document.addEventListener("DOMContentLoaded", () => {
   bindBrowseInteractions();
   loadBrowseTracks();
 });
-
-
-
-
-
-
-
-

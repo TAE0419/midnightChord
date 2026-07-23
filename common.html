@@ -1,20 +1,29 @@
 <div class="trackit-app grid grid-cols-[72px_1fr] md:grid-cols-[190px_1fr]">
+  <style>
+    @media (max-width: 767px) {
+      .trackit-app .sidebar { align-items: center; }
+      .trackit-app .sidebar-logo { width: 2.75rem; height: 2.75rem; }
+      .trackit-app .sidebar-logo-main { display: none; }
+      .trackit-app .sidebar-logo-compact { display: block; }
+      .trackit-app [data-nav] .nav-link { justify-content: center; padding-left: 0; padding-right: 0; }
+      .trackit-app [data-nav] .nav-link span { display: none !important; }
+    }
+
+    @media (min-width: 768px) {
+      .trackit-app .sidebar-logo-main { display: block; }
+      .trackit-app .sidebar-logo-compact { display: none; }
+    }
+  </style>
   <aside class="sidebar p-3 md:p-4 flex flex-col gap-6">
-    <a class="items-center gap-3" href="index.html" aria-label="Studio Midnight 홈">
+    <a class="sidebar-logo flex items-center justify-center gap-3" href="index.html" aria-label="Studio Midnight">
       <div class="w-30 h-20 flex items-center justify-center font-medium">
-        <img src="./assets/images/logo.png"/>
+        <img class="sidebar-logo-main" src="./assets/images/logo.png" alt="Studio Midnight"/>
+        <img class="sidebar-logo-compact" src="./assets/images/logo2.png" alt="Studio Midnight"/>
       </div>
-      <div class="hidden md:block">
-        <!-- <p class="font-medium">STUDIO MIDNIGHT!!</p> -->
-        <!-- <p class="text-xs" style="color:var(--muted)">Feel the purple wave</p>
-      </div> -->
     </a>
-    <nav class="space-y-2 text-sm" data-nav aria-label="주 메뉴"></nav>
-    <div class="mt-auto hidden md:block surface rounded-2xl p-3" style="margin-top: 1rem;">
-      <p class="text-xs" style="color:var(--muted)">현재 재생 중</p>
-      <p class="text-sm mt-1" data-sidebar-player-title>Violet Night</p>
-      <div class="progress h-1.5 rounded-full mt-3"><span data-sidebar-player-progress style="width:0%"></span></div>
-    </div>
+    <nav class="space-y-2 text-sm" data-nav aria-label="메인 메뉴"></nav>
+    <span class="hidden" data-sidebar-player-title>Violet Night</span>
+    <span class="hidden" data-sidebar-player-progress style="width:0%"></span>
   </aside>
   <main class="min-w-0 p-4 md:p-6 pb-24">
     <header class="flex flex-col md:flex-row gap-3 md:items-center justify-between mb-6">
@@ -23,11 +32,29 @@
         <input data-search-input type="search" placeholder="아티스트, 앨범, 곡 검색" class="w-full rounded-xl border py-2 pl-9 pr-3 text-base" style="border-color:var(--border);color:#f4f4f5;background-color: #111115;">
       </label>
       <div class="flex items-center gap-3">
-        <button type="button" class="surface icon-button purple-btn" aria-label="알림" title="알림"><i data-lucide="Bell" class="w-4 h-4"></i></button>
-        <div class="w-9 h-9 rounded-full purple-soft flex items-center justify-center">MC</div>
+        <button type="button" class="surface rounded-full icon-button purple-btn" aria-label="알림" title="알림"><i data-lucide="Bell" class="w-4 h-4"></i></button>
+        <div class="min-w-9 h-9 rounded-full purple-soft flex items-center justify-center px-3 text-sm" style="border: 1px solid #322d3f;" data-header-user>MC</div>
+        <img src="data:," alt="" class="hidden" onerror="try{const u=JSON.parse(localStorage.getItem('studio-midnight-user'));if(u&&typeof u.name==='string'&&u.name.trim()){const b=document.querySelector('[data-header-user]');b.textContent=u.name.trim();b.title=u.name.trim();}}catch(e){}this.remove();">
       </div>
     </header>
     <div data-common-page-slot></div>
+    <footer class="mt-20 mb-28 border-t pt-6 text-sm" style="border-color:var(--border);color:var(--muted); padding: 2rem; height: 1rem;">
+      <div class="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
+        <div class="flex gap-4" style="flex-direction: column;">
+          <p class="font-medium" style="color:#f4f4f5">MIDNIGHT STUDIO</p>
+          <p class="font-medium" style="color:#f4f4f5">사업자등록번호 : 123-45-67890 | 통신판매업신고 : 제 2026-서울마포-0123호</p>
+          <p class="font-medium" style="color:#f4f4f5">이메일 : help@midnightcode.com | 고객센터 : 02-000-0000</p>
+          <p class="mt-1">보랏빛 밤의 음악과 플레이리스트를 큐레이션합니다.</p>
+        </div>
+        <div class="flex flex-wrap gap-4" style="flex-direction: column; align-items: end;">
+          <a href="pages/browse/" class="hover:text-white">둘러보기</a>
+          <a href="pages/artists/" class="hover:text-white">아티스트</a>
+          <a href="pages/playlist/" class="hover:text-white">플레이리스트</a>
+          <a href="pages/settings/" class="hover:text-white">설정</a>
+        </div>
+      </div>
+      <p class="mt-5 text-xs">© 2026 Studio Midnight. All rights reserved.</p>
+    </footer>
   </main>
   <footer class="fixed-player col-span-2 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_1fr] gap-3 items-center px-4 md:px-6 py-3">
     <audio id="studioAudio" preload="metadata"></audio>
@@ -36,7 +63,7 @@
       <div class="min-w-0">
         <p id="playerTitle" class="truncate text-sm">Violet Night</p>
         <p id="playerArtist" class="text-xs truncate" style="color:var(--muted)">LUNA</p>
-        <p id="playerStatus" class="text-[11px] truncate" style="color:var(--muted)">음원을 선택하거나 재생 버튼을 누르세요</p>
+        <p id="playerStatus" class="text-[11px] truncate" style="color:var(--muted)">음원을 선택하거나 재생 버튼을 눌러주세요</p>
       </div>
     </div>
     <div class="hidden md:block">
