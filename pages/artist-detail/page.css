@@ -96,7 +96,7 @@
 .artist-intro-card::before {
   content: "";
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   inset: 1px;
   border-radius: calc(1rem - 1px);
   background-image: var(--artist-detail-image);
@@ -107,6 +107,7 @@
 /* 아주 연한 보라색 유리 패널. 뒤 사진을 흐리게 보여줍니다. */
 .artist-intro-glass {
   position: absolute;
+  z-index: 1;
   inset: 1px;
   overflow: hidden;
   border-radius: calc(1rem - 1px);
