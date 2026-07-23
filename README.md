@@ -1,4 +1,4 @@
-오늘 오후 2시 10분 이후 수정된 파일입니다.
+오늘 오후 2시 10분 이후 수정된 파일입니다.<br>
 14:31:24 — pages/settings/settings.js
 14:40:34 — js/trackit-pages.js
 15:11:49 — pages/artist-detail/artist-detail-page.js
