@@ -140,9 +140,7 @@
 #my-playlists {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 100% 0, rgba(124, 58, 237, .11), transparent 30%),
-    var(--panel);
+  background: var(--panel);
 }
 
 #my-playlists::before {
@@ -152,7 +150,7 @@
   left: 1.25rem;
   right: 1.25rem;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(86, 233, 201, .45), rgba(167, 139, 250, .5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(176, 79, 255, .55), transparent);
 }
 
 #my-playlists .mypage-section-title {
@@ -168,35 +166,37 @@
 }
 
 #my-playlists .mypage-section-title > span {
-  border: 1px solid rgba(167, 139, 250, .22);
+  border: 1px solid rgba(183, 152, 255, .3);
   border-radius: 999px;
   padding: .3rem .55rem;
-  color: #d8ceff;
-  background: rgba(124, 58, 237, .09);
+  color: #fff;
+  background: #6953ae;
 }
 
 #my-playlists .mypage-playlist-grid {
   position: relative;
   z-index: 1;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
 }
 
 #my-playlists .mypage-playlist-card {
   display: flex;
   flex-direction: column;
-  padding: .7rem;
-  border-color: rgba(167, 139, 250, .13);
-  border-radius: 1.15rem;
-  background: linear-gradient(160deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .012));
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .14);
+  padding: .75rem;
+  border-color: var(--border);
+  border-radius: 1rem;
+  background: var(--panel);
+  box-shadow: none;
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 #my-playlists .mypage-playlist-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(86, 233, 201, .35);
-  background: linear-gradient(160deg, rgba(124, 58, 237, .1), rgba(86, 233, 201, .035));
-  box-shadow: 0 18px 42px rgba(0, 0, 0, .24);
+  transform: translateY(-2px);
+  border-color: rgba(183, 152, 255, .5);
+  background: var(--panel);
+  box-shadow: 0 0 0 2px rgba(105, 83, 174, .18);
 }
 
 #my-playlists .mypage-playlist-main {
@@ -209,11 +209,11 @@
   aspect-ratio: 1;
   margin-bottom: .85rem;
   border: 1px solid rgba(255, 255, 255, .06);
-  border-radius: .9rem;
+  border-radius: .75rem;
   background:
-    radial-gradient(circle at 72% 22%, rgba(86, 233, 201, .62), transparent 20%),
-    radial-gradient(circle at 25% 75%, rgba(124, 58, 237, .9), transparent 42%),
-    linear-gradient(145deg, #25184a, #0e1720 70%);
+    radial-gradient(circle at 72% 22%, rgba(176, 79, 255, .72), transparent 22%),
+    radial-gradient(circle at 25% 75%, rgba(105, 83, 174, .9), transparent 42%),
+    linear-gradient(145deg, #241a3b, #111115 72%);
   box-shadow: inset 0 1px rgba(255, 255, 255, .08);
 }
 
@@ -229,14 +229,14 @@
   width: 2.35rem;
   height: 2.35rem;
   border: 1px solid rgba(255, 255, 255, .16);
-  background: rgba(17, 17, 21, .72);
+  background: rgba(0, 0, 0, .58);
   backdrop-filter: blur(8px);
   transition: transform .2s, background .2s;
 }
 
 #my-playlists .mypage-playlist-card:hover .mypage-playlist-open {
   transform: scale(1.08);
-  background: #6d4aff;
+  background: #b04fff;
 }
 
 #my-playlists .mypage-playlist-main h3 {
@@ -253,7 +253,7 @@
 #my-playlists .mypage-playlist-main > span {
   margin-top: auto;
   padding-top: .7rem;
-  color: #70ead0;
+  color: #c4b5fd;
   font-weight: 500;
 }
 
@@ -265,17 +265,30 @@
 
 #my-playlists .mypage-playlist-actions button {
   min-height: 2.1rem;
-  border: 1px solid rgba(167, 139, 250, .12);
-  background: rgba(255, 255, 255, .025);
+  border: 1px solid rgba(183, 152, 255, .18);
+  color: #fff;
+  background: #6953ae;
 }
 
 #my-playlists .mypage-playlist-actions button:hover {
-  border-color: rgba(167, 139, 250, .3);
+  border-color: #b04fff;
+  background: #b04fff;
+}
+
+#my-playlists .mypage-playlist-actions button.danger {
+  border-color: rgba(244, 63, 94, .2);
+  color: #fda4af;
+  background: rgba(244, 63, 94, .08);
+}
+
+#my-playlists .mypage-playlist-actions button.danger:hover {
+  border-color: rgba(244, 63, 94, .45);
+  background: rgba(244, 63, 94, .16);
 }
 
 @media (min-width: 1180px) {
   #my-playlists .mypage-playlist-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -295,4 +308,271 @@
   #my-playlists .mypage-playlist-cover {
     aspect-ratio: 16 / 10;
   }
+}
+
+/* Refined following tab */
+#my-follows {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 100% 0, rgba(105, 83, 174, .14), transparent 32%),
+    var(--panel);
+}
+
+#my-follows::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(176, 79, 255, .55), transparent);
+}
+
+#my-follows .mypage-section-title {
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+#my-follows .mypage-section-title h2 {
+  font-size: 1.2rem;
+  letter-spacing: -.02em;
+}
+
+#my-follows .mypage-section-title > span {
+  border: 1px solid rgba(183, 152, 255, .3);
+  border-radius: 999px;
+  padding: .3rem .6rem;
+  color: #fff;
+  background: #6953ae;
+}
+
+#my-follows .mypage-artist-grid {
+  position: relative;
+  z-index: 1;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .85rem;
+}
+
+#my-follows .mypage-artist-card {
+  min-width: 0;
+  padding: .8rem;
+  border-color: rgba(183, 152, 255, .16);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, .018);
+  box-shadow: none;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+#my-follows .mypage-artist-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(183, 152, 255, .5);
+  background: rgba(105, 83, 174, .12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .2);
+}
+
+#my-follows .mypage-artist-link {
+  min-height: 3.5rem;
+}
+
+#my-follows .mypage-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 2px solid rgba(183, 152, 255, .32);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .28);
+}
+
+#my-follows .mypage-artist-card h3 {
+  font-size: .92rem;
+  font-weight: 600;
+}
+
+#my-follows .mypage-artist-card p {
+  margin-top: .3rem;
+  font-size: .7rem;
+}
+
+#my-follows .mypage-artist-arrow {
+  color: #b798ff;
+  transition: transform 180ms ease;
+}
+
+#my-follows .mypage-artist-card:hover .mypage-artist-arrow {
+  transform: translateX(2px);
+}
+
+#my-follows .mypage-unfollow {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgba(244, 63, 94, .15);
+  background: rgba(244, 63, 94, .04);
+}
+
+#my-follows .mypage-unfollow:hover,
+#my-follows .mypage-unfollow:focus-visible {
+  border-color: rgba(244, 63, 94, .4);
+  background: rgba(244, 63, 94, .15);
+}
+
+@media (min-width: 1180px) {
+  #my-follows .mypage-artist-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  #my-follows {
+    padding: 1rem;
+  }
+
+  #my-follows .mypage-artist-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mypage-delete-dialog {
+  width: min(92vw, 420px);
+  margin: auto;
+  padding: 1.4rem;
+  overflow: hidden;
+  border: 1px solid rgba(244, 63, 94, .28);
+  border-radius: 1.25rem;
+  color: #f4f4f5;
+  background:
+    radial-gradient(circle at 100% 0, rgba(244, 63, 94, .12), transparent 38%),
+    #18181f;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .72);
+}
+
+.mypage-delete-dialog::backdrop {
+  background: rgba(3, 2, 8, .78);
+  backdrop-filter: blur(6px);
+}
+
+.mypage-delete-icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(244, 63, 94, .25);
+  border-radius: 1rem;
+  color: #fb7185;
+  background: rgba(244, 63, 94, .1);
+}
+
+.mypage-delete-icon svg {
+  width: 1.25rem;
+}
+
+.mypage-delete-copy h2 {
+  margin-top: .3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.mypage-delete-copy > p:last-child {
+  margin-top: .65rem;
+  color: var(--muted);
+  font-size: .8rem;
+  line-height: 1.65;
+}
+
+.mypage-delete-copy strong {
+  color: #fda4af;
+  font-weight: 600;
+}
+
+.mypage-delete-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .65rem;
+  margin-top: 1.35rem;
+}
+
+.mypage-delete-actions button {
+  min-height: 2.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  border: 1px solid var(--border);
+  border-radius: .75rem;
+  color: #ddd6fe;
+  background: rgba(255, 255, 255, .035);
+}
+
+.mypage-delete-actions button:hover {
+  background: rgba(255, 255, 255, .08);
+}
+
+.mypage-delete-actions button.danger {
+  border-color: rgba(244, 63, 94, .3);
+  color: #fff;
+  background: #be123c;
+}
+
+.mypage-delete-actions button.danger:hover {
+  background: #e11d48;
+}
+
+.mypage-delete-actions svg {
+  width: .95rem;
+}
+
+.mypage-profile-saved-dialog {
+  width: min(92vw, 390px);
+  margin: auto;
+  padding: 1.6rem;
+  border: 1px solid rgba(86, 233, 201, .28);
+  border-radius: 1.25rem;
+  color: #f4f4f5;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0, rgba(86, 233, 201, .12), transparent 42%),
+    #18181f;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .72);
+}
+
+.mypage-profile-saved-dialog::backdrop {
+  background: rgba(3, 2, 8, .78);
+  backdrop-filter: blur(6px);
+}
+
+.mypage-profile-saved-icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 1rem;
+  border: 1px solid rgba(86, 233, 201, .3);
+  border-radius: 50%;
+  color: #56e9c9;
+  background: rgba(86, 233, 201, .1);
+}
+
+.mypage-profile-saved-icon svg {
+  width: 1.45rem;
+}
+
+.mypage-profile-saved-dialog h2 {
+  margin-top: .35rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.mypage-profile-saved-dialog > p:not(.mypage-eyebrow) {
+  margin-top: .65rem;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.65;
+}
+
+.mypage-profile-saved-dialog > button {
+  width: 100%;
+  min-height: 2.65rem;
+  margin-top: 1.25rem;
+  border-radius: .75rem;
 }
