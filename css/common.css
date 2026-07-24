@@ -42,6 +42,22 @@ body {
 } 
 
 .sidebar { background: var(--nav); border-right: 1px solid var(--border); }
+
+.sidebar .sidebar-logo {
+  position: fixed;
+  z-index: 50;
+  left: calc(1rem + 12px);
+  top: 1rem;
+  width: calc(72px - 24px);
+}
+
+.sidebar [data-nav] {
+  position: fixed;
+  z-index: 50;
+  left: calc(1rem + 12px);
+  top: 6.25rem;
+  width: calc(72px - 24px);
+}
 .surface { background: var(--panel); border: 1px solid var(--border); }
 .surface-soft { background: var(--panel-soft); }
 .purple-btn { background: var(--purple); color: var(--bg); }
@@ -429,6 +445,18 @@ body {
 }
 
 @media (min-width: 768px) {
+  .sidebar .sidebar-logo {
+    left: calc(2rem + 16px);
+    top: 2rem;
+    width: calc(190px - 32px);
+  }
+
+  .sidebar [data-nav] {
+    left: calc(2rem + 16px);
+    top: 7.25rem;
+    width: calc(190px - 32px);
+  }
+
   .fixed-player { left: 2rem; right: 2rem; bottom: 2rem; }
 
   .trackit-app > main {

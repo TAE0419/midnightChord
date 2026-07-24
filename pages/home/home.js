@@ -1,5 +1,90 @@
 ﻿const { albums, tracks } = window.trackitData;
 
+let homeAlbumCarouselIndex = 0;
+let homeAlbumSourceTracks = [];
+let homeAlbumCarouselLocked = false;
+
+const homeAlbumCoverImages = [
+  "pages/album/albumimg/abum01.webp",
+  "pages/album/albumimg/abum02.jpg",
+  "pages/album/albumimg/abum03.webp",
+  "pages/album/albumimg/abum04.webp",
+  "pages/album/albumimg/abum05.webp",
+  "pages/album/albumimg/abum06.jpeg",
+  "pages/album/albumimg/abum07.webp",
+  "pages/album/albumimg/abum08.jpg",
+  "pages/album/albumimg/abum09.webp",
+  "pages/album/albumimg/abum10.webp",
+  "pages/album/albumimg/abum11.webp",
+  "pages/album/albumimg/abum12.webp",
+  "pages/album/albumimg/abum13.webp",
+  "pages/album/albumimg/abum14.webp",
+  "pages/album/albumimg/abum15.webp",
+  "pages/album/albumimg/abum16.webp",
+  "pages/album/albumimg/abum17.webp",
+  "pages/album/albumimg/abum18.webp",
+  "pages/album/albumimg/abum19.webp",
+  "pages/album/albumimg/abum20.webp",
+  "pages/album/albumimg/abum21.webp"
+];
+
+const homeAlbumCoverByTrack = {
+  "classic-01": 4,
+  "classic-02": 8,
+  "classic-03": 17,
+  "kpop-01": 1,
+  "kpop-02": 11,
+  "kpop-03": 18,
+  "jpop-01": 2,
+  "jpop-02": 5,
+  "jpop-03": 15,
+  "pop-01": 3,
+  "pop-02": 19,
+  "pop-03": 9,
+  "indie-band-01": 10,
+  "indie-band-02": 14,
+  "indie-band-03": 16,
+  "hiphop-rnb-01": 13,
+  "hiphop-rnb-02": 20,
+  "hiphop-rnb-03": 6,
+  "hiphop-rnb-04": 12
+};
+
+const homeAlbumTitleByTrack = {
+  "classic-01": "Imperial Waltz Hall",
+  "classic-02": "Velvet Chamber",
+  "classic-03": "Cathedral Light",
+  "kpop-01": "Neon Minute",
+  "kpop-02": "After You Glow",
+  "kpop-03": "No Rules Tonight",
+  "jpop-01": "Night Train Letter",
+  "jpop-02": "Tokyo Sidewalk",
+  "jpop-03": "Soft Signal",
+  "pop-01": "Skyline Crush",
+  "pop-02": "Lucky Static",
+  "pop-03": "Blue Hypnosis",
+  "indie-band-01": "Crown Room Echo",
+  "indie-band-02": "Small Hours",
+  "indie-band-03": "Low Tide Diary",
+  "hiphop-rnb-01": "Late Call",
+  "hiphop-rnb-02": "Dice Season",
+  "hiphop-rnb-03": "Chrome Engine",
+  "hiphop-rnb-04": "Easy Mode"
+};
+
+const homePopularAlbumOrder = [
+  "pop-03",
+  "hiphop-rnb-02",
+  "classic-01",
+  "jpop-02",
+  "indie-band-01",
+  "kpop-01",
+  "pop-01",
+  "classic-02",
+  "hiphop-rnb-01",
+  "jpop-01"
+];
+
 function icon(name, className = "w-4 h-4") {
   return `<i data-lucide="${name}" class="${className}"></i>`;
 }
@@ -13,8 +98,9 @@ function assetBox(item, className, fallback = "") {
 
 function setHomePlayerCover(index) {
   const cover = document.getElementById("playerCover");
-  const safeIndex = tracks.length ? (index + tracks.length) % tracks.length : 0;
-  const track = tracks[safeIndex] || tracks[0];
+  const playerTracks = window.trackitData.tracks || tracks;
+  const safeIndex = playerTracks.length ? (index + playerTracks.length) % playerTracks.length : 0;
+  const track = playerTracks[safeIndex] || playerTracks[0];
   const imageSrc = track && (track.imageSrc || track.coverImage);
 
   if (!cover || !track) {
@@ -76,12 +162,228 @@ function bindHomeMoodBackground() {
       return;
     }
 
-    moodSection.style.backgroundImage = `linear-gradient(180deg, rgba(17, 17, 21, .72), rgba(17, 17, 21, .82)), url("${moodCard.dataset.moodBg}")`;
+    const nextBackground = `linear-gradient(180deg, rgba(17, 17, 21, .72), rgba(17, 17, 21, .82)), url("${moodCard.dataset.moodBg}")`;
+    const overlay = document.createElement("div");
+    overlay.className = "home-mood-bg-fade";
+    overlay.style.backgroundImage = nextBackground;
+    moodSection.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add("is-visible"));
+    window.setTimeout(() => {
+      moodSection.style.backgroundImage = nextBackground;
+      overlay.remove();
+    }, 620);
     moodSection.style.backgroundSize = "cover";
     moodSection.style.backgroundPosition = "center";
     moodSection.querySelectorAll("[data-mood-bg]").forEach(card => {
       card.classList.toggle("is-active", card === moodCard);
     });
+  });
+}
+
+function encodeHomeAlbumCoverPath(path) {
+  return path.split("/").map(segment => encodeURIComponent(segment)).join("/");
+}
+
+function getHomeAlbumCover(track, index) {
+  const coverIndex = homeAlbumCoverByTrack[track?.id] ?? index % homeAlbumCoverImages.length;
+  return encodeHomeAlbumCoverPath(homeAlbumCoverImages[coverIndex]);
+}
+
+function getHomeAlbumTitle(track) {
+  return homeAlbumTitleByTrack[track?.id] || track?.title || "Midnight Album";
+}
+
+function getHomePopularAlbums() {
+  const albumTracks = homeAlbumSourceTracks.length ? homeAlbumSourceTracks : tracks;
+  const used = new Set();
+  const ranked = homePopularAlbumOrder
+    .map(id => albumTracks.findIndex(track => track.id === id))
+    .filter(index => {
+      if (index < 0 || used.has(index)) return false;
+      used.add(index);
+      return true;
+    })
+    .map((trackIndex, rankIndex) => {
+      const track = albumTracks[trackIndex];
+      return {
+        title: getHomeAlbumTitle(track),
+        artist: track.artist,
+        year: "2026",
+        imageSrc: getHomeAlbumCover(track, trackIndex),
+        rank: rankIndex + 1,
+        trackId: track.id
+      };
+    });
+
+  albums.forEach(album => {
+    if (ranked.length < 10) {
+      ranked.push({ ...album, rank: ranked.length + 1 });
+    }
+  });
+
+  return ranked.slice(0, 10);
+}
+
+function getHomeAlbumVisibleCount() {
+  const carousel = document.querySelector("[data-home-album-carousel]");
+  const value = carousel ? window.getComputedStyle(carousel).getPropertyValue("--home-album-visible") : "5";
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : 5;
+}
+
+function getHomeAlbumStep(carousel) {
+  const track = carousel?.querySelector("[data-home-album-track]");
+  const firstCard = track?.firstElementChild;
+  if (!carousel || !firstCard) {
+    return 0;
+  }
+
+  const styles = window.getComputedStyle(track);
+  const gap = Number.parseFloat(styles.columnGap || styles.gap || "0") || 0;
+  return firstCard.getBoundingClientRect().width + gap;
+}
+
+function setHomeAlbumTrackItems(carousel, popularAlbums, startIndex, extraBefore = false, extraAfter = false) {
+  const track = carousel?.querySelector("[data-home-album-track]");
+  if (!track || !popularAlbums.length) return;
+
+  const visibleCount = getHomeAlbumVisibleCount();
+  const items = [];
+  if (extraBefore) {
+    items.push(popularAlbums[(startIndex - 1 + popularAlbums.length) % popularAlbums.length]);
+  }
+
+  for (let offset = 0; offset < visibleCount; offset += 1) {
+    items.push(popularAlbums[(startIndex + offset) % popularAlbums.length]);
+  }
+
+  if (extraAfter) {
+    items.push(popularAlbums[(startIndex + visibleCount) % popularAlbums.length]);
+  }
+
+  track.innerHTML = items.map(album => albumTile(album, false, album.rank)).join("");
+}
+
+function moveHomeAlbumCarousel(direction) {
+  const popularAlbums = getHomePopularAlbums();
+  const carousel = document.querySelector("[data-home-album-carousel]");
+  const track = carousel?.querySelector("[data-home-album-track]");
+  if (!popularAlbums.length || !carousel || !track || homeAlbumCarouselLocked) return;
+
+  homeAlbumCarouselLocked = true;
+  const normalizedDirection = direction > 0 ? 1 : -1;
+  setHomeAlbumTrackItems(carousel, popularAlbums, homeAlbumCarouselIndex, normalizedDirection < 0, normalizedDirection > 0);
+
+  const step = getHomeAlbumStep(carousel);
+  track.classList.remove("is-sliding");
+  track.style.transform = normalizedDirection < 0 ? `translateX(${-step}px)` : "translateX(0)";
+
+  requestAnimationFrame(() => {
+    track.classList.add("is-sliding");
+    track.style.transform = normalizedDirection > 0 ? `translateX(${-step}px)` : "translateX(0)";
+  });
+
+  window.setTimeout(() => {
+    homeAlbumCarouselIndex = (homeAlbumCarouselIndex + normalizedDirection + popularAlbums.length) % popularAlbums.length;
+    carousel.dataset.carouselIndex = String(homeAlbumCarouselIndex);
+    track.classList.remove("is-sliding");
+    track.style.transform = "translateX(0)";
+    setHomeAlbumTrackItems(carousel, popularAlbums, homeAlbumCarouselIndex);
+    homeAlbumCarouselLocked = false;
+  }, 360);
+}
+
+function bindHomeAlbumCarousel() {
+  if (window.homeAlbumCarouselBound) {
+    return;
+  }
+
+  window.homeAlbumCarouselBound = true;
+  let dragStartX = 0;
+  let dragLastX = 0;
+  let isDragging = false;
+  let didDragAlbumCarousel = false;
+
+  document.addEventListener("click", event => {
+    if (document.body.dataset.currentPage !== "home") return;
+    const button = event.target.closest("[data-home-album-move]");
+    const albumCard = event.target.closest("[data-home-album-track-id]");
+
+    if (button) {
+      event.preventDefault();
+      event.stopPropagation();
+      moveHomeAlbumCarousel(button.dataset.homeAlbumMove === "next" ? 1 : -1);
+      return;
+    }
+
+    if (albumCard) {
+      if (didDragAlbumCarousel) {
+        event.preventDefault();
+        event.stopPropagation();
+        didDragAlbumCarousel = false;
+      }
+    }
+  });
+
+  document.addEventListener("wheel", event => {
+    const carousel = event.target.closest("[data-home-album-carousel]");
+    if (!carousel || document.body.dataset.currentPage !== "home") return;
+
+    const primaryDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (Math.abs(primaryDelta) < 10) return;
+
+    event.preventDefault();
+    moveHomeAlbumCarousel(primaryDelta > 0 ? 1 : -1);
+  }, { passive: false });
+
+  document.addEventListener("pointercancel", () => {
+    const carousel = document.querySelector("[data-home-album-carousel]");
+    const track = carousel?.querySelector("[data-home-album-track]");
+    isDragging = false;
+    carousel?.classList.remove("is-dragging");
+    if (track) {
+      track.classList.add("is-sliding");
+      track.style.transform = "translateX(0)";
+      window.setTimeout(() => track.classList.remove("is-sliding"), 180);
+    }
+  });
+
+  document.addEventListener("pointerdown", event => {
+    const carousel = event.target.closest("[data-home-album-carousel]");
+    if (!carousel || document.body.dataset.currentPage !== "home" || homeAlbumCarouselLocked) return;
+    dragStartX = event.clientX;
+    dragLastX = event.clientX;
+    isDragging = true;
+    didDragAlbumCarousel = false;
+    carousel.classList.add("is-dragging");
+  });
+
+  document.addEventListener("pointermove", event => {
+    if (!isDragging || document.body.dataset.currentPage !== "home") return;
+    const carousel = document.querySelector("[data-home-album-carousel]");
+    const track = carousel?.querySelector("[data-home-album-track]");
+    if (!carousel || !track) return;
+
+    dragLastX = event.clientX;
+    const distance = Math.max(Math.min(dragLastX - dragStartX, 120), -120);
+    didDragAlbumCarousel = Math.abs(distance) > 8;
+    track.style.transform = `translateX(${distance}px)`;
+  });
+
+  document.addEventListener("pointerup", event => {
+    const carousel = event.target.closest("[data-home-album-carousel]") || document.querySelector("[data-home-album-carousel]");
+    if (!isDragging || document.body.dataset.currentPage !== "home") return;
+    isDragging = false;
+    carousel?.classList.remove("is-dragging");
+    const track = carousel?.querySelector("[data-home-album-track]");
+    const distance = dragLastX - dragStartX;
+    if (track) {
+      track.classList.add("is-sliding");
+      track.style.transform = "translateX(0)";
+      window.setTimeout(() => track.classList.remove("is-sliding"), 180);
+    }
+    if (Math.abs(distance) < 42) return;
+    window.setTimeout(() => moveHomeAlbumCarousel(distance < 0 ? 1 : -1), 0);
   });
 }
 
@@ -116,9 +418,10 @@ async function loadHomeChartTracks() {
       return;
     }
 
+    homeAlbumSourceTracks = loadedTracks.filter(track => track && track.title && track.artist);
+
     const playableTracks = loadedTracks
       .filter(track => track && track.title && track.artist && track.audioSrc)
-      .slice(0, 10)
       .map((track, index) => {
         const exactCover = covers.find(cover => cover.title === track.title && cover.artist === track.artist);
         const artistCover = covers.find(cover => cover.artist === track.artist);
@@ -157,7 +460,20 @@ function albumTile(album, framed = false, rank = null) {
     <p class="mt-2 font-medium">${album.title}</p>
     <p class="text-sm" style="color:var(--muted)">${album.artist}${album.year ? ` · ${album.year}` : ""}</p>
   `;
-  return framed ? `<article class="surface rounded-2xl p-3 home-album-card">${body}</article>` : `<article class="home-album-card">${body}</article>`;
+  const detailHref = album.trackId ? `pages/album/?track=${encodeURIComponent(album.trackId)}` : "pages/album/";
+  const detailAttrs = album.trackId ? ` data-home-album-track-id="${album.trackId}"` : "";
+  return framed ? `<a href="${detailHref}" class="surface rounded-2xl p-3 home-album-card"${detailAttrs}>${body}</a>` : `<a href="${detailHref}" class="home-album-card"${detailAttrs}>${body}</a>`;
+}
+
+function renderHomeAlbumCarouselItems(popularAlbums = getHomePopularAlbums()) {
+  if (!popularAlbums.length) {
+    return "";
+  }
+
+  return Array.from({ length: Math.min(getHomeAlbumVisibleCount(), popularAlbums.length) }, (_, offset) => {
+    const album = popularAlbums[(homeAlbumCarouselIndex + offset) % popularAlbums.length];
+    return albumTile(album, false, album.rank);
+  }).join("");
 }
 
 function trackRow(track, index, options = {}) {
@@ -212,9 +528,15 @@ function renderHome() {
     <div>
       <div class="flex justify-between items-center mb-3">
         <h2 class="font-medium text-lg mintText">지금 인기 있는 앨범</h2>
-        <button type="button" class="text-sm home-link-button" style="color:#c4b5fd" data-page-link="album">전체 보기</button>
+        <div class="home-album-actions">
+          <button type="button" class="home-album-arrow" data-home-album-move="prev" aria-label="이전 인기 앨범">${icon("ChevronLeft")}</button>
+          <button type="button" class="home-album-arrow" data-home-album-move="next" aria-label="다음 인기 앨범">${icon("ChevronRight")}</button>
+          <button type="button" class="text-sm home-link-button" style="color:#c4b5fd" data-page-link="album">전체 보기</button>
+        </div>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">${albums.slice(0, 4).map((album, index) => albumTile(album, false, index + 1)).join("")}</div>
+      <div class="home-album-carousel" data-home-album-carousel data-carousel-index="${homeAlbumCarouselIndex}">
+        <div class="home-album-track" data-home-album-track>${renderHomeAlbumCarouselItems()}</div>
+      </div>
     </div>
 
     <div class="grid md:grid-cols-[1.2fr_.8fr] gap-4">
@@ -251,6 +573,7 @@ function renderHome() {
 window.trackitPages = window.trackitPages || {};
 window.trackitPages.home = renderHome;
 bindHomeMoodBackground();
+bindHomeAlbumCarousel();
 loadHomeChartTracks();
 document.addEventListener("DOMContentLoaded", () => {
   syncHomePlayerCover();
