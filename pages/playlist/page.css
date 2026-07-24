@@ -1140,6 +1140,15 @@
   }
 }
 
+/* Mobile (768px 이하): 모달을 열었을 때만 하단 재생바를 숨깁니다. */
+@media (max-width: 768px) {
+  .trackit-app:has(.playlist-modal:not([hidden])) > .fixed-player,
+  .trackit-app:has(.playlist-name-modal:not([hidden])) > .fixed-player,
+  .trackit-app:has(.playlist-delete-modal:not([hidden])) > .fixed-player {
+    display: none;
+  }
+}
+
 /* Mobile (768px 이하): 플레이리스트 패널은 세로로, 캐러셀은 한 카드씩 표시합니다. */
 @media (max-width: 768px) {
   .playlist-carousel {
