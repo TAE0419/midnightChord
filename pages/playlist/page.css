@@ -1132,3 +1132,17 @@
     width: 100%;
   }
 }
+
+/* 보라색 버튼은 모든 화면에서 같은 hover 색상을 사용합니다. */
+.playlist-create-button:hover,
+.playlist-modal-other-button:hover,
+.playlist-modal-add-button:hover,
+.playlist-name-actions button:hover,
+.playlist-modal-other-list .playlist-modal-other-delete:hover,
+.playlist-modal-confirm:hover,
+.playlist-delete-dialog button:hover,
+.playlist-recent-delete:hover,
+.playlist-current-header .playlist-current-delete:hover,
+.playlist-current-header [data-current-playlist-play].is-playing:hover {
+  background-color: #b04fff;
+}

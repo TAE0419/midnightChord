@@ -389,3 +389,9 @@
     padding: .38rem .45rem;
   }
 }
+
+/* 보라색 버튼은 모든 화면에서 같은 hover 색상을 사용합니다. */
+.artist-mini-play:hover,
+[data-page-root] > .grid > article button[data-artist-name]:hover {
+  background-color: #b04fff;
+}
