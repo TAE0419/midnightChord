@@ -78,7 +78,9 @@ const releaseDateByGenre = {
 };
 
 let albumTracks = Array.isArray(window.trackitData?.tracks) ? window.trackitData.tracks : [];
-let selectedAlbumIndex = 0;
+let selectedAlbumIndex = null;
+let currentAlbumPage = 1;
+const albumsPerPage = 8;
 
 function encodeAlbumCoverPath(path) {
   return path.split("/").map(segment => encodeURIComponent(segment)).join("/");
@@ -125,9 +127,9 @@ function getAlbumCover(track, index) {
 function getSelectedAlbumFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const trackId = params.get("track");
-  if (!trackId) return 0;
+  if (!trackId) return null;
   const foundIndex = albumTracks.findIndex(track => track.id === trackId);
-  return foundIndex >= 0 ? foundIndex : 0;
+  return foundIndex >= 0 ? foundIndex : null;
 }
 
 function getMixedAlbumIndexes() {
@@ -177,6 +179,19 @@ function albumCard(track, index) {
       <strong>${getAlbumTitle(track)}</strong>
       <small>${track.artist} · ${getAlbumReleaseDate(track)}</small>
     </button>
+  `;
+}
+
+function renderAlbumPagination(totalPages) {
+  if (totalPages <= 1) return "";
+
+  return `
+    <div class="album-pagination" aria-label="싱글 앨범 페이지">
+      ${Array.from({ length: totalPages }, (_, index) => {
+        const page = index + 1;
+        return `<button type="button" class="${page === currentAlbumPage ? "is-active" : ""}" data-album-page="${page}" aria-label="${page}페이지" aria-current="${page === currentAlbumPage ? "page" : "false"}">${page}</button>`;
+      }).join("")}
+    </div>
   `;
 }
 
@@ -236,21 +251,29 @@ function renderAlbum() {
     return `<section class="surface rounded-2xl p-6">앨범으로 만들 곡 데이터가 없습니다.</section>`;
   }
 
-  selectedAlbumIndex = Math.min(selectedAlbumIndex, albumTracks.length - 1);
-  const selectedTrack = albumTracks[selectedAlbumIndex];
+  if (selectedAlbumIndex !== null) {
+    selectedAlbumIndex = Math.min(selectedAlbumIndex, albumTracks.length - 1);
+  }
+  const selectedTrack = selectedAlbumIndex !== null ? albumTracks[selectedAlbumIndex] : null;
+  const mixedAlbumIndexes = getMixedAlbumIndexes();
+  const totalAlbumPages = Math.ceil(mixedAlbumIndexes.length / albumsPerPage);
+  currentAlbumPage = Math.min(Math.max(currentAlbumPage, 1), totalAlbumPages);
+  const pageStart = (currentAlbumPage - 1) * albumsPerPage;
+  const visibleAlbumIndexes = mixedAlbumIndexes.slice(pageStart, pageStart + albumsPerPage);
 
   return `
     <div class="album-shell">
-      ${renderAlbumDetail(selectedTrack, selectedAlbumIndex)}
+      ${selectedTrack ? renderAlbumDetail(selectedTrack, selectedAlbumIndex) : ""}
       <section class="album-library surface">
         <div class="album-section-head">
           <div>
             <p>SINGLES</p>
             <h2>싱글 앨범 ${albumTracks.length}개</h2>
           </div>
-          <span>1 track each</span>
+          <span>${currentAlbumPage} / ${totalAlbumPages}</span>
         </div>
-        <div class="single-album-grid">${getMixedAlbumIndexes().map(index => albumCard(albumTracks[index], index)).join("")}</div>
+        <div class="single-album-grid">${visibleAlbumIndexes.map(index => albumCard(albumTracks[index], index)).join("")}</div>
+        ${renderAlbumPagination(totalAlbumPages)}
       </section>
     </div>
   `;
@@ -347,11 +370,19 @@ function bindAlbumInteractions() {
     if (document.body.dataset.currentPage !== "album") return;
 
     const card = event.target.closest("[data-album-index]");
+    const pageButton = event.target.closest("[data-album-page]");
     const playButton = event.target.closest("[data-album-play]");
 
     if (playButton) {
       event.preventDefault();
       playAlbumTrack(Number(playButton.dataset.albumPlay));
+      return;
+    }
+
+    if (pageButton) {
+      event.preventDefault();
+      currentAlbumPage = Number(pageButton.dataset.albumPage);
+      renderAlbumPage();
       return;
     }
 
