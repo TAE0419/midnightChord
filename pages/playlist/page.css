@@ -1146,3 +1146,22 @@
 .playlist-current-header [data-current-playlist-play].is-playing:hover {
   background-color: #b04fff;
 }
+
+/* Mobile (768px 이하): 플레이리스트에서는 아이콘 전용 사이드바를 유지합니다. */
+@media (max-width: 768px) {
+  .trackit-app {
+    grid-template-columns: 72px minmax(0, 1fr) !important;
+  }
+
+  .trackit-app > .sidebar {
+    display: flex !important;
+  }
+
+  .trackit-app > main {
+    grid-column: 2;
+  }
+
+  .trackit-app > .fixed-player {
+    grid-column: 1 / -1 !important;
+  }
+}
