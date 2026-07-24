@@ -1,8 +1,10 @@
 (() => {
   const deletedTrackKeys = new Set();
+  const tracksPerPage = 4;
   let pendingRow = null;
   let isCurrentPlaylistDeletePending = false;
   let allowCurrentPlaylistDelete = false;
+  let currentTrackPage = 1;
 
   function trackKey(row) {
     const artist = row.querySelector(".font-medium")?.textContent.trim() || "";
@@ -25,7 +27,10 @@
   }
 
   function renderTrackDeleteButtons() {
-    document.querySelectorAll(".playlist-current-row").forEach(row => {
+    const currentList = document.querySelector("[data-current-playlist-list]");
+    if (!currentList) return;
+
+    currentList.querySelectorAll(".playlist-current-row").forEach(row => {
       if (deletedTrackKeys.has(trackKey(row))) {
         row.remove();
         return;
@@ -40,6 +45,48 @@
       button.setAttribute("aria-label", `${row.querySelector(".playlist-current-title")?.textContent.trim() || "곡"} 삭제`);
       row.append(button);
     });
+
+    renderTrackPagination(currentList);
+  }
+
+  function renderTrackPagination(currentList) {
+    const panel = currentList.closest(".playlist-current-panel");
+    if (!panel) return;
+    const rows = [...currentList.querySelectorAll(".playlist-current-row")];
+    const totalPages = Math.ceil(rows.length / tracksPerPage);
+    const existingPagination = panel.querySelector(".playlist-current-pagination");
+
+    if (totalPages <= 1) {
+      rows.forEach(row => { row.hidden = false; });
+      existingPagination?.remove();
+      return;
+    }
+
+    currentTrackPage = Math.min(Math.max(currentTrackPage, 1), totalPages);
+    rows.forEach((row, index) => {
+      row.hidden = Math.floor(index / tracksPerPage) + 1 !== currentTrackPage;
+    });
+
+    const pagination = existingPagination || document.createElement("nav");
+    pagination.className = "playlist-current-pagination";
+    pagination.setAttribute("aria-label", "현재 재생목록 페이지");
+    pagination.innerHTML = "";
+
+    const addPageButton = (label, page, isActive = false) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = label;
+      button.dataset.playlistCurrentPage = String(page);
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-label", `${label} 페이지`);
+      pagination.append(button);
+    };
+
+    addPageButton("≪", 1);
+    for (let page = 1; page <= totalPages; page += 1) addPageButton(String(page), page, page === currentTrackPage);
+    addPageButton("≫", totalPages);
+
+    if (!existingPagination) panel.append(pagination);
   }
 
   function bindTrackDeleteConfirmation() {
@@ -97,6 +144,13 @@
         closeTrackDeleteModal();
       }
     }, true);
+
+    document.addEventListener("click", event => {
+      const pageButton = event.target.closest("[data-playlist-current-page]");
+      if (!pageButton) return;
+      currentTrackPage = Number(pageButton.dataset.playlistCurrentPage);
+      renderTrackDeleteButtons();
+    });
   }
 
   document.addEventListener("trackit:ready", bindTrackDeleteConfirmation, { once: true });

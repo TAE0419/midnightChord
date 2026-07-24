@@ -1149,6 +1149,40 @@
   }
 }
 
+/* Mobile (768px 이하): 현재 재생목록을 스크롤 대신 페이지 버튼으로 탐색합니다. */
+@media (max-width: 768px) {
+  .playlist-current-panel {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .playlist-current-pagination {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    justify-content: center;
+    margin-top: .9rem;
+  }
+
+  .playlist-current-pagination button {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: .4rem;
+    color: #f4f4f5;
+    cursor: pointer;
+    font-size: .72rem;
+    min-width: 1.9rem;
+    padding: .38rem .45rem;
+  }
+
+  .playlist-current-pagination button:hover,
+  .playlist-current-pagination button.is-active {
+    background: #7057b8;
+    border-color: #7057b8;
+  }
+}
+
 /* Mobile (768px 이하): 플레이리스트 패널은 세로로, 캐러셀은 한 카드씩 표시합니다. */
 @media (max-width: 768px) {
   .playlist-carousel {
