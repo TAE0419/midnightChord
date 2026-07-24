@@ -50,6 +50,19 @@ function playlistRecentRow(entry, index) {
   `;
 }
 
+function playlistCurrentRow(entry) {
+  const art = entry.imageSrc
+    ? assetBox(entry, "w-9 h-9 rounded-full shrink-0", entry.initial || "")
+    : `<div class="${entry.art || "purple-soft"} w-9 h-9 rounded-full shrink-0"></div>`;
+  return `
+    <div class="playlist-current-row">
+      ${art}
+      <div class="min-w-0"><p class="font-medium truncate">${entry.artist}</p><p class="text-xs truncate" style="color:var(--muted)">${entry.plays || ""}</p></div>
+      <p class="playlist-current-title">${entry.title}</p>
+    </div>
+  `;
+}
+
 function renderHome() {
   return `
     <div class="surface rounded-3xl p-5 md:p-7 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-center overflow-hidden">
@@ -114,133 +127,21 @@ function renderBrowse() {
   `;
 }
 
-function getAlbumCoverInfo(track) {
-  const genre = (track.genre || "").toLowerCase();
-  if (genre.includes("클래식")) {
-    return {
-      cover: "assets/images/covers/classic-masterpiece.svg",
-      tag: "CLASSIC",
-      type: "클래식 앨범",
-      mood: "우아한 밤의 음악",
-      description: "고전 관현악의 깊은 울림이 담긴 트랙입니다. 관악기와 현악기의 풍부한 텍스처가 밤의 감성을 촉촉하게 채웁니다."
-    };
-  }
-  if (genre.includes("케이팝")) {
-    return {
-      cover: "assets/images/covers/kpop-color.svg",
-      tag: "K-POP",
-      type: "케이팝 싱글",
-      mood: "빛나는 밤의 리듬",
-      description: "경쾌한 비트와 선명한 멜로디가 돋보이는 트랙입니다. 화려한 사운드가 이어지는 밤을 연출합니다."
-    };
-  }
-  if (genre.includes("제이팝")) {
-    return {
-      cover: "assets/images/covers/jpop-color.svg",
-      tag: "J-POP",
-      type: "제이팝 싱글",
-      mood: "몽환적인 감성",
-      description: "부드러운 선율과 반짝이는 사운드가 어우러진 곡입니다. 꿈결 같은 무드를 밤에 담아냅니다."
-    };
-  }
-  if (genre.includes("힙합") || genre.includes("r&b")) {
-    return {
-      cover: "assets/images/covers/hiphop-color.svg",
-      tag: "HIPHOP/R&B",
-      type: "힙합/R&B 싱글",
-      mood: "도시적인 밤의 무드",
-      description: "무게감 있는 비트와 리듬이 돋보이는 트랙입니다. 도심 속 밤의 감성을 은은하게 채웁니다."
-    };
-  }
-  if (genre.includes("인디") || genre.includes("밴드")) {
-    return {
-      cover: "assets/images/covers/indie-color.svg",
-      tag: "INDIE",
-      type: "인디/밴드 싱글",
-      mood: "감성적인 여운",
-      description: "어쿠스틱과 일렉트릭이 어우러진 매력적인 트랙입니다. 아늑한 밤의 감성으로 잔잔히 흐릅니다."
-    };
-  }
-  if (genre.includes("electronic") || genre.includes("electronica")) {
-    return {
-      cover: "assets/images/covers/electronic-color.svg",
-      tag: "ELECTRONIC",
-      type: "일렉트로닉 싱글",
-      mood: "미래적인 야간 감성",
-      description: "신비로운 신스와 리듬이 어우러진 트랙입니다. 밤의 공기를 전자음으로 물들입니다."
-    };
-  }
-  if (genre.includes("팝")) {
-    return {
-      cover: "assets/images/covers/pop-color.svg",
-      tag: "POP",
-      type: "팝 싱글",
-      mood: "달빛 아래 감성",
-      description: "세련된 멜로디와 감각적인 편곡이 돋보이는 트랙입니다. 밤의 공기를 가볍게 물들입니다."
-    };
-  }
-  return {
-    cover: "pages/album/album-cover.svg",
-    tag: track.genre || "ALBUM",
-    type: "싱글",
-    mood: "다채로운 감성",
-    description: "Studio Midnight이 큐레이션한 트랙입니다. 음악의 색감과 분위기를 담아낸 상세 페이지입니다."
-  };
-}
-
 function renderAlbum() {
-  const track = tracks[0];
-  const coverInfo = getAlbumCoverInfo(track);
-
   return `
-    <div class="grid gap-6 lg:grid-cols-[360px_1fr]">
-      <section class="surface rounded-[28px] p-6 album-detail-card">
-        <div class="relative overflow-hidden rounded-[28px] cover-card mb-6">
-          <img id="albumCover" src="${coverInfo.cover}" alt="앨범 커버" class="w-full h-full object-cover" />
-          <div id="albumCoverTag" class="cover-tag">${coverInfo.tag}</div>
+    <div class="grid md:grid-cols-[250px_1fr] gap-6 items-end">
+      <div class="album-art rounded-3xl aspect-square"></div>
+      <div>
+        <p class="text-sm" style="color:var(--muted)">ALBUM</p>
+        <h1 class="text-3xl md:text-5xl font-medium mt-2">Violet Night</h1>
+        <p class="mt-3">LUNA · 2026 · 10곡</p>
+        <div class="flex gap-2 mt-5">
+          <button type="button" class="purple-btn rounded-xl px-5 py-2" data-play-track="0">전체 재생</button>
+          <button type="button" class="surface rounded-xl px-4 py-2">${icon("Heart")} 저장</button>
         </div>
-        <div class="space-y-3">
-          <p class="text-sm" style="color:var(--muted)">앨범 상세</p>
-          <h1 id="albumTitle" class="text-3xl font-semibold">${track.title}</h1>
-          <p id="albumArtist" class="text-sm" style="color:var(--muted)">${track.artist} · ${track.genre} · 1곡</p>
-          <div class="grid gap-3 mt-4">
-            <div class="metric-card">
-              <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">트랙</p>
-              <p id="detailTrackName" class="viz-stat-value text-xl">${track.title}</p>
-            </div>
-            <div class="metric-card">
-              <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">길이</p>
-              <p id="detailTrackTime" class="viz-stat-value text-xl">${track.time}</p>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-3 mt-5">
-            <button id="detailPlay" type="button" class="purple-btn rounded-full px-5 py-3 font-medium" data-play-track="0">재생</button>
-            <button id="detailNext" type="button" class="surface rounded-full px-5 py-3 font-medium">다음 트랙</button>
-          </div>
-        </div>
-      </section>
-      <section class="surface rounded-[28px] p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-semibold">트랙 상세</h2>
-          <span id="albumGenreTag" class="chip">${track.genre}</span>
-        </div>
-        <p id="trackDetailDescription" class="text-sm leading-7" style="color:#d4d4d8">${coverInfo.description}</p>
-        <div class="mt-6 grid gap-3">
-          <div class="metric-card">
-            <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">앨범 유형</p>
-            <p id="albumType" class="viz-stat-value text-xl">${coverInfo.type}</p>
-          </div>
-          <div class="metric-card">
-            <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">추천 분위기</p>
-            <p id="albumMoodDetail" class="viz-stat-value text-xl">${coverInfo.mood}</p>
-          </div>
-          <div class="metric-card">
-            <p class="text-xs uppercase tracking-[0.2em]" style="color:var(--muted)">아티스트</p>
-            <p id="albumArtistMeta" class="viz-stat-value text-xl">${track.artist}</p>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
+    <div class="surface rounded-2xl overflow-hidden">${tracks.slice(0, 4).map((track, index) => trackRow(track, index, { active: index === 1 })).join("")}</div>
   `;
 }
 
@@ -290,68 +191,12 @@ function renderPodcasts() {
   `;
 }
 
-function playlistRecommendationData() {
-  let user = null;
-  try { user = JSON.parse(localStorage.getItem("studio-midnight-user")); } catch { user = null; }
-  if (!user?.email) return null;
-
-  const userKey = user.email.toLowerCase();
-  try {
-    const settings = JSON.parse(localStorage.getItem("studio-midnight-settings")) || {};
-    if (settings[userKey]?.playlistRecommendations === false) return null;
-  } catch {
-    // 저장 데이터가 손상된 경우 기본값인 추천 켜짐 상태를 사용합니다.
-  }
-
-  let follows = [];
-  let likes = [];
-  try {
-    const following = JSON.parse(localStorage.getItem("studio-midnight-following")) || {};
-    follows = Array.isArray(following[userKey]) ? following[userKey] : [];
-  } catch {
-    follows = [];
-  }
-  try {
-    const accounts = JSON.parse(localStorage.getItem("studio-midnight-accounts")) || {};
-    likes = Array.isArray(accounts[userKey]?.likes) ? accounts[userKey].likes : [];
-  } catch {
-    likes = [];
-  }
-
-  const preferredNames = new Set([
-    ...follows.map(item => String(item.name || "").toLowerCase()),
-    ...likes.map(item => String(item.artist || "").toLowerCase())
-  ]);
-  const recommended = artists.filter(artist => {
-    const name = artist.name.toLowerCase();
-    return [...preferredNames].some(preferred => name.includes(preferred) || preferred.includes(name));
-  });
-  const selected = (recommended.length ? recommended : artists).slice(0, 4);
-  return {
-    artists: selected,
-    title: recommended.length ? "취향 기반 Midnight Mix" : "Midnight Discovery",
-    reason: recommended.length ? "좋아요와 팔로우를 반영한 추천입니다." : "새로운 아티스트를 발견해보세요."
-  };
-}
-
-function renderPlaylistRecommendation() {
-  const recommendation = playlistRecommendationData();
-  if (!recommendation?.artists.length) return "";
-  return `
-    <section class="surface rounded-2xl p-4" data-playlist-recommendation>
-      <div class="flex flex-col md:flex-row md:items-center gap-4">
-        <div class="flex-1 min-w-0">
-          <p class="text-xs" style="color:#b9a5ff">FOR YOU</p>
-          <h2 class="font-medium mt-1">${recommendation.title}</h2>
-          <p class="text-sm mt-1" style="color:var(--muted)">${recommendation.reason}</p>
-          <p class="text-sm mt-3 truncate">${recommendation.artists.map(artist => artist.name).join(" · ")}</p>
-        </div>
-        <button type="button" class="playlist-create-button rounded-xl px-4 py-2 shrink-0" data-save-playlist-recommendation="${recommendation.artists.map(artist => artists.indexOf(artist)).join(",")}">내 플리에 저장</button>
-      </div>
-    </section>`;
-}
-
 function renderPlaylist() {
+  const featuredTitles = [
+    "Violet Afterglow", "Static Hearts", "Neon Bloom", "Blue Hour Drive", "별빛의 온도",
+    "Midnight Funk", "Paper Moon", "Slow Motion", "Electric Bloom", "Velvet Signal",
+    "City Lights", "Miso Soup", "After the Rain", "Night Choir", "Little Planet"
+  ];
   const carouselItems = Array.from({ length: 30 }, (_, index) => ({
     ...playlists[index % playlists.length],
     artist: artists[index % artists.length],
@@ -364,7 +209,6 @@ function renderPlaylist() {
       <div><p class="text-sm" style="color:var(--muted)">MY LIBRARY</p><h1 class="text-2xl font-medium mt-1">플레이리스트</h1></div>
       <button type="button" class="playlist-create-button rounded-xl px-4 py-2" data-playlist-create>+ 새 플레이리스트</button>
     </div>
-    ${renderPlaylistRecommendation()}
     <div class="playlist-carousel-shell">
       <button type="button" class="playlist-carousel-jump playlist-carousel-jump-start" data-playlist-carousel-start aria-label="처음으로 이동">${icon("ChevronsLeft", "w-5 h-5")}</button>
       <button type="button" class="playlist-carousel-jump playlist-carousel-jump-end" data-playlist-carousel-end aria-label="마지막으로 이동">${icon("ChevronsRight", "w-5 h-5")}</button>
@@ -403,6 +247,7 @@ function renderPlaylist() {
             <button type="button" class="playlist-modal-artist ${index === 0 ? "is-selected" : ""}" data-playlist-modal-artist="${index}" data-playlist-modal-search-text="${artist.name} ${artist.title} ${artist.plays}">
               ${assetBox(artist, "w-11 h-11 rounded-full", artist.initial)}
               <span class="playlist-modal-artist-info"><strong>${artist.name}</strong><small>${artist.plays}</small></span>
+              <span class="playlist-modal-featured-track">${window.artistPageData?.artists?.find(item => item.name === artist.name)?.title || featuredTitles[index % featuredTitles.length]}</span>
               <span class="playlist-modal-intro" data-playlist-modal-detail="${encodeURIComponent(artist.name)}">소개 보기</span>
           </button>`).join("")}
           <p class="playlist-modal-empty" data-playlist-modal-empty hidden>검색 결과가 없습니다.</p>
@@ -411,18 +256,37 @@ function renderPlaylist() {
           <div class="playlist-modal-picker">
             <input class="playlist-modal-current-name" data-playlist-modal-current-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름">
             <button type="button" class="playlist-modal-other-button" data-playlist-modal-other aria-expanded="false">다른 플리</button>
+            <button type="button" class="playlist-modal-add-button" data-playlist-modal-add aria-label="새 플레이리스트 만들기">+</button>
             <div class="playlist-modal-other-list" data-playlist-modal-other-list hidden>
-              ${["새벽 산책", "Purple Focus", "주말 드라이브"].map(name => `<button type="button" data-playlist-modal-name="${name}">${name}</button>`).join("")}
+              ${["새벽 산책", "Purple Focus", "주말 드라이브"].map(name => `<div class="playlist-modal-other-item"><button type="button" data-playlist-modal-name="${name}">${name}</button><button type="button" class="playlist-modal-other-delete" data-playlist-modal-delete="${name}">삭제</button></div>`).join("")}
             </div>
           </div>
           <button type="button" class="playlist-modal-confirm" data-playlist-modal-confirm>확인</button>
         </div>
       </section>
     </div>
+    <div class="playlist-name-modal" data-playlist-name-modal hidden>
+      <section class="playlist-name-dialog" role="dialog" aria-modal="true" aria-labelledby="playlist-name-title">
+        <h2 id="playlist-name-title">플레이리스트의 이름을 알려주세요</h2>
+        <div class="playlist-name-actions"><input type="text" data-playlist-name-input maxlength="30" aria-label="플레이리스트 이름" autocomplete="off"><button type="button" data-playlist-name-confirm>확인</button></div>
+      </section>
+    </div>
+    <div class="playlist-delete-modal" data-playlist-delete-modal hidden>
+      <section class="playlist-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="playlist-delete-title">
+        <h2 id="playlist-delete-title">정말 삭제 하시겠습니까?</h2>
+        <div><button type="button" data-playlist-delete-confirm>네</button><button type="button" data-playlist-delete-cancel>아니요</button></div>
+      </section>
+    </div>
     <div class="playlist-toast" data-playlist-toast role="status" aria-live="polite">플레이리스트에 추가 되었습니다.</div>
-    <div class="surface rounded-2xl p-4">
-      <h2 class="font-medium mb-3">최근 들은 곡</h2>
-      <div data-playlist-recent-list></div>
+    <div class="playlist-lower-grid">
+      <section class="surface rounded-2xl p-4">
+        <h2 class="font-medium mb-3">최근 들은 곡</h2>
+        <div data-playlist-recent-list></div>
+      </section>
+      <section class="surface rounded-2xl p-3 playlist-current-panel">
+        <div class="playlist-current-header"><div class="playlist-current-picker"><input data-current-playlist-name value="미드나잇플리" readonly aria-label="현재 플레이리스트 이름"><div class="playlist-current-options" data-current-playlist-options hidden>${["Purple Focus", "새벽 산책", "주말 드라이브"].map(name => `<button type="button" data-current-playlist-option="${name}">${name}</button>`).join("")}</div></div><button type="button" data-current-playlist-play aria-label="플레이리스트 재생">▶ 재생</button><button type="button" class="playlist-current-delete" data-current-playlist-delete>삭제</button></div>
+        <div data-current-playlist-list></div>
+      </section>
     </div>
   `;
 }
@@ -432,10 +296,11 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   const track = document.querySelector("[data-playlist-carousel-track]");
   if (!carousel || !track || carousel.dataset.playlistCarouselInitialized === "true") return;
   carousel.dataset.playlistCarouselInitialized = "true";
-  const libraryKey = "studio-midnight-mypage-library";
 
   const createButton = document.querySelector("[data-playlist-create]");
   const modal = document.querySelector("[data-playlist-modal]");
+  const playlistNameModal = document.querySelector("[data-playlist-name-modal]");
+  const playlistDeleteModal = document.querySelector("[data-playlist-delete-modal]");
   const toast = document.querySelector("[data-playlist-toast]");
   const startButton = document.querySelector("[data-playlist-carousel-start]");
   const endButton = document.querySelector("[data-playlist-carousel-end]");
@@ -447,85 +312,6 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     art: albums[index]?.art,
     time: index === 0 ? "2분 전" : "18분 전"
   }));
-
-  function currentPlaylistUser() {
-    try {
-      return JSON.parse(localStorage.getItem("studio-midnight-user"));
-    } catch {
-      return null;
-    }
-  }
-
-  function artistTrack(artist) {
-    const matched = tracks.find(item =>
-      item.artist === artist.name ||
-      artist.name.includes(item.artist) ||
-      item.artist.includes(artist.name)
-    );
-    if (matched) return { ...matched };
-    return {
-      title: artist.title || `${artist.name} Sample`,
-      artist: artist.name,
-      time: artist.time || "--:--",
-      audioSrc: artist.audio || ""
-    };
-  }
-
-  function updateMypagePlaylist(name, selectedArtists) {
-    const user = currentPlaylistUser();
-    if (!user?.email) {
-      alert("플레이리스트를 저장하려면 먼저 로그인해주세요.");
-      window.location.href = new URL("pages/mypage/", document.baseURI).href;
-      return false;
-    }
-
-    let libraries = {};
-    try {
-      libraries = JSON.parse(localStorage.getItem(libraryKey)) || {};
-    } catch {
-      libraries = {};
-    }
-
-    const userKey = user.email.toLowerCase();
-    const library = libraries[userKey] && typeof libraries[userKey] === "object"
-      ? libraries[userKey]
-      : { follows: [], playlists: [], likes: [] };
-    if (!Array.isArray(library.playlists)) library.playlists = [];
-
-    const additions = selectedArtists.map(artistTrack);
-    const playlist = library.playlists.find(item => item.title === name);
-    if (playlist) {
-      const uniqueTracks = new Map(
-        [...(Array.isArray(playlist.tracks) ? playlist.tracks : []), ...additions]
-          .map(item => [`${item.title}::${item.artist}`, item])
-      );
-      playlist.tracks = [...uniqueTracks.values()];
-      playlist.count = playlist.tracks.length;
-    } else {
-      library.playlists.unshift({
-        id: `playlist-${Date.now()}`,
-        title: name,
-        description: "플레이리스트 페이지에서 저장한 음악",
-        icon: "ListMusic",
-        tracks: additions,
-        count: additions.length
-      });
-    }
-
-    libraries[userKey] = library;
-    localStorage.setItem(libraryKey, JSON.stringify(libraries));
-    return true;
-  }
-
-  document.querySelector("[data-save-playlist-recommendation]")?.addEventListener("click", event => {
-    const selectedArtists = String(event.currentTarget.dataset.savePlaylistRecommendation || "")
-      .split(",")
-      .map(Number)
-      .map(index => artists[index])
-      .filter(Boolean);
-    if (!selectedArtists.length || !updateMypagePlaylist("Midnight Mix", selectedArtists)) return;
-    showPlaylistToast();
-  });
 
   function renderRecentEntries() {
     if (!recentList) return;
@@ -558,10 +344,150 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     renderRecentEntries();
   });
 
+  const currentPlaylistList = document.querySelector("[data-current-playlist-list]");
+  const currentPlaylistName = document.querySelector("[data-current-playlist-name]");
+  const playlistCollections = new Map([
+    ["미드나잇플리", []],
+    ["Purple Focus", []],
+    ["새벽 산책", []],
+    ["주말 드라이브", []]
+  ]);
+  let currentPlaylistEntries = playlistCollections.get("미드나잇플리");
+  let playlistNamePendingDeletion = "";
+
+  function appendPlaylistOption(name) {
+    const modalList = modal?.querySelector("[data-playlist-modal-other-list]");
+    const currentList = document.querySelector("[data-current-playlist-options]");
+    if (modalList && ![...modalList.querySelectorAll("[data-playlist-modal-name]")].some(button => button.dataset.playlistModalName === name)) {
+      const item = document.createElement("div");
+      item.className = "playlist-modal-other-item";
+      const selectButton = document.createElement("button");
+      selectButton.type = "button";
+      selectButton.dataset.playlistModalName = name;
+      selectButton.textContent = name;
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "playlist-modal-other-delete";
+      deleteButton.dataset.playlistModalDelete = name;
+      deleteButton.textContent = "삭제";
+      item.append(selectButton, deleteButton);
+      modalList.append(item);
+    }
+    if (currentList && ![...currentList.querySelectorAll("[data-current-playlist-option]")].some(button => button.dataset.currentPlaylistOption === name)) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.currentPlaylistOption = name;
+      button.textContent = name;
+      currentList.append(button);
+    }
+  }
+
+  function setPlaylistNameModalOpen(isOpen) {
+    if (!playlistNameModal) return;
+    playlistNameModal.hidden = !isOpen;
+    if (isOpen) {
+      const input = playlistNameModal.querySelector("[data-playlist-name-input]");
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  function createPlaylistFromNameModal() {
+    const input = playlistNameModal?.querySelector("[data-playlist-name-input]");
+    const name = input?.value.trim();
+    if (!name) {
+      input?.focus();
+      return;
+    }
+    if (!playlistCollections.has(name)) playlistCollections.set(name, []);
+    appendPlaylistOption(name);
+    const currentNameInput = modal?.querySelector("[data-playlist-modal-current-name]");
+    if (currentNameInput) currentNameInput.value = name;
+    setPlaylistNameModalOpen(false);
+  }
+
+  function setPlaylistDeleteModalOpen(isOpen) {
+    if (playlistDeleteModal) playlistDeleteModal.hidden = !isOpen;
+  }
+
+  function deletePlaylist(name) {
+    if (!name || name === "미드나잇플리") return;
+    playlistCollections.delete(name);
+    [...(modal?.querySelectorAll("[data-playlist-modal-delete]") || [])]
+      .find(button => button.dataset.playlistModalDelete === name)
+      ?.closest(".playlist-modal-other-item")?.remove();
+    [...document.querySelectorAll("[data-current-playlist-option]")]
+      .find(button => button.dataset.currentPlaylistOption === name)?.remove();
+    const modalName = modal?.querySelector("[data-playlist-modal-current-name]");
+    if (modalName?.value === name) modalName.value = "미드나잇플리";
+    if (currentPlaylistName?.value === name) {
+      currentPlaylistEntries = playlistCollections.get("미드나잇플리");
+      currentPlaylistName.value = "미드나잇플리";
+      renderCurrentPlaylist();
+    }
+  }
+
+  function renderCurrentPlaylist() {
+    if (!currentPlaylistList) return;
+    currentPlaylistList.innerHTML = currentPlaylistEntries.length
+      ? currentPlaylistEntries.map(playlistCurrentRow).join("")
+      : `<p class="playlist-current-empty">저장한 곡이 없습니다.</p>`;
+  }
+
+  function saveCurrentPlaylistFromModal() {
+    const selectedArtists = [...modal.querySelectorAll("[data-playlist-modal-artist].is-selected")]
+      .map(button => artists[Number(button.dataset.playlistModalArtist)]);
+    if (!selectedArtists.length) return;
+    const playlistName = modal.querySelector("[data-playlist-modal-current-name]").value;
+    if (!playlistCollections.has(playlistName)) playlistCollections.set(playlistName, []);
+    currentPlaylistEntries = playlistCollections.get(playlistName);
+    currentPlaylistEntries.splice(0, currentPlaylistEntries.length, ...selectedArtists.map((artist, index) => ({
+      artist: artist.name,
+      title: window.artistPageData?.artists?.find(item => item.name === artist.name)?.title || tracks[index]?.title || "대표곡 준비 중",
+      plays: artist.plays,
+      imageSrc: artist.imageSrc,
+      initial: artist.initial,
+      art: artist.art
+    })));
+    currentPlaylistName.value = playlistName;
+    renderCurrentPlaylist();
+  }
+
+  renderCurrentPlaylist();
+  document.querySelector("[data-current-playlist-play]")?.addEventListener("click", () => {
+    const firstArtist = artists.find(artist => artist.name === currentPlaylistEntries[0]?.artist);
+    const audio = document.getElementById("studioAudio");
+    const firstArtistIndex = artists.indexOf(firstArtist);
+    if (!firstArtist || !audio) return;
+    if (Number(audio.dataset.playlistArtistIndex) === firstArtistIndex && !audio.paused) {
+      audio.pause();
+      updateCardPlayers();
+      return;
+    }
+    playArtist(firstArtistIndex, true);
+  });
+  document.querySelector("[data-current-playlist-delete]")?.addEventListener("click", () => {
+    currentPlaylistEntries.splice(0, currentPlaylistEntries.length);
+    renderCurrentPlaylist();
+  });
+  currentPlaylistName?.addEventListener("click", () => {
+    const options = document.querySelector("[data-current-playlist-options]");
+    options.hidden = !options.hidden;
+  });
+  document.querySelector("[data-current-playlist-options]")?.addEventListener("click", event => {
+    const option = event.target.closest("[data-current-playlist-option]");
+    if (!option) return;
+    const playlistName = option.dataset.currentPlaylistOption;
+    if (!playlistCollections.has(playlistName)) playlistCollections.set(playlistName, []);
+    currentPlaylistEntries = playlistCollections.get(playlistName);
+    currentPlaylistName.value = playlistName;
+    event.currentTarget.hidden = true;
+    renderCurrentPlaylist();
+  });
+
   function setModalOpen(isOpen) {
     if (!modal) return;
     modal.hidden = !isOpen;
-    document.body.classList.toggle("playlist-modal-open", isOpen);
     if (!isOpen) {
       modal.querySelector("[data-playlist-modal-other-list]").hidden = true;
       modal.querySelector("[data-playlist-modal-other]").setAttribute("aria-expanded", "false");
@@ -581,6 +507,23 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   }
 
   createButton?.addEventListener("click", () => setModalOpen(true));
+  modal?.querySelector("[data-playlist-modal-add]")?.addEventListener("click", () => setPlaylistNameModalOpen(true));
+  playlistNameModal?.querySelector("[data-playlist-name-confirm]")?.addEventListener("click", createPlaylistFromNameModal);
+  playlistNameModal?.querySelector("[data-playlist-name-input]")?.addEventListener("keydown", event => {
+    if (event.key === "Enter") createPlaylistFromNameModal();
+  });
+  playlistNameModal?.addEventListener("click", event => {
+    if (event.target === playlistNameModal) setPlaylistNameModalOpen(false);
+  });
+  playlistDeleteModal?.querySelector("[data-playlist-delete-confirm]")?.addEventListener("click", () => {
+    deletePlaylist(playlistNamePendingDeletion);
+    playlistNamePendingDeletion = "";
+    setPlaylistDeleteModalOpen(false);
+  });
+  playlistDeleteModal?.querySelector("[data-playlist-delete-cancel]")?.addEventListener("click", () => setPlaylistDeleteModalOpen(false));
+  playlistDeleteModal?.addEventListener("click", event => {
+    if (event.target === playlistDeleteModal) setPlaylistDeleteModalOpen(false);
+  });
   if (new URLSearchParams(window.location.search).get("modal") === "1") setModalOpen(true);
   function showPlaylistToast() {
     if (!toast) return;
@@ -593,15 +536,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   endButton?.addEventListener("click", () => carousel.scrollTo({ left: carousel.scrollWidth, behavior: "smooth" }));
   modal?.addEventListener("click", event => {
     if (event.target.closest("[data-playlist-modal-confirm]")) {
-      const selectedArtists = [...modal.querySelectorAll("[data-playlist-modal-artist].is-selected")]
-        .map(button => artists[Number(button.dataset.playlistModalArtist)])
-        .filter(Boolean);
-      if (!selectedArtists.length) {
-        alert("플레이리스트에 담을 아티스트를 선택해주세요.");
-        return;
-      }
-      const playlistName = modal.querySelector("[data-playlist-modal-current-name]").value.trim() || "미드나잇플리";
-      if (!updateMypagePlaylist(playlistName, selectedArtists)) return;
+      saveCurrentPlaylistFromModal();
       setModalOpen(false);
       showPlaylistToast();
       return;
@@ -624,6 +559,12 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
       modal.querySelectorAll("[data-playlist-modal-name]").forEach(button => button.classList.toggle("is-selected", button === playlistNameButton));
       modal.querySelector("[data-playlist-modal-other-list]").hidden = true;
       modal.querySelector("[data-playlist-modal-other]").setAttribute("aria-expanded", "false");
+      return;
+    }
+    const playlistDeleteButton = event.target.closest("[data-playlist-modal-delete]");
+    if (playlistDeleteButton) {
+      playlistNamePendingDeletion = playlistDeleteButton.dataset.playlistModalDelete;
+      setPlaylistDeleteModalOpen(true);
       return;
     }
     const detailLink = event.target.closest("[data-playlist-modal-detail]");
@@ -665,6 +606,14 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
       button.innerHTML = icon(active ? "Pause" : "Play", "w-5 h-5");
       button.setAttribute("aria-label", active ? "일시정지" : "재생");
     });
+    const currentPlaylistPlay = document.querySelector("[data-current-playlist-play]");
+    const firstPlaylistArtist = artists.find(artist => artist.name === currentPlaylistEntries[0]?.artist);
+    const currentPlaylistPlaying = !audio?.paused && firstPlaylistArtist && Number(audio.dataset.playlistArtistIndex) === artists.indexOf(firstPlaylistArtist);
+    if (currentPlaylistPlay) {
+      currentPlaylistPlay.classList.toggle("is-playing", Boolean(currentPlaylistPlaying));
+      currentPlaylistPlay.textContent = currentPlaylistPlaying ? "Ⅱ 일시정지" : "▶ 재생";
+      currentPlaylistPlay.setAttribute("aria-label", currentPlaylistPlaying ? "플레이리스트 일시정지" : "플레이리스트 재생");
+    }
     if (window.lucide) window.lucide.createIcons();
   }
 
@@ -672,9 +621,6 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     const artist = artists[index];
     const audio = document.getElementById("studioAudio");
     if (!artist?.audio || !audio) return;
-    const artistAudio = typeof window.preferredStudioAudioSource === "function"
-      ? window.preferredStudioAudioSource(artist.audio)
-      : artist.audio;
 
     const isCurrentArtist = Number(audio.dataset.playlistArtistIndex) === index;
     if (isCurrentArtist && !audio.paused && !forcePlay) {
@@ -684,7 +630,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     }
 
     if (!isCurrentArtist) {
-      audio.src = artistAudio;
+      audio.src = artist.audio;
       audio.dataset.playlistArtistIndex = String(index);
       audio.load();
     } else if (audio.ended) {
@@ -704,11 +650,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
     const action = event.target.closest("[data-playlist-action]");
     const addButton = event.target.closest(".playlist-card-add");
     if (addButton) {
-      const card = addButton.closest("[data-playlist-card]");
-      const artist = artists[Number(card?.dataset.playlistCard)];
-      if (!artist || !updateMypagePlaylist("미드나잇플리", [artist])) return;
-      addButton.classList.add("is-added");
-      showPlaylistToast();
+      addButton.classList.toggle("is-added");
       return;
     }
     if (!action) return;
@@ -772,6 +714,7 @@ window.trackitPlaylistCarousel = function initializePlaylistCarousel() {
   audio?.addEventListener("timeupdate", updateCardPlayers);
   audio?.addEventListener("play", updateCardPlayers);
   audio?.addEventListener("pause", updateCardPlayers);
+  audio?.addEventListener("ended", updateCardPlayers);
 };
 
 function renderSearch(query = "") {
@@ -848,3 +791,4 @@ window.trackitPages = {
   mypage: renderMypage,
   settings: renderSettings
 };
+
