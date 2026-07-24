@@ -127,51 +127,6 @@ body {
   text-align: center;
 }
 
-.opening-record {
-  position: absolute;
-  right: clamp(-8rem, -2vw, -2rem);
-  bottom: clamp(-8rem, -4vw, -3rem);
-  width: clamp(18rem, 32vw, 31rem);
-  aspect-ratio: 1;
-  border: clamp(1.1rem, 2vw, 1.7rem) solid #15161d;
-  border-radius: 50%;
-  background: #0c0d12;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.13), 0 0 0 7px rgba(0, 0, 0, 0.25);
-  animation: opening-spin 16s linear infinite;
-}
-
-.opening-record-ring {
-  position: absolute;
-  inset: 11%;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 50%;
-}
-
-.opening-record-ring.ring-two { inset: 23%; }
-.opening-record-ring.ring-three { inset: 35%; border-color: rgba(86, 233, 201, 0.25); }
-
-.opening-record-label {
-  position: absolute;
-  inset: 40%;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(167, 139, 250, 0.7);
-  border-radius: 50%;
-  background: #242034;
-  color: #d7d1ff;
-  font-size: clamp(0.8rem, 1.4vw, 1.25rem);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  line-height: 0.85;
-  text-align: center;
-}
-
-.opening-record-label small {
-  color: #56e9c9;
-  font-size: 0.45em;
-  font-weight: 500;
-}
-
 .opening-mark {
   display: flex;
   height: 3.5rem;
@@ -408,10 +363,6 @@ body {
   50% { opacity: 0.22; }
 }
 
-@keyframes opening-spin {
-  to { transform: rotate(360deg); }
-}
-
 @keyframes opening-eq {
   to { transform: scaleY(0.35); opacity: 0.5; }
 }
@@ -444,13 +395,6 @@ body {
     inset: 12% 7%;
   }
 
-  .opening-record {
-    right: -8rem;
-    bottom: -5rem;
-    width: 19rem;
-    opacity: 0.5;
-  }
-
   .opening-track {
     width: min(100%, 19rem);
   }
@@ -459,7 +403,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .opening-logo,
   .opening-mark span,
-  .opening-record,
   .opening-equalizer span {
     animation: none;
   }
